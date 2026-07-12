@@ -6,14 +6,75 @@ param(
     [string]$LearningDirectory = "learning-flow",
     [ValidateSet("Fail", "Merge", "Replace")]
     [string]$Mode = "Fail",
-    [switch]$SkipRootAgents
+    [switch]$SkipRootAgents,
+    [switch]$SkipSelfRefresh
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
+$InstallerVersion = "0.1.2"
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
+}
+
+function Resolve-RemoteCommit(
+    [string]$RepositoryName,
+    [string]$RequestedRef
+) {
+    if ($RequestedRef -match "^[0-9a-fA-F]{40}$") {
+        return $RequestedRef.ToLowerInvariant()
+    }
+
+    if ($null -eq (Get-Command git -ErrorAction SilentlyContinue)) {
+        throw "Git is required to resolve the latest repository revision."
+    }
+
+    $remoteUrl = "https://github.com/$RepositoryName.git"
+    $patterns = @(
+        "refs/heads/$RequestedRef",
+        "refs/tags/$RequestedRef^{}",
+        "refs/tags/$RequestedRef"
+    )
+
+    $lines = @(& git ls-remote $remoteUrl @patterns)
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to resolve '$RequestedRef' from $remoteUrl."
+    }
+
+    $headSha = $null
+    $peeledTagSha = $null
+    $tagSha = $null
+
+    foreach ($line in $lines) {
+        $parts = $line -split "\s+", 2
+        if ($parts.Count -ne 2) {
+            continue
+        }
+
+        $sha = $parts[0]
+        $name = $parts[1]
+
+        if ($name -eq "refs/heads/$RequestedRef") {
+            $headSha = $sha
+        }
+        elseif ($name -eq "refs/tags/$RequestedRef^{}") {
+            $peeledTagSha = $sha
+        }
+        elseif ($name -eq "refs/tags/$RequestedRef") {
+            $tagSha = $sha
+        }
+    }
+
+    $resolved = @($headSha, $peeledTagSha, $tagSha) |
+        Where-Object { -not [string]::IsNullOrWhiteSpace($_) } |
+        Select-Object -First 1
+
+    if ([string]::IsNullOrWhiteSpace($resolved)) {
+        throw "Ref '$RequestedRef' was not found in $RepositoryName."
+    }
+
+    return $resolved.ToLowerInvariant()
 }
 
 function Test-DirectoryHasContent([string]$Path) {
@@ -25,8 +86,8 @@ function Test-DirectoryHasContent([string]$Path) {
 }
 
 function Copy-MissingTree([string]$Source, [string]$Destination) {
-    $copied = 0
-    $skipped = 0
+    $script:copied = 0
+    $script:skipped = 0
 
     Get-ChildItem -LiteralPath $Source -Recurse -Force | ForEach-Object {
         $relative = [System.IO.Path]::GetRelativePath($Source, $_.FullName)
@@ -59,25 +120,68 @@ function Copy-MissingTree([string]$Source, [string]$Destination) {
     }
 }
 
+if ($Repository -like "__GITHUB_OWNER__/*") {
+    throw "Replace __GITHUB_OWNER__ in the installer or pass -Repository owner/codebase-learning-flow."
+}
+
+$resolvedCommit = Resolve-RemoteCommit -RepositoryName $Repository -RequestedRef $Ref
+$noCacheHeaders = @{
+    "Cache-Control" = "no-cache, no-store, max-age=0"
+    "Pragma" = "no-cache"
+}
+
+if (-not $SkipSelfRefresh) {
+    $bootstrapRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("codebase-learning-flow-bootstrap-" + [Guid]::NewGuid().ToString("N"))
+    $latestInstaller = Join-Path $bootstrapRoot "install.ps1"
+    $nonce = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+    $latestInstallerUrl = "https://raw.githubusercontent.com/$Repository/$resolvedCommit/scripts/install.ps1?nocache=$nonce"
+
+    try {
+        New-Item -ItemType Directory -Path $bootstrapRoot -Force | Out-Null
+        Write-Step "Refreshing installer v$InstallerVersion from commit $resolvedCommit"
+        Invoke-WebRequest `
+            -Uri $latestInstallerUrl `
+            -OutFile $latestInstaller `
+            -UseBasicParsing `
+            -Headers $noCacheHeaders
+
+        & $latestInstaller `
+            -TargetPath $TargetPath `
+            -Repository $Repository `
+            -Ref $resolvedCommit `
+            -LearningDirectory $LearningDirectory `
+            -Mode $Mode `
+            -SkipRootAgents:$($SkipRootAgents.IsPresent) `
+            -SkipSelfRefresh
+        return
+    }
+    finally {
+        if (Test-Path -LiteralPath $bootstrapRoot) {
+            Remove-Item -LiteralPath $bootstrapRoot -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+}
+
 $resolvedTarget = [System.IO.Path]::GetFullPath($TargetPath)
 if (-not (Test-Path -LiteralPath $resolvedTarget)) {
     New-Item -ItemType Directory -Path $resolvedTarget -Force | Out-Null
 }
 
-if ($Repository -like "__GITHUB_OWNER__/*") {
-    throw "Replace __GITHUB_OWNER__ in the installer or pass -Repository owner/codebase-learning-flow."
-}
-
 $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("codebase-learning-flow-" + [Guid]::NewGuid().ToString("N"))
 $archivePath = Join-Path $tempRoot "source.zip"
 $extractPath = Join-Path $tempRoot "extract"
-$archiveUrl = "https://github.com/$Repository/archive/$Ref.zip"
+$nonce = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
+$archiveUrl = "https://github.com/$Repository/archive/$resolvedCommit.zip?nocache=$nonce"
 
 try {
     New-Item -ItemType Directory -Path $extractPath -Force | Out-Null
 
-    Write-Step "Downloading $Repository at ref $Ref"
-    Invoke-WebRequest -Uri $archiveUrl -OutFile $archivePath -UseBasicParsing
+    Write-Step "Downloading $Repository at commit $resolvedCommit"
+    Invoke-WebRequest `
+        -Uri $archiveUrl `
+        -OutFile $archivePath `
+        -UseBasicParsing `
+        -Headers $noCacheHeaders
 
     Write-Step "Extracting template"
     Expand-Archive -LiteralPath $archivePath -DestinationPath $extractPath -Force
@@ -108,8 +212,6 @@ try {
 
     if ($Mode -eq "Merge" -and (Test-Path -LiteralPath $targetLearning)) {
         Write-Step "Merging missing template files"
-        $script:copied = 0
-        $script:skipped = 0
         $mergeResult = Copy-MissingTree -Source $sourceLearning -Destination $targetLearning
         Write-Step "Copied $($mergeResult.Copied) files and preserved $($mergeResult.Skipped) existing files"
     }
