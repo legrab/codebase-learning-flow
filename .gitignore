@@ -18,4 +18,5 @@ Desktop.ini
 *.log
 
 # Locally generated distribution archives
-/codebase-learning-flow.zip
+/INITIALIZE_LEARNING_FLOW_*.zip
+/codebase-learning-flow*.zip

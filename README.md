@@ -1,70 +1,44 @@
 # Codebase Learning Flow
 
-A repository-native framework for continuous technical onboarding, codebase research, and contributor-specific learning.
+A repository-native harness for safe agentic collaboration and deliberate codebase learning.
 
-It gives an AI coding agent a durable structure for teaching a repository over time instead of repeatedly rediscovering the same architecture, domain vocabulary, runtime behavior, ownership boundaries, and implementation patterns.
+Version 0.5.3 keeps two concerns separate:
 
-The framework is designed for contributors who need to:
-
-- work on real tickets while understanding the surrounding system;
-- learn breadth-first without getting lost;
-- specialize depth-first in future ownership areas;
-- keep several learning themes active;
-- resume learning after days or months;
-- retain shared repository research without duplicating it in personal notes;
-- use Git diffs as the communication surface with the teaching agent.
-
-## What gets installed
-
-The installer copies the prepared framework from `sample/learning-flow/` into the current repository as:
+- `agentic-flow/` governs framing, planning, autonomy, validation, records, and handoff;
+- `learning-flow/` adds optional orientation, explanation, understanding checks, maps, and durable takeaways.
 
 ```text
-learning-flow/
+Repository instructions
+  ↓
+agentic-flow: Frame → Inspect → Decide → Act → Verify → Handoff
+  ↓
+One selective task procedure
+  ↓
+Optional learning-flow: Locate → Reason → Work → Explain → Recap
 ```
 
-If the target repository has no root `AGENTS.md`, it also installs the minimal fallback from `sample/root/AGENTS.md`.
+The repository's own agentic setup is part of initial learning research. Existing instructions, skills, prompts, plans, and records are mapped; known template files are recognized without wasting context.
 
-If a root `AGENTS.md` already exists, it is left untouched. Add the following pointer manually:
+## Profiles
 
-```md
-For onboarding, repository research, contributor learning, or maintenance of the
-learning workflow, read and follow `learning-flow/AGENTS.md`.
-```
+| Profile | Use | Persistent learning | Skills |
+|---|---|---:|---:|
+| `minimal` | daily work, short engagements, token-sensitive agents | `MAP.md`, `TAKEAWAYS.md` | 1 |
+| `full` | deliberate onboarding, teaching, long-lived ownership | map, takeaways, optional research and learning artifacts | 7 |
 
-The installed framework contains:
+New installations default to `minimal`. Both profiles are task-first and create no curriculum, session, contributor file, quiz, or explainer without a real reason.
 
-```text
-learning-flow/
-├── README.md
-├── AGENTS.md
-├── BOOTSTRAP.md
-├── REPOSITORIES.md
-├── research/
-│   ├── README.md
-│   └── topics/
-│       └── README.md
-├── materials/
-│   ├── README.md
-│   └── themes/
-│       └── README.md
-├── contributors/
-│   └── README.md
-└── templates/
-    ├── research-topic.md
-    ├── learning-material.md
-    ├── contributor-readme.md
-    ├── contributor-tracking.md
-    ├── contributor-theme.md
-    └── ticket-learning-path.md
-```
+## Communication defaults
 
-`INITIALIZE_LEARNING_FLOW.md` is also included in this repository. It contains the full design prompt used to derive the framework and remains useful when redesigning or extending it.
+Agents use friendly, concise, summary-first language. Substantial updates say what changed and why it matters in a few descriptive, visually distinct bullets; they avoid dry labels, chronological tool logs, and file-by-file inventories. Commit bodies use compact `Why`, `What`, and `Checks` sections only when those sections add useful context.
 
-## One-line installation
+Human-facing Markdown uses collapsible sections for secondary evidence, examples, command matrices, and long inventories, while warnings and required decisions remain visible.
 
-Run the command from the root of the repository that should receive the learning flow.
+Full mode may ask one optional A/B/C/D learner-context question when user experience cannot be inferred and materially changes useful depth.
 
-Piping a remote script executes whatever the referenced revision currently contains. For stable team use, publish a release tag and pin the raw script URL and installer `Ref` to that tag instead of tracking `main`.
+## Installation
+
+Run from the repository that should receive the harness.
 
 ### PowerShell
 
@@ -72,7 +46,7 @@ Piping a remote script executes whatever the referenced revision currently conta
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1)))
 ```
 
-### Bash, Zsh, or compatible shell
+### Bash or Zsh
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.sh | sh
@@ -84,121 +58,112 @@ curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/
 powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.bat -OutFile '%TEMP%\install-learning-flow.bat'" && "%TEMP%\install-learning-flow.bat"
 ```
 
-The default behavior is conservative:
+Remote piping executes the referenced revision. Team installations should pin a release tag or commit.
 
-- abort if `learning-flow/` already contains files;
-- never overwrite an existing root `AGENTS.md`;
-- never modify application code;
-- never commit.
-
-## Installer modes
-
-All installers support the same intent:
-
-- `fail`: stop if the target learning directory already contains files;
-- `merge`: copy missing template files and preserve existing files;
-- `replace`: delete the target learning directory and install a clean copy.
-
-### PowerShell examples
+<details>
+<summary>Profiles, modes, and root integration</summary>
 
 ```powershell
-./scripts/install.ps1 -Mode Merge
-./scripts/install.ps1 -Mode Replace
-./scripts/install.ps1 -TargetPath C:\work\my-repository
-./scripts/install.ps1 -SkipRootAgents
-./scripts/install.ps1 -Repository my-org/codebase-learning-flow -Ref v1.0.0
-```
-
-### Shell examples
-
-```sh
-./scripts/install.sh --mode merge
-./scripts/install.sh --mode replace
-./scripts/install.sh --target /work/my-repository
-./scripts/install.sh --skip-root-agents
-./scripts/install.sh --repository my-org/codebase-learning-flow --ref v1.0.0
-```
-
-### Batch examples
-
-The batch installer delegates to the PowerShell installer and accepts the same PowerShell arguments:
-
-```bat
-scripts\install.bat -Mode Merge
-scripts\install.bat -TargetPath C:\work\my-repository
-```
-
-## Local installation from a clone
-
-```powershell
-pwsh ./scripts/install.ps1
+./scripts/install.ps1 -Profile Minimal
+./scripts/install.ps1 -Profile Full
+./scripts/install.ps1 -Mode Update
+./scripts/install.ps1 -RootAgents Integrate
+./scripts/install.ps1 -RootAgents Initialize
 ```
 
 ```sh
-./scripts/install.sh
+./scripts/install.sh --profile minimal
+./scripts/install.sh --profile full
+./scripts/install.sh --mode update
+./scripts/install.sh --root-agents integrate
+./scripts/install.sh --root-agents initialize
 ```
 
-```bat
-scripts\install.bat
+Modes:
+
+- `fail`: stop on existing managed content;
+- `merge`: add missing framework files while preserving existing content;
+- `update`: refresh framework-owned files and managed skills;
+- `replace`: replace framework directories and this framework's managed skills.
+
+`update` preserves agentic settings, maps, takeaways, research, materials, contributor traces, explainers, labs, and unrelated skills.
+
+Root modes are `auto`, `integrate`, `initialize`, `preserve`, and `skip`. Existing root content is never replaced wholesale.
+
+A minimal installation can upgrade safely:
+
+```sh
+./scripts/install.sh --mode update --profile full
 ```
 
-The scripts still install from the configured public repository by default. Pass `-Repository` or `--repository` to test a fork.
+Full-to-minimal update is rejected because automatic deletion could destroy repository-authored content.
 
-## After installation
+</details>
 
-Give the repository agent this instruction:
+## First use
 
 ```text
-Read learning-flow/AGENTS.md and learning-flow/BOOTSTRAP.md.
-Inspect the repository, confirm my contributor slug, and perform the initial
-research build. Do not modify application code and do not commit.
+Use the agentic-workflow skill to inspect this repository's actual agent-facing setup.
+Recognize installed template files, map custom instructions and effective precedence,
+resolve root integration, and use balanced defaults unless a meaningful preference needs
+one compact A/B/C/D choice.
 ```
 
-The agent should then:
-
-1. inspect the repository and existing instructions;
-2. confirm contributor identity;
-3. record repository baselines;
-4. research the five bootstrap themes at screening depth;
-5. prepare a first learning session for each;
-6. prepare a second session only for the highest-value themes;
-7. stop with reviewable, uncommitted changes.
-
-## Typical later requests
+Minimal learning:
 
 ```text
-Hit me with something new.
-Give me three useful next topics.
-Continue my last learning topic.
-Teach me a small domain concept based on what I already know.
-I have ticket ABC-123. Build a two or three session learning path before implementation.
-Research the next useful depth for module A.
-Evaluate my changes in learning-flow/contributors/my-slug/themes/ARCH-0-FOUNDATIONS.md.
-Do a useful research pass, but do not start a personal learning session.
+Use repository-learning for the initial baseline or current task. Keep inspection narrow,
+persist only verified reusable map or takeaway content, ask at most one consequential
+understanding check, and end with a compact recap.
 ```
 
-## Repository contents
+Full learning:
 
-- `INITIALIZE_LEARNING_FLOW.md`: full initializer and design prompt.
-- `sample/`: files copied into target repositories.
-- `scripts/`: portable installers.
-- `LICENSE`: MIT license for the framework and templates.
+```text
+Use learning-bootstrap for a compact baseline, including the actual agentic setup. Ask
+about my experience only if it materially changes useful scaffolding. Do not pre-generate
+sessions or learning artifacts. Then use the narrowest primary skill for the task.
+```
 
-## Updating installed frameworks
+## Incorporating future references
 
-The installer is intentionally not a package manager.
+Read [`docs/references/REFERENCE_INTEGRATION.md`](docs/references/REFERENCE_INTEGRATION.md), or give an agent the prompt shown there with a GitHub source or ZIP. Every integration must add a concise `docs/references/REFERENCE_REVIEW_<SOURCE>.md` that records exact provenance, retained value, rejected source-specific constraints, and resulting framework changes.
 
-For an established repository, prefer:
+Current reference reviews:
 
-1. inspect changes in this template repository;
-2. run the installer with `merge` to add newly introduced files;
-3. manually or agentically reconcile changed shared instructions;
-4. review the diff before committing.
+- [`REFERENCE_REVIEW_POCOK.md`](docs/references/REFERENCE_REVIEW_POCOK.md)
+- [`REFERENCE_REVIEW_LITT.md`](docs/references/REFERENCE_REVIEW_LITT.md)
 
-Using `replace` on an active learning flow will delete contributor traces and researched material. That mode is for fresh or disposable installations only.
+<details>
+<summary>Installed structure</summary>
 
-## Design boundaries
+Common:
 
-This framework is Markdown-first and Git-native. It does not require a database, web service, vector store, custom CLI, or generated dashboard.
+```text
+.agents/skills/agentic-workflow/SKILL.md
+agentic-flow/
+├── AGENTS.md
+├── WORKFLOW.md
+├── CONFIGURE.md
+├── ROOT_INTEGRATION.md
+├── SETTINGS.md
+├── LEARN.md
+└── REFERENCE_INTEGRATION.md
+```
 
-That is deliberate. The repository, its history, and the agent already provide the infrastructure needed for the first useful version.
+Minimal adds one `repository-learning` skill and `learning-flow/{AGENTS,MAP,README,TAKEAWAYS}.md`.
+
+Full adds seven narrow learning skills plus optional research, materials, explainers, labs, and contributor surfaces that remain empty until justified.
+
+</details>
+
+## Repository documentation
+
+- [`docs/README.md`](docs/README.md): maintenance documentation index
+- [`CHANGELOG.md`](CHANGELOG.md): revision history
+- [`LICENSE`](LICENSE): reuse terms and attribution guidance
+- [`scripts/README.md`](scripts/README.md): installer details
+
+## License
+
+Software is available under the MIT License. Original documentation, workflow text, templates, and evaluation content are available under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), which permits reuse and adaptation with attribution. See [`LICENSE`](LICENSE) for scope and a copy-ready credit line.
