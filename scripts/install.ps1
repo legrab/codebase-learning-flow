@@ -16,10 +16,67 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$InstallerVersion = "0.5.3"
+$InstallerVersion = "0.7.0"
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
+}
+
+function Initialize-LocalLearningWorkspace([string]$TargetRoot, [string]$HistoryTemplate) {
+    if (-not (Test-Path -LiteralPath $HistoryTemplate -PathType Leaf)) {
+        throw "Local learning-history template is missing: $HistoryTemplate"
+    }
+
+    $changed = $false
+    $ignorePath = Join-Path $TargetRoot ".gitignore"
+    if (Test-Path -LiteralPath $ignorePath -PathType Container) {
+        throw "$ignorePath exists but is not a file."
+    }
+
+    $hasLocalIgnore = $false
+    if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
+        $hasLocalIgnore = $null -ne (
+            Get-Content -LiteralPath $ignorePath |
+                Where-Object { $_.Trim() -in @("/.local/", ".local/", "/.local", ".local") } |
+                Select-Object -First 1
+        )
+    }
+    if (-not $hasLocalIgnore) {
+        $newline = "`n"
+        if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
+            $content = [System.IO.File]::ReadAllText($ignorePath)
+            if ($content.Contains("`r`n")) { $newline = "`r`n" }
+            $entry = "/.local/$newline"
+            if ($content.Length -gt 0 -and -not $content.EndsWith("`n")) { $entry = "$newline$entry" }
+            [System.IO.File]::AppendAllText($ignorePath, $entry, [System.Text.UTF8Encoding]::new($false))
+        }
+        else {
+            [System.IO.File]::WriteAllText($ignorePath, "/.local/$newline", [System.Text.UTF8Encoding]::new($false))
+        }
+        $changed = $true
+    }
+
+    $localRoot = Join-Path $TargetRoot ".local"
+    if (Test-Path -LiteralPath $localRoot -PathType Leaf) {
+        throw "$localRoot exists but is not a directory."
+    }
+    foreach ($directory in @($localRoot, (Join-Path $localRoot "sessions"), (Join-Path $localRoot "follow-ups"))) {
+        if (-not (Test-Path -LiteralPath $directory -PathType Container)) {
+            New-Item -ItemType Directory -Path $directory -Force | Out-Null
+            $changed = $true
+        }
+    }
+
+    $historyPath = Join-Path $localRoot "learning-history.md"
+    if (-not (Test-Path -LiteralPath $historyPath)) {
+        Copy-Item -LiteralPath $HistoryTemplate -Destination $historyPath
+        $changed = $true
+    }
+    elseif (-not (Test-Path -LiteralPath $historyPath -PathType Leaf)) {
+        throw "$historyPath exists but is not a file."
+    }
+
+    if ($changed) { Write-Step "Initialized private learning state under .local/" }
 }
 
 function Resolve-RemoteCommit([string]$RepositoryName, [string]$RequestedRef) {
@@ -148,6 +205,50 @@ function Copy-ManagedFiles([string]$Source, [string]$Destination, [string]$Manif
     return $copied
 }
 
+function Remove-RetiredManagedFiles([string]$Destination, [string]$PreviousManifestPath, [string]$CurrentManifestPath) {
+    if (-not (Test-Path -LiteralPath $PreviousManifestPath -PathType Leaf)) { return 0 }
+
+    $destinationPath = [System.IO.Path]::GetFullPath($Destination).TrimEnd([char[]]@('\', '/'))
+    $destinationRoot = $destinationPath + [System.IO.Path]::DirectorySeparatorChar
+    $current = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    foreach ($rawLine in Get-Content -LiteralPath $CurrentManifestPath) {
+        $relative = $rawLine.Trim()
+        if (-not [string]::IsNullOrWhiteSpace($relative) -and -not $relative.StartsWith('#')) {
+            $null = $current.Add($relative.Replace('\', '/'))
+        }
+    }
+
+    $removed = 0
+    foreach ($rawLine in Get-Content -LiteralPath $PreviousManifestPath) {
+        $relative = $rawLine.Trim()
+        if ([string]::IsNullOrWhiteSpace($relative) -or $relative.StartsWith('#')) { continue }
+        $portable = $relative.Replace('\', '/')
+        if ($current.Contains($portable)) { continue }
+
+        $normalized = $portable.Replace('/', [string][System.IO.Path]::DirectorySeparatorChar)
+        $targetFile = [System.IO.Path]::GetFullPath((Join-Path $Destination $normalized))
+        if (-not $targetFile.StartsWith($destinationRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw "Unsafe path in previous managed-files manifest: $relative"
+        }
+        if (Test-Path -LiteralPath $targetFile -PathType Container) {
+            throw "Retired managed target is a directory, expected a file: $relative"
+        }
+        if (-not (Test-Path -LiteralPath $targetFile -PathType Leaf)) { continue }
+
+        Remove-Item -LiteralPath $targetFile -Force
+        $removed += 1
+        $parent = Split-Path -Parent $targetFile
+        while (-not [string]::IsNullOrWhiteSpace($parent) -and
+            $parent.StartsWith($destinationRoot, [System.StringComparison]::OrdinalIgnoreCase) -and
+            -not [System.IO.Path]::GetFullPath($parent).Equals($destinationPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            if ($null -ne (Get-ChildItem -LiteralPath $parent -Force | Select-Object -First 1)) { break }
+            Remove-Item -LiteralPath $parent -Force
+            $parent = Split-Path -Parent $parent
+        }
+    }
+    return $removed
+}
+
 function Get-ManagedSkillNames([string]$ManifestPath) {
     if (-not (Test-Path -LiteralPath $ManifestPath -PathType Leaf)) { return @() }
     $names = @(
@@ -191,6 +292,9 @@ function Install-Component(
         Write-Step "Copied $($result.Copied) files and preserved $($result.Skipped) existing files"
     }
     elseif ($InstallMode -eq "Update") {
+        $previousManagedFiles = Join-Path $Destination ".managed-files"
+        $retired = Remove-RetiredManagedFiles -Destination $Destination -PreviousManifestPath $previousManagedFiles -CurrentManifestPath $ManagedFiles
+        if ($retired -gt 0) { Write-Step "Removed $retired retired managed files from $Name" }
         Write-Step "Adding missing $Name files"
         $result = Copy-MissingTree -Source $Source -Destination $Destination
         Write-Step "Copied $($result.Copied) files and preserved $($result.Skipped) existing files"
@@ -251,11 +355,10 @@ function Resolve-RootAgentsMode([string]$TargetRoot, [string]$RequestedMode) {
             Write-Host "  A. Append the managed agentic-flow and learning-flow pointer now"
             Write-Host "  B. Preserve it and review overlaps with the agent later (default)"
             Write-Host "  C. Preserve it and use explicit workflow invocation only"
-            Write-Host "  D. Skip root integration entirely"
             $choice = (Read-Host "Choice [B]").Trim().ToUpperInvariant()
             switch ($choice) {
                 "A" { return "Integrate" }
-                "D" { return "Skip" }
+                "C" { return "Skip" }
                 default { return "Preserve" }
             }
         }
@@ -264,14 +367,13 @@ function Resolve-RootAgentsMode([string]$TargetRoot, [string]$RequestedMode) {
 
     if (Test-InteractiveTerminal) {
         Write-Host "[learning-flow] No root AGENTS.md found. Choose initialization:"
-        Write-Host "  A. Create the lean Pocok-informed root and configure with the agent next"
-        Write-Host "  B. Create the lean root with balanced defaults; configure later (default)"
-        Write-Host "  C. Leave it absent and ask the agent to propose a tailored root later"
-        Write-Host "  D. Skip root integration entirely"
-        $choice = (Read-Host "Choice [B]").Trim().ToUpperInvariant()
+        Write-Host "  A. Create the lean Pocok-informed root with the balanced preset (default)"
+        Write-Host "  B. Leave it absent for later review or tailoring"
+        Write-Host "  C. Leave it absent and use explicit workflow invocation only"
+        $choice = (Read-Host "Choice [A]").Trim().ToUpperInvariant()
         switch ($choice) {
-            "C" { return "Preserve" }
-            "D" { return "Skip" }
+            "B" { return "Preserve" }
+            "C" { return "Skip" }
             default { return "Initialize" }
         }
     }
@@ -288,6 +390,40 @@ function Add-RootPointer([string]$TargetFile, [string]$PointerFile) {
     $separator = if ($content.EndsWith("`n")) { "`n" } else { "`n`n" }
     [System.IO.File]::AppendAllText($TargetFile, $separator + $pointer.TrimEnd() + "`n", [System.Text.UTF8Encoding]::new($false))
     Write-Step "Connected existing root AGENTS.md to agentic-flow and learning-flow"
+}
+
+function Set-RootIntegrationState([string]$SettingsPath, [string]$ResolvedMode) {
+    if (-not (Test-Path -LiteralPath $SettingsPath -PathType Leaf)) { return }
+    $state = switch ($ResolvedMode) {
+        { $_ -in @("Integrate", "Initialize") } { "linked"; break }
+        "Preserve" { "pending"; break }
+        "Skip" { "explicit-only"; break }
+        default { throw "Unsupported root integration mode: $ResolvedMode" }
+    }
+
+    $content = [System.IO.File]::ReadAllText($SettingsPath)
+    $newline = if ($content.Contains("`r`n")) { "`r`n" } else { "`n" }
+    $hadTrailingNewline = $content.EndsWith("`n")
+    $lines = @([regex]::Split($content.TrimEnd([char[]]@("`r", "`n")), "\r?\n"))
+    $hasRootLine = $null -ne ($lines | Where-Object { $_ -match '^Root integration:' } | Select-Object -First 1)
+    $inserted = $false
+    $updated = [System.Collections.Generic.List[string]]::new()
+    foreach ($line in $lines) {
+        if ($line -match '^Root integration:') {
+            $updated.Add("Root integration: $state")
+            $inserted = $true
+            continue
+        }
+        $updated.Add($line)
+        if (-not $hasRootLine -and -not $inserted -and $line -match '^Agentic setup review:') {
+            $updated.Add("Root integration: $state")
+            $inserted = $true
+        }
+    }
+    if (-not $inserted) { $updated.Add("Root integration: $state") }
+    $result = [string]::Join($newline, $updated)
+    if ($hadTrailingNewline) { $result += $newline }
+    [System.IO.File]::WriteAllText($SettingsPath, $result, [System.Text.UTF8Encoding]::new($false))
 }
 
 if ($Repository -like "__GITHUB_OWNER__/*") {
@@ -377,6 +513,7 @@ try {
     $sourceCommonSkills = Join-Path $sourceCommon ".agents/skills"
     $sourceAgenticManagedFiles = Join-Path $sourceAgentic ".managed-files"
     $sourceAgenticManagedSkills = Join-Path $sourceAgentic ".managed-skills"
+    $sourceLocalHistory = Join-Path $sourceCommon "local/learning-history.md"
 
     $sourceProfile = Join-Path $archiveRoot "sample/profiles/$selectedProfile"
     $sourceLearning = Join-Path $sourceProfile "learning-flow"
@@ -391,7 +528,7 @@ try {
             throw "Required framework directory is missing: $requiredDirectory"
         }
     }
-    foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills)) {
+    foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills, $sourceLocalHistory)) {
         if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
             throw "Required framework manifest is missing: $requiredFile"
         }
@@ -419,6 +556,7 @@ try {
 
     Install-Component -Name "agentic-flow" -Source $sourceAgentic -Destination $targetAgentic -ManagedFiles $sourceAgenticManagedFiles -InstallMode $Mode
     Install-Component -Name "learning-flow/$selectedProfile" -Source $sourceLearning -Destination $targetLearning -ManagedFiles $sourceLearningManagedFiles -InstallMode $Mode
+    Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
 
     if (-not $SkipSkills) {
         New-Item -ItemType Directory -Path $targetSkills -Force | Out-Null
@@ -473,11 +611,12 @@ try {
         "Skip" { Write-Step "Root AGENTS.md integration skipped" }
     }
 
+    Set-RootIntegrationState -SettingsPath (Join-Path $targetAgentic "SETTINGS.md") -ResolvedMode $resolvedRootAgents
+
     Write-Step "Installation complete: profile=$selectedProfile mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
     Write-Host ""
     Write-Host "Suggested first instruction:"
-    Write-Host "Use the agentic-workflow skill to inspect and map this repository's actual agentic setup. Treat managed template files as known, research custom instructions and procedures, resolve root integration if pending, and ask the compact A/B/C/D collaboration settings when useful."
-    Write-Host "Then run the selected learning baseline so learning-flow/MAP.md records the effective agentic instruction order alongside code and domain orientation."
+    Write-Host "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."
 }
 finally {
     if (Test-Path -LiteralPath $tempRoot) {

@@ -7,10 +7,10 @@ description: Turn a real issue or planned change into a short repository learnin
 
 Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
 
-Read `learning-flow/AGENTS.md`. Use `templates/ticket-learning-path.md` only when a durable ticket artifact is justified.
+Read `learning-flow/AGENTS.md`. Use `templates/ticket-learning-path.md` only when the user explicitly wants a durable ticket artifact; keep a contributor-specific instance under `.local/` and use a tracked location only after deliberate shared promotion.
 
-1. Read and classify the ticket as bug, feature, refactor, review, or exploration.
-2. Locate likely ownership and one representative path.
+1. Read and classify the ticket, then state the actor or caller, intended outcome, capability, and governing rule when relevant.
+2. Locate likely ownership and one representative path from trigger to effect.
 3. Reuse existing map, takeaways, and research before reading broadly.
 4. Fill only high-value missing context.
 5. Propose the shortest responsible route, usually one to three steps.

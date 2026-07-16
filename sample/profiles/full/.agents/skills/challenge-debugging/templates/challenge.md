@@ -12,14 +12,12 @@
 
 _Use at most one when consequential._
 
-## Recap
+## Reusable learning (optional)
 
 - **Model:**
-- **Where:**
 - **Evidence:**
 - **Boundary:**
-- **Transfer:**
 
 ## Promotion decision
 
-_Keep conversational, update map/takeaways, or create canonical research. State why._
+_Keep conversational, update map/takeaways, or create a durable repository artifact. State why._

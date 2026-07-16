@@ -18,7 +18,9 @@ Read native instructions and the narrowest relevant code, tests, configuration, 
 
 Choose the smallest coherent route. Use a brief plan only when sequencing, risk, or coordination benefits from it.
 
-If an opinionated choice materially affects the result and repository evidence does not settle it, ask one relevant A/B/C/D question. Otherwise use the configured default.
+Confirm that the route's required runtime, tools, access, and approval are available before acting. Check only capabilities material to the task; adapt the route or name the exact blocker instead of inventorying every tool or silently enabling a new external capability.
+
+If collaboration behavior materially affects the result and repository evidence does not settle it, use the configured preset or ask for one relevant override. Otherwise use `balanced`.
 
 ## Act
 
@@ -35,6 +37,12 @@ Keep evidence labels distinct:
 - focused checks passed;
 - broader executable verification passed;
 - verification unavailable or incomplete.
+
+## Progress visibility
+
+For substantial work, open with the intended outcome and a two-to-four-step route. After that, update only at a meaningful phase transition, when evidence changes the route, when a blocker appears, or when a long-running step would otherwise leave the user without useful context.
+
+Use a compact `Now / Found / Next` pulse when those labels improve scanning. Report decisions and evidence, not commands already visible in tool output. Do not restate an unchanged plan.
 
 ## Handoff
 
@@ -55,7 +63,7 @@ Open
 
 Use descriptive bullets grouped by outcome instead of a chronological tool log or file inventory. Put long command output, secondary rationale, alternatives, or exhaustive evidence in collapsible sections. Keep failures and required next actions visible.
 
-Add a learning recap only when `learning-flow/` was active or explanation was requested.
+When `learning-flow/` or a meaningful generic learning session was active, close private continuity under `.local/` according to `LOCAL.md`, then fold only useful learning reinforcement into this handoff. Do not add a second recap section, repeat the same outcome and evidence, or expose private session detail through shared records.
 
 ## Stop conditions
 

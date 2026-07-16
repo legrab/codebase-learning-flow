@@ -9,7 +9,7 @@ Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, app
 
 Read `learning-flow/AGENTS.md`. Load only the relevant map, tests, and canonical findings.
 
-1. Define observable behavior and constraints.
+1. Define the actor, intended outcome, capability, observable behavior, and governing invariants.
 2. Search by behavior and tests, not name alone.
 3. Compare the strongest candidates across entry point, domain rules, data flow, configuration, interface, tests, and operational effects.
 4. Select the nearest valid analogue.

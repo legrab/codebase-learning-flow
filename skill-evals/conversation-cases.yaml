@@ -1,0 +1,34 @@
+route: conversational-learning
+cases:
+  - prompt: Teach me why Earth has seasons. Keep it conversational.
+    expected_skill: learn-anything
+    must_include: [compact mental model, one helpful example, learner-led depth, local closure if this becomes a meaningful session]
+    must_not: [repository inspection, tracked personal artifact, mandatory quiz]
+  - prompt: Help me practice ordering food in Spanish. Start at beginner level and adapt as we talk.
+    expected_skill: learn-anything
+    must_include: [practice exchange, direct kind correction, adaptation from learner response, private progress under .local]
+    must_not: [repository learning flow, pre-generated lesson series, tracked progress record]
+  - prompt: Explain recursion as a general programming concept, not in relation to this codebase.
+    expected_skill: learn-anything
+    must_include: [compact mental model, worked example, no repository analysis]
+    must_not: [codebase search, MAP.md update, TAKEAWAYS.md update]
+  - prompt: "Give me a direct answer: what is photosynthesis?"
+    expected_skill: learn-anything
+    must_include: [direct answer, collapsed learning loop]
+    must_not: [setup question, forced interaction, repeated recap, session file for one-off answer]
+  - prompt: Help me understand how an ecosystem can tip after a gradual environmental change.
+    expected_skill: learn-anything
+    must_include: [system boundary, interacting parts and relationships, state change or feedback, evidence and uncertainty, nearby transfer]
+    must_not: [fact inventory without causal model, mandatory system worksheet]
+  - prompt: Continue the topic we studied last time, revise the part I found difficult, and give me a short check based on it.
+    expected_skill: learn-anything
+    must_include: [read only relevant .local history, revise prior concept, check based on previous learning, update local session and history at closure]
+    must_not: [reteach everything from scratch, load entire local archive, tracked personal state]
+  - prompt: Close this learning session and preserve the useful result globally.
+    expected_skill: learn-anything
+    must_include: [complete local session state, updated local learning history, deliberate promotion review, deduplication, stable reusable non-sensitive threshold]
+    must_not: [publish personal or uncertain detail, promote generic personal transcript]
+  - prompt: Show me how requests flow through this repository's storage subsystem.
+    expected_skill: repository_learning_route
+    must_include: [repository evidence, representative path]
+    must_not: [learn-anything as the primary skill]

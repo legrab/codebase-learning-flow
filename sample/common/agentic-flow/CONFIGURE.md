@@ -1,36 +1,32 @@
 # Configure agentic collaboration
 
-Configuration is optional. Balanced defaults allow work to begin immediately. Ask these choices during setup, on explicit request, or when one unresolved preference materially changes substantial work.
+Configuration is optional. Use `balanced` by default and begin work immediately. During setup or explicit configuration, prefer one preset name over a questionnaire.
 
-A compact answer such as `1B 2A 3C 4B` is enough. `defaults` selects the balanced choices.
+## Presets
 
-## 1. Autonomy and pauses
+| Preset | Best for | Behavior |
+|---|---|---|
+| `fast` | routine, low-risk delivery | end-to-end autonomy, minimal planning, focused checks, no learning prompts or persistence |
+| `balanced` | normal repository work | meaningful-fork autonomy, brief planning, risk-based checks, concise learning in the handoff, durable findings only |
+| `guided` | deliberate codebase and domain learning | balanced delivery with prediction, explanation, one consequential check, and durable findings only |
+| `gated` | high-risk or review-heavy work | pause before implementation and major scope changes, use durable phases, broad checks, and lean learning |
 
-- **A. Fast:** execute end to end; ask only for blockers, safety, or irreversible choices.
-- **B. Balanced, default:** proceed independently and ask at meaningful design forks.
-- **C. Reviewed:** show a brief plan before implementation and pause at major scope changes.
-- **D. Gated:** pause before implementation and after each major phase.
+`balanced` is the default. A task-specific request such as “move fast,” “teach me as we work,” or “pause before implementation” overrides the stored preset for that task without rewriting settings.
 
-## 2. Planning depth
+<details>
+<summary>Advanced overrides and optional learner context</summary>
 
-- **A. Minimal:** no plan unless sequencing is genuinely unclear.
-- **B. Brief, default:** short in-chat plan for multi-step work.
-- **C. Durable:** create a plan file for substantial or handoff-heavy work.
-- **D. Formal:** explicit phases, acceptance criteria, and review gates.
+## Optional overrides
 
-## 3. Validation depth
+Use overrides only when the user explicitly wants finer control or one preset behavior is a poor fit. Do not ask this list as an onboarding questionnaire.
 
-- **A. Focused:** run the closest checks and disclose the remaining boundary.
-- **B. Risk-proportional, default:** focused checks first, then broaden as risk warrants.
-- **C. Broad:** focused, affected, and repository-wide validation when available.
-- **D. Matrix:** follow a repository-defined command matrix and record each result.
+1. **Autonomy and pauses:** `A` end to end, `B` meaningful forks, `C` plan and scope-change review, `D` gated phases.
+2. **Planning depth:** `A` minimal, `B` brief in-chat, `C` durable when justified, `D` formal phases and acceptance criteria.
+3. **Validation depth:** `A` focused, `B` risk-proportional, `C` broad, `D` repository command matrix.
+4. **Learning depth:** `A` delivery only, `B` concise handoff reinforcement, `C` explain-back when consequential, `D` guided prediction and teaching.
+5. **Persistence:** `A` no learning history beyond the conversation, `B` private learning continuity in `.local/` plus durable verified shared findings, `C` explicit reusable shared records when justified.
 
-## 4. Learning and records
-
-- **A. Delivery only:** no learning prompts or persistent records unless requested.
-- **B. Lean, default:** concise recap; persist only durable maps, takeaways, decisions, or evidence.
-- **C. Explain-back:** one check for consequential concepts plus the lean recap.
-- **D. Guided:** deliberate teaching, prediction, explain-back, and optional session records.
+Avoid contradictory combinations. Autonomy controls pauses; planning controls representation. A formal plan does not silently remove a configured gate, and fast autonomy does not require formal planning.
 
 ## Optional full-profile learner context
 
@@ -43,12 +39,16 @@ Ask this only when the full learning profile is active, the user's experience ca
 
 Do not classify the user automatically or ask again once enough context is available. Store the choice only when the user wants it reused.
 
+</details>
+
 ## Root integration
 
-Root integration is a separate one-time choice. Read `ROOT_INTEGRATION.md` and ask only the matching A/B/C/D set. Do not combine root integration, four settings, and learner context into one questionnaire.
+Root integration is a separate one-time filesystem choice. Read `ROOT_INTEGRATION.md` and ask only the matching three-way choice. Do not combine root integration, preset selection, learner context, and advanced overrides into one questionnaire.
 
 ## Recording choices
 
-Update `SETTINGS.md` and set `Status: configured` or `Status: defaults`.
+Update `SETTINGS.md`, set `Status: configured`, and record the preset. Keep override rows at `inherit` unless requested; when switching presets, clear old overrides unless the user explicitly keeps them.
 
-Set `Agentic setup review` to `template-linked`, `custom-mapped`, or `pending`. Task-specific instructions override stored preferences. Do not turn a one-off request into a permanent setting unless asked.
+Set `Agentic setup review` to `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. Set `Root integration` to `linked`, `pending`, or `explicit-only`. Task-specific instructions override stored preferences. Do not turn a one-off request into a permanent setting unless asked.
+
+Legacy settings without a preset or persistence row remain valid: infer `balanced` from the existing B defaults and treat persistence as `B` unless repository instructions say otherwise. Persistence settings never move personal or uncertain state out of `.local/`.

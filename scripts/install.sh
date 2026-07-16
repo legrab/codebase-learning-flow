@@ -31,6 +31,41 @@ log() {
     printf '%s\n' "[learning-flow] $*"
 }
 
+initialize_local_learning_workspace() {
+    target_root="$1"
+    history_template="$2"
+    ignore_path="$target_root/.gitignore"
+    local_root="$target_root/.local"
+    changed="false"
+
+    [ -f "$history_template" ] || { echo "Local learning-history template is missing: $history_template" >&2; exit 1; }
+    if [ -e "$ignore_path" ] && [ ! -f "$ignore_path" ]; then
+        echo "$ignore_path exists but is not a file." >&2
+        exit 1
+    fi
+    if [ ! -f "$ignore_path" ] || ! grep -Eq '^[[:space:]]*/?\.local/?[[:space:]]*$' "$ignore_path"; then
+        if [ -s "$ignore_path" ]; then printf '\n/.local/\n' >> "$ignore_path"; else printf '/.local/\n' > "$ignore_path"; fi
+        changed="true"
+    fi
+
+    if [ -e "$local_root" ] && [ ! -d "$local_root" ]; then
+        echo "$local_root exists but is not a directory." >&2
+        exit 1
+    fi
+    for directory in "$local_root" "$local_root/sessions" "$local_root/follow-ups"; do
+        if [ ! -d "$directory" ]; then mkdir -p "$directory"; changed="true"; fi
+    done
+    if [ ! -e "$local_root/learning-history.md" ]; then
+        cp "$history_template" "$local_root/learning-history.md"
+        changed="true"
+    elif [ ! -f "$local_root/learning-history.md" ]; then
+        echo "$local_root/learning-history.md exists but is not a file." >&2
+        exit 1
+    fi
+
+    if [ "$changed" = "true" ]; then log "Initialized private learning state under .local/"; fi
+}
+
 require_value() {
     option="$1"
     remaining="$2"
@@ -123,7 +158,7 @@ read_tty_choice() {
     printf '%s' "$prompt" > /dev/tty
     IFS= read -r answer < /dev/tty || answer=""
     answer="$(printf '%s' "$answer" | tr 'a-z' 'A-Z')"
-    case "$answer" in A|B|C|D) printf '%s\n' "$answer" ;; *) printf '%s\n' "$default_choice" ;; esac
+    case "$answer" in A|B|C) printf '%s\n' "$answer" ;; *) printf '%s\n' "$default_choice" ;; esac
 }
 
 resolve_root_agents_mode() {
@@ -141,14 +176,12 @@ resolve_root_agents_mode() {
   A. Append the managed agentic-flow and learning-flow pointer now
   B. Preserve it and review overlaps with the agent later (default)
   C. Preserve it and use explicit workflow invocation only
-  D. Skip root integration entirely
 EOF
             choice="$(read_tty_choice 'Choice [B]: ' B)"
             case "$choice" in
                 A) printf '%s\n' integrate ;;
                 B) printf '%s\n' preserve ;;
-                C) printf '%s\n' preserve ;;
-                D) printf '%s\n' skip ;;
+                C) printf '%s\n' skip ;;
             esac
         else
             printf '%s\n' preserve
@@ -157,17 +190,15 @@ EOF
         if is_interactive_terminal; then
             cat > /dev/tty <<'EOF'
 [learning-flow] No root AGENTS.md found. Choose initialization:
-  A. Create the lean Pocok-informed root and configure with the agent next
-  B. Create the lean root with balanced defaults; configure later (default)
-  C. Leave it absent and ask the agent to propose a tailored root later
-  D. Skip root integration entirely
+  A. Create the lean Pocok-informed root with the balanced preset (default)
+  B. Leave it absent for later review or tailoring
+  C. Leave it absent and use explicit workflow invocation only
 EOF
-            choice="$(read_tty_choice 'Choice [B]: ' B)"
+            choice="$(read_tty_choice 'Choice [A]: ' A)"
             case "$choice" in
                 A) printf '%s\n' initialize ;;
-                B) printf '%s\n' initialize ;;
-                C) printf '%s\n' preserve ;;
-                D) printf '%s\n' skip ;;
+                B) printf '%s\n' preserve ;;
+                C) printf '%s\n' skip ;;
             esac
         else
             printf '%s\n' initialize
@@ -186,6 +217,38 @@ append_root_pointer() {
     cat "$pointer_file" >> "$target_file"
     printf '\n' >> "$target_file"
     log "Connected existing root AGENTS.md to agentic-flow and learning-flow"
+}
+
+set_root_integration_state() {
+    settings_file="$1"
+    resolved_mode="$2"
+    [ -f "$settings_file" ] || return 0
+
+    case "$resolved_mode" in
+        integrate|initialize) state="linked" ;;
+        preserve) state="pending" ;;
+        skip) state="explicit-only" ;;
+        *) echo "Unsupported root integration mode: $resolved_mode" >&2; exit 1 ;;
+    esac
+
+    has_root=0
+    grep -q '^Root integration:' "$settings_file" && has_root=1
+    settings_tmp="$settings_file.tmp.$$"
+    if ! awk -v state="$state" -v has_root="$has_root" '
+        /^Root integration:/ { print "Root integration: " state; next }
+        { print }
+        !has_root && !inserted && /^Agentic setup review:/ {
+            print "Root integration: " state
+            inserted = 1
+        }
+        END {
+            if (!has_root && !inserted) print "Root integration: " state
+        }
+    ' "$settings_file" > "$settings_tmp"; then
+        rm -f "$settings_tmp"
+        exit 1
+    fi
+    mv "$settings_tmp" "$settings_file"
 }
 
 parse_bootstrap_source() {
@@ -274,6 +337,46 @@ copy_managed_files() {
     log "Updated $copied managed files in $(basename "$target_root")"
 }
 
+remove_retired_managed_files() {
+    target_root="$1"
+    previous_manifest="$2"
+    current_manifest="$3"
+    [ -f "$previous_manifest" ] || return 0
+
+    current_entries="$(sed '/^[[:space:]]*$/d; /^[[:space:]]*#/d' "$current_manifest")"
+    removed=0
+    while IFS= read -r relative || [ -n "$relative" ]; do
+        case "$relative" in
+            ''|'#'*) continue ;;
+            /*|..|../*|*/../*|*/..)
+                echo "Unsafe path in previous managed-files manifest: $relative" >&2
+                exit 1
+                ;;
+        esac
+        if printf '%s\n' "$current_entries" | grep -Fqx "$relative"; then
+            continue
+        fi
+
+        target_file="$target_root/$relative"
+        [ ! -d "$target_file" ] || {
+            echo "Retired managed target is a directory, expected a file: $relative" >&2
+            exit 1
+        }
+        [ -f "$target_file" ] || continue
+        rm -f "$target_file"
+        removed=$((removed + 1))
+
+        parent="$(dirname "$target_file")"
+        while [ "$parent" != "$target_root" ]; do
+            case "$parent" in "$target_root"/*) ;; *) break ;; esac
+            rmdir "$parent" 2>/dev/null || break
+            parent="$(dirname "$parent")"
+        done
+    done < "$previous_manifest"
+
+    [ "$removed" -eq 0 ] || log "Removed $removed retired managed files from $(basename "$target_root")"
+}
+
 skill_names_from_manifest() {
     manifest="$1"
     [ -f "$manifest" ] || return 0
@@ -321,6 +424,7 @@ install_component() {
         log "Merging missing $component_name files"
         copy_missing_tree "$source_root" "$target_root"
     elif [ "$MODE" = "update" ]; then
+        remove_retired_managed_files "$target_root" "$target_root/.managed-files" "$managed_files"
         log "Adding missing $component_name files"
         copy_missing_tree "$source_root" "$target_root"
         log "Updating framework-owned $component_name files"
@@ -510,6 +614,7 @@ SOURCE_AGENTIC="$SOURCE_COMMON/agentic-flow"
 SOURCE_COMMON_SKILLS="$SOURCE_COMMON/.agents/skills"
 SOURCE_AGENTIC_MANAGED_FILES="$SOURCE_AGENTIC/.managed-files"
 SOURCE_AGENTIC_MANAGED_SKILLS="$SOURCE_AGENTIC/.managed-skills"
+SOURCE_LOCAL_HISTORY="$SOURCE_COMMON/local/learning-history.md"
 SOURCE_PROFILE="$ARCHIVE_ROOT/sample/profiles/$SELECTED_PROFILE"
 SOURCE_LEARNING="$SOURCE_PROFILE/learning-flow"
 SOURCE_PROFILE_SKILLS="$SOURCE_PROFILE/.agents/skills"
@@ -521,7 +626,7 @@ SOURCE_ROOT_POINTER="$ARCHIVE_ROOT/sample/root/AGENTS.pointer.md"
 for required in "$SOURCE_AGENTIC" "$SOURCE_LEARNING"; do
     [ -d "$required" ] || { echo "Required framework directory is missing: $required" >&2; exit 1; }
 done
-for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS"; do
+for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS" "$SOURCE_LOCAL_HISTORY"; do
     [ -f "$required" ] || { echo "Required framework manifest is missing: $required" >&2; exit 1; }
 done
 if [ "$SKIP_SKILLS" != "true" ]; then
@@ -554,6 +659,7 @@ fi
 
 install_component "agentic-flow" "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_MANAGED_FILES"
 install_component "learning-flow/$SELECTED_PROFILE" "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_MANAGED_FILES"
+initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY"
 
 if [ "$SKIP_SKILLS" != "true" ]; then
     mkdir -p "$TARGET_SKILLS"
@@ -605,7 +711,8 @@ case "$RESOLVED_ROOT_AGENTS_MODE" in
     skip) log "Root AGENTS.md integration skipped" ;;
 esac
 
+set_root_integration_state "$TARGET_AGENTIC/SETTINGS.md" "$RESOLVED_ROOT_AGENTS_MODE"
+
 log "Installation complete: profile=$SELECTED_PROFILE mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
 printf '\n%s\n' "Suggested first instruction:"
-printf '%s\n' "Use the agentic-workflow skill to inspect and map this repository's actual agentic setup. Treat managed template files as known, research custom instructions and procedures, resolve root integration if pending, and ask the compact A/B/C/D collaboration settings when useful."
-printf '%s\n' "Then run the selected learning baseline so learning-flow/MAP.md records the effective agentic instruction order alongside code and domain orientation."
+printf '%s\n' "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."

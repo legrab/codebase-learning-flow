@@ -6,7 +6,7 @@ Follow repository-native instructions and `agentic-flow/AGENTS.md` first. This f
 
 General collaboration pace, approval gates, planning, validation depth, records, commit policy, and handoff belong to `agentic-flow/`. Do not duplicate them here.
 
-The compact initial baseline includes the repository's actual agentic setup as a learning territory. Recognize managed template files by their markers, then inspect root integration, custom instructions, tool-specific files, skills, prompts, plans, records, effective precedence, and unresolved conflicts.
+For a requested initial baseline, recognize managed template files by their markers. Inspect root integration and custom agent surfaces only when they affect repository work or reveal unresolved precedence. A normal template installation needs no learning-map status.
 
 ## Select one primary learning workflow
 
@@ -24,11 +24,9 @@ Do not load all skills. Do not use `agentic-workflow` as a second engineering pr
 
 Agents without task-skill support use `PLAYBOOKS.md`.
 
-## Communication and tailoring
+## Tailoring
 
-Use friendly, concise, summary-first explanations. Start with the conceptual map, then reveal code-level or historical detail only when useful. In human-facing Markdown, use `<details>` for secondary evidence, long examples, alternatives, and command output. Keep essential warnings and decisions visible.
-
-When the user's experience cannot be inferred and it materially changes useful scaffolding, ask the optional full-profile learner-context A/B/C/D question in `agentic-flow/CONFIGURE.md`. Do not ask routinely, classify automatically, or repeat the question after enough context exists.
+Start with the conceptual map, then reveal code or history only when useful. Ask the optional learner-context question from `agentic-flow/CONFIGURE.md` only when experience cannot be inferred and materially changes useful scaffolding; never classify automatically or ask again after enough context exists.
 
 ## Shared learning flow
 
@@ -36,13 +34,15 @@ When the user's experience cannot be inferred and it materially changes useful s
 Locate → Reason → Work → Explain → Recap
 ```
 
-- Locate the relevant boundary, vocabulary, representative path, and proof surface.
-- Reason from an explicit behavior contract, hypothesis, valid analogue, or safe seam.
+- Locate the intended actor or caller, outcome, capability, governing rule, relevant boundary, representative path, and proof surface. Skip fields that add no value.
+- Reason from an explicit domain invariant, behavior contract, hypothesis, valid analogue, or safe seam.
 - Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 - Explain through one brief retrieval or transfer check only when consequential and enabled by settings or request.
-- Recap the model, location, evidence, boundary, and nearby transfer.
+- Recap only useful learning by folding it into the normal handoff; do not create a second summary.
 
 Collapse or skip anything that adds no learning or engineering value.
+
+Treat the selected territory as a system before diving into files. Choose only the useful parts of purpose or outcome, boundary, actors or components, relationships and flows, state changes or feedback, governing rules, evidence, and nearby transfer. Prefer one representative interaction over an inventory; this is a reasoning lens, not a required form.
 
 ## Context economy
 
@@ -62,20 +62,15 @@ Do not re-check the same concept unless later reasoning contradicts the earlier 
 
 ## Persistence and ownership
 
-Conversation is the default. Persist only verified, repository-specific findings likely to be reused and costly to rediscover.
+Conversation is the default. Close meaningful learning sessions through `agentic-flow/LOCAL.md`. Promote only verified, repository-specific, non-sensitive findings likely to be reused and costly to rediscover; deduplicate explicit global-preservation requests first.
 
 Use one owner:
 
-- `MAP.md`: compact boundaries, vocabulary, representative flows, and high-value unknowns;
+- `MAP.md`: compact domain slices, boundaries, representative flows, and high-value unknowns;
 - `TAKEAWAYS.md`: concise reusable lessons;
 - `REPOSITORIES.md`: repository identity, baseline, and access boundary;
-- `research/`: detailed canonical evidence and uncertainty;
-- `materials/`: reusable teaching derived from research;
-- `contributors/`: optional personal working traces;
-- `explainers/`: warranted non-trivial change walkthroughs;
-- `labs/`: bounded interactive harnesses.
 
-Do not copy the same explanation across surfaces. Do not create contributor folders, challenge files, explainers, labs, sessions, or materials in advance.
+Task-specific templates stay inside their owning skills until needed. Put contributor-specific instances under `.local/` and track one only after deliberate promotion. Prefer existing test and debug infrastructure; do not pre-create personal tracking, challenges, explainers, labs, sessions, research, or teaching material.
 
 ## Visual and evidence policy
 
@@ -87,12 +82,4 @@ Rereading and agreement show exposure, not understanding. A sound explanation, p
 
 ## Completion
 
-End meaningful learning work with three to six bullets that revisit:
-
-- central mechanism or model;
-- architecture or domain placement;
-- decisive evidence;
-- important boundary, tradeoff, or corrected misconception;
-- nearest useful transfer.
-
-Reuse and correct the user's own explanation when available. Store only durable takeaways, not a transcript.
+Use the normal `agentic-flow` handoff. When learning was central, include only useful points about the model, decisive evidence, boundary, or transfer; reuse and correct the user's explanation when available. Do not add a second recap or store a transcript.

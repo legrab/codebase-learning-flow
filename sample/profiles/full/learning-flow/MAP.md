@@ -2,28 +2,21 @@
 
 Keep this file compact and visual. It is an orientation surface, not an inventory.
 
-## Agentic collaboration setup
+## Agentic setup exceptions
 
-Map this during the initial baseline.
-
-| Concern | Effective owner or path | Notes |
-|---|---|---|
-| Instruction order | _Not mapped yet._ | Root, nested, tool-specific, installed, and custom precedence |
-| Stable repository policy | _Not mapped yet._ | Architecture, security, commands, conventions |
-| Collaboration workflow | _Not mapped yet._ | Template profile, settings status, custom workflow |
-| Task procedures | _Not mapped yet._ | Installed and custom skills or prompts |
-| Learning support | _Not mapped yet._ | Profile, research surfaces, and activation rules |
-| Temporary state and evidence | _Not mapped yet._ | Plans, sessions, status, ledgers, or conversation-only state |
-
-When template markers exist, treat managed content as known and map only integration, custom additions, overrides, and unresolved conflicts.
+_None known. Treat managed content as known. Add only custom instructions, unresolved precedence, meaningful overlap, or stale state that will affect future work._
 
 ## System boundaries
 
 _Not mapped yet._
 
-## Domain territories and vocabulary
+## Domain slice
 
-_Not mapped yet._
+Add one row per relevant territory, not a comprehensive business glossary.
+
+| Actor and outcome | Capability | Rule or invariant | Trigger and effect | Owning boundary and evidence |
+|---|---|---|---|---|
+| _Not mapped yet._ | | | | |
 
 ## Representative paths
 

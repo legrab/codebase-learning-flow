@@ -1,5 +1,76 @@
 # Changelog
 
+## 0.7.0
+
+### Added
+
+- A common `learn-anything` skill for friendly, adaptive learning conversations about non-repository topics.
+- Source-repository instructions and routing checks that keep general learning chat-like and send codebase questions back to repository learning.
+- An ignored repository-root `.local/` workspace for complete private learning sessions, compact cross-session history, and generated follow-up material.
+
+### Changed
+
+- The shared `Locate → Reason → Work → Explain → Recap` loop can now locate a learner's question as well as repository evidence, while retaining one selective route at a time.
+- Both profiles install the generic learning skill without adding private study records to tracked learning surfaces.
+- Session closure now saves contributor-specific state locally and promotes only stable, reusable, non-sensitive knowledge into existing shared records.
+- Installers initialize `.local/` idempotently, preserve existing history, and ensure the directory is excluded through `.gitignore`.
+- Repository and general-topic learning now share a selective system lens covering purpose, boundaries, relationships, change or feedback, evidence, and transfer.
+- First-use documentation now leads with installation and a real task, while optional modes and reference inventories use progressive disclosure.
+- Always-loaded collaboration and profile instructions now defer low-frequency detail to existing canonical guides, reducing repetition without changing behavior.
+
+## 0.6.2
+
+### Changed
+
+- Normal managed-template integration no longer requires an agentic setup status in the learning map; only durable custom exceptions or conflicts are recorded.
+- Full-profile bootstrap is now an explicitly requested onboarding activity rather than a prerequisite for the first real task.
+- Learning reinforcement is folded into the normal handoff, limited to a few useful points, and skipped when it would duplicate delivery evidence.
+
+### Removed
+
+- Baseline reporting of transient branch, commit, profile, settings, and ordinary template status.
+- Separate quota-shaped recap sections after the normal agentic handoff.
+
+## 0.6.1
+
+### Changed
+
+- Reference integrations now treat external sources as evidence rather than target architectures.
+- Reviews name useful value already covered locally and retain only a small gap-closing delta, including an explicit no-change outcome when appropriate.
+- The integration contract preserves the repository's educational core, friendly voice, and low-ceremony defaults instead of importing breadth or rigidity for parity.
+- Third-party skills now require a lightweight source, capability, and rule-overlap review; catalogue presence or popularity is not treated as endorsement.
+- The standard flow now checks only task-critical runtime, tool, access, and approval readiness before acting, then adapts or reports the exact blocker.
+- Project and installed READMEs now clarify that the flow configures a host agent rather than providing a tool runtime, sandbox, retry engine, or durable resumption.
+
+### Reference reviews
+
+- Reviewed `VoltAgent/awesome-agent-skills` at an exact revision and retained only the external-skill trust boundary.
+- Reviewed `aaif-goose/goose` at an exact revision and retained only a lightweight capability-readiness check.
+- Reviewed `RyanAlberts/best-of-Agent-Harnesses` at an exact revision and retained only a product-scope clarification.
+
+## 0.6.0
+
+### Added
+
+- Task-first onboarding that verifies the installed workflow quietly and surfaces only meaningful conflicts.
+- Sparse `Now / Found / Next` progress pulses for substantial work without command narration.
+- A compact domain slice connecting actors, outcomes, capabilities, invariants, triggers, effects, ownership, and evidence.
+- `fast`, `balanced`, `guided`, and `gated` collaboration presets with optional advanced overrides.
+
+### Changed
+
+- Initial learning records one agentic setup status instead of inventorying the framework before useful work.
+- Learning routes start from the affected domain outcome or rule before tracing implementation.
+- The full profile keeps only its durable core visible; task templates now travel inside their owning skills.
+- Root integration exposes three behaviorally distinct choices and records `linked`, `pending`, or `explicit-only` in settings.
+- Learning depth and persistence are independently configurable.
+- Update mode removes retired framework-owned files while preserving repository-authored content.
+
+### Removed
+
+- Pre-created full-profile research, material, contributor, explainer, lab, and general template directories.
+- The superseded pre-profile `sample/learning-flow/` tree.
+
 ## 0.5.3
 
 ### Added

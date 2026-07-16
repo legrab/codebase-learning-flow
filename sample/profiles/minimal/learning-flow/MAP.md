@@ -2,28 +2,21 @@
 
 Keep this file compact. Prefer one small Mermaid diagram or table plus stable paths and symbols.
 
-## Agentic collaboration setup
+## Agentic setup exceptions
 
-Map this during the initial baseline, even when code learning is the main goal.
-
-| Concern | Effective owner or path | Notes |
-|---|---|---|
-| Instruction order | _Not mapped yet._ | Root, nested, tool-specific, installed, and custom precedence |
-| Stable repository policy | _Not mapped yet._ | Architecture, security, commands, conventions |
-| Collaboration workflow | _Not mapped yet._ | Template profile, settings status, custom workflow |
-| Task procedures | _Not mapped yet._ | Installed and custom skills or prompts |
-| Learning support | _Not mapped yet._ | Minimal or full profile and activation rules |
-| Temporary state and evidence | _Not mapped yet._ | Plans, sessions, status, ledgers, or conversation-only state |
-
-Record only repository-specific differences when the installed template is recognized. Flag meaningful overlap, conflict, or stale handoff without copying whole instruction files.
+_None known. Add only repository-specific instructions, unresolved precedence, meaningful overlap, or stale state that will affect future work. Do not record ordinary managed-template status._
 
 ## System boundaries
 
 _Not mapped yet._
 
-## Domain vocabulary
+## Domain slice
 
-_Not mapped yet._
+Add one row only when domain context materially improves the current or near-term work.
+
+| Actor and outcome | Capability | Rule or invariant | Trigger and effect | Owner and evidence |
+|---|---|---|---|---|
+| _Not mapped yet._ | | | | |
 
 ## Representative paths
 

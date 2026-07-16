@@ -8,7 +8,7 @@ This profile supports deliberate onboarding and long-lived repository understand
 Locate → Reason → Work → Explain → Recap
 ```
 
-The initial repository baseline also maps the actual agentic setup: existing root and tool-specific instructions, custom skills and prompts, the installed template integration, effective precedence, and temporary evidence locations. Known template files are not exhaustively re-researched.
+A requested repository baseline recognizes managed agentic setup quietly. It maps custom instructions, skills, prompts, precedence, or stale evidence only when they affect work and will be useful again.
 
 Prediction, tracing, comparison, and challenge activities are used only when they improve reasoning. Planning, approval gates, validation depth, and handoff remain governed by `agentic-flow/`.
 
@@ -16,34 +16,29 @@ Prediction, tracing, comparison, and challenge activities are used only when the
 
 | Surface | Purpose |
 |---|---|
-| `MAP.md` | compact boundaries, vocabulary, representative paths, and high-value unknowns |
+| `MAP.md` | compact domain slices, boundaries, representative paths, and high-value unknowns |
 | `TAKEAWAYS.md` | short verified lessons likely to be reused |
 | `REPOSITORIES.md` | repository identities, baselines, and access boundaries |
-| `research/` | evidence-rich canonical findings |
-| `materials/` | reusable teaching content derived from verified research |
-| `contributors/` | optional personal working traces, created only on explicit need |
-| `explainers/` | non-trivial change explanations that earn reuse |
-| `labs/` | bounded synthetic harnesses when interaction materially improves understanding |
 
-Conversation is the default. Do not create a file merely because a template exists.
+Meaningful learning sessions keep complete private state, progress, check history, and compact continuation memory under ignored repository-root `.local/`. Task-specific challenge, ticket-path, and change-explainer templates travel inside their owning skills; put contributor-specific instances in `.local/` and promote only reusable, stable, non-sensitive knowledge to the tracked surfaces above. Prefer existing test and debug infrastructure over framework lab folders.
 
 ## Start
 
-For a new repository, use `learning-bootstrap` to create only the compact baseline described in `BOOTSTRAP.md`. It must not pre-generate themes, sessions, contributor folders, explainers, or labs.
+Use `learning-bootstrap` only when a compact baseline or deliberate onboarding pass is requested. An ordinary task in a new repository can start with the matching task skill. Bootstrap must not pre-generate themes, sessions, personal tracking, explainers, or labs.
 
-After baseline creation, select one primary learning skill for the current task. The `agentic-workflow` skill is only for configuring or understanding the harness itself.
+Select one primary learning skill for the current task. The `agentic-workflow` skill is only for configuring or understanding the harness itself.
 
-## Understanding and recap
+## Understanding and handoff
 
 Use at most one brief open checkpoint by default when misunderstanding would affect future reasoning and setting 4 allows it. A declined check never blocks engineering.
 
-Every meaningful learning session ends with a compact three-to-six-bullet recap revisiting the central model, repository placement, decisive evidence, important boundary or corrected misconception, and nearest transfer.
+When learning was central, fold up to three useful points about the model, decisive evidence, boundary, or transfer into the normal handoff. Skip them when the handoff already carries that value; never add a second recap section just to satisfy the framework.
 
 ## Artifact budget
 
 Create or update a persistent artifact only when the result is verified, repository-specific, likely to be reused, costly enough to rediscover, and owned by exactly one surface.
 
-Contributor identity is never needed for shared repository learning. Personal tracking is explicit opt-in.
+Contributor identity is never needed for shared repository learning. Personal tracking stays local and may use a contributor label only when needed to distinguish local learners.
 
 ## Communication
 

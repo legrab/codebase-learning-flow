@@ -7,9 +7,9 @@ description: Diagnose or teach through a concrete bug, failing test, intermitten
 
 Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
 
-Read `learning-flow/AGENTS.md`. Load only material for the affected territory.
+Read `learning-flow/AGENTS.md`. Load only material for the affected territory. Use `templates/challenge.md` only when the user explicitly wants a durable challenge artifact; keep a contributor-specific instance under `.local/` and use a tracked location only after deliberate shared promotion.
 
-1. State observable symptom and falsifiable expected behavior.
+1. State the affected outcome or rule, observable symptom, and falsifiable expected behavior.
 2. Find the smallest discriminating reproduction, test, trace, or log.
 3. Rank only credible hypotheses and test one uncertainty at a time.
 4. Explain the failure mechanism before changing code.
@@ -19,4 +19,4 @@ Read `learning-flow/AGENTS.md`. Load only material for the affected territory.
 
 Use at most one prediction or explain-back when consequential. Do not keep a hypothesis diary.
 
-Report symptom, expectation, decisive evidence, mechanism, fix or seam, regression proof, untested boundary, and compact recap.
+Report symptom, expectation, decisive evidence, mechanism, fix or seam, regression proof, and the untested boundary. Fold in a useful learning point only when it adds value beyond the normal handoff.

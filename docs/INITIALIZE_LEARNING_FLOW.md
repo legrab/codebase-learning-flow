@@ -15,7 +15,7 @@ Install two distinct layers:
 1. `agentic-flow/` for general collaboration behavior;
 2. `learning-flow/` for optional educational support.
 
-Repository-native instructions remain authoritative for architecture, security, commands, conventions, and hard boundaries. Temporary handoff must not be embedded in stable instructions.
+Repository-native instructions remain authoritative for architecture, security, commands, conventions, and hard boundaries. Private learning and temporary handoff must live in the conversation or ignored repository-root `.local/`, not stable instructions.
 
 ## General agentic flow
 
@@ -38,14 +38,9 @@ Do not require a plan file, session record, one-step approval loop, one commit p
 
 ## Opinionated setup
 
-Provide four compact A/B/C/D choices:
+Provide four simple presets: `fast`, `balanced`, `guided`, and `gated`. Use `balanced` by default and ask for one preset only during explicit or guided configuration.
 
-1. autonomy and pauses;
-2. planning depth;
-3. validation depth;
-4. learning and records.
-
-Use balanced defaults when the repository is unconfigured. Ask all four only during initialization or explicit configuration. During ordinary tasks, ask at most one relevant choice when it would materially change substantial work.
+Keep autonomy, planning, validation, learning depth, and persistence as advanced overrides. Do not ask them as an onboarding questionnaire. Learning depth and persistence remain independent so guided explanation does not require repository records.
 
 Task-specific user instructions override stored preferences. No preference grants permission to commit, push, publish, release, disclose sensitive content, or perform irreversible work.
 
@@ -57,7 +52,7 @@ Include a small optional module explaining:
 - the common agentic workflow and settings;
 - selectively loaded task skills or plans;
 - the separate learning framework;
-- temporary task state and evidence.
+- private learning continuity and temporary task evidence under `.local/`.
 
 Show how an ordinary request resolves through these layers. Offer at most one brief explain-back, prediction, trace, or ownership check unless the user requests a quiz.
 
@@ -75,13 +70,13 @@ Install only:
 - `TAKEAWAYS.md` for verified reusable lessons;
 - profile and update manifests.
 
-Do not create contributor folders, curricula, activity files, labs, explainers, progress states, or research/material layers.
+Do not create tracked contributor folders, curricula, activity files, labs, explainers, progress states, or research/material layers. Private continuity for sessions that actually occur belongs under `.local/`.
 
 ### Full profile
 
 Use for deliberate onboarding, long-lived ownership development, or teaching programs.
 
-Retain selective learning skills and optional research, materials, contributor traces, explainers, labs, and templates. Populate them only when a verified result will be reused.
+Retain selective learning skills, compact shared maps and takeaways, repository baselines, and task templates inside their owning skills. Keep contributor-specific sessions and template instances under `.local/`; add a tracked artifact only after deliberate promotion for clear team-wide reuse.
 
 ## Shared learning flow
 
@@ -91,17 +86,13 @@ Locate → Reason → Work → Explain → Recap
 
 Keep routine inspection uninterrupted. Use one brief explanation, prediction, trace, comparison, or boundary check only when misunderstanding would affect later work. Skip it when the user already demonstrated understanding or requested fast execution.
 
-Every meaningful learning session ends with a short recap that revisits:
+Use a compact system lens across repository and general-topic learning: purpose, boundary, parts and relationships, change or feedback, evidence, and transfer. Select only what improves causal understanding, trace one representative interaction, and revise the model when evidence or learner reasoning contradicts it.
 
-- the central mechanism;
-- where it lives;
-- the decisive evidence;
-- the important boundary or corrected misconception;
-- one nearby transfer.
+When learning was central, fold up to three useful points about the mechanism, placement, evidence, boundary, or nearby transfer into the normal handoff. Skip them when that value is already present; do not add a second recap section.
 
 ## Persistence policy
 
-Conversation is the default. Persist only findings that are:
+Conversation is the live interaction layer. Meaningful learning sessions save complete contributor-specific state, compact cross-session history, and generated follow-ups under ignored `.local/`. Persist to shared tracked surfaces only findings that are:
 
 - verified;
 - repository-specific;
@@ -110,12 +101,12 @@ Conversation is the default. Persist only findings that are:
 
 Use clear ownership:
 
+- `.local/`: private sessions, progress, explanations, attempts, quiz history, summaries, uncertainty, and generated follow-ups;
 - `agentic-flow/SETTINGS.md`: durable collaboration preferences only;
 - `MAP.md`: compact boundaries and representative flows;
 - `TAKEAWAYS.md`: short durable lessons;
-- full-profile `research/`: canonical evidence;
-- full-profile `materials/`: reusable teaching;
-- full-profile `contributors/`: optional personal working traces only.
+- full-profile `REPOSITORIES.md`: repository identities, baselines, and access boundaries;
+- optional promoted artifacts: explicitly requested challenges, ticket paths, or explainers with stable team-wide reuse value; contributor-specific instances remain under `.local/`.
 
 ## Installer behavior
 
@@ -125,6 +116,8 @@ New installs default to minimal. Existing installations retain their profile aut
 
 Update only manifest-owned framework files and managed skills. Preserve repository-authored settings and knowledge plus unrelated skills.
 
+Fresh setup must create `.local/{sessions,follow-ups}`, seed `.local/learning-history.md` only when missing, and ensure `/.local/` is ignored. Repeated setup must preserve all existing local content. Retire only framework-owned legacy contributor placeholders automatically; move contributor-authored tracked state only through an explicit verified migration.
+
 ## Safety and restraint
 
 - Never store secrets, personal data, customer data, raw production logs, or sensitive query results.
@@ -132,6 +125,7 @@ Update only manifest-owned framework files and managed skills. Preserve reposito
 - Do not commit, push, publish, or release automatically.
 - Do not duplicate repository-native engineering rules into the generic framework.
 - Do not create a new artifact when conversation or an existing owned surface is sufficient.
+- Never store contributor-specific learning state outside `.local/` during normal use.
 
 ## Avoid
 
@@ -149,9 +143,9 @@ Update only manifest-owned framework files and managed skills. Preserve reposito
 
 ## Existing agentic setup as learning material
 
-The initial repository baseline must inspect and map the repository's effective agentic system, not only the installed template. Cover root, nested, and tool-specific instructions; installed and custom skills; prompts, plans, sessions, status records, and evidence ledgers; precedence; ownership; and refresh rules.
+The initial repository baseline recognizes the installed template without mapping it. Inspect root, nested, and tool-specific instructions, custom skills, prompts, plans, sessions, status records, or evidence ledgers only when repository evidence suggests they affect the task. Reserve a complete precedence and ownership map for an explicit agentic setup review.
 
-Use template markers to avoid re-researching managed framework files. Map custom additions, integration, overrides, and conflicts in `MAP.md`. Root integration must support existing and missing `AGENTS.md` files through compact A/B/C/D choices and remain available after installation.
+Use template markers to avoid re-researching managed framework files. Do not write ordinary template status to `MAP.md`; map only durable custom additions, overrides, and conflicts that affect future work. Root integration must support existing and missing `AGENTS.md` files through three distinct choices—link or initialize, preserve for later review, and explicit-only—and remain available after installation.
 
 
 

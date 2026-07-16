@@ -7,14 +7,14 @@ description: Explain a non-trivial diff, pull request, or agent-produced impleme
 
 Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
 
-Read `learning-flow/AGENTS.md`. Use `templates/change-explainer.md` only when a persistent artifact is warranted.
+Read `learning-flow/AGENTS.md`. Use `templates/change-explainer.md` only when the user explicitly wants a durable artifact; keep a contributor-specific instance under `.local/` and use a tracked location only after deliberate shared promotion.
 
 1. Establish exact change range and intended outcome.
-2. Explain relevant behavior and architecture before the diff.
+2. Explain the intended outcome, governing rules or invariants, and relevant architecture before the diff.
 3. Walk through changed files in conceptual execution order.
 4. Record decisions, rejected alternatives, risks, and unchanged contracts.
 5. Connect claims to tests or safe runtime evidence.
 6. Use at most one understanding check unless the user explicitly requests a quiz covering independent mechanisms.
-7. End with a compact reinforcing recap.
+7. Fold up to three useful learning points into the normal handoff; do not add a second recap.
 
 Keep the explanation conversational unless it meets the persistence threshold. Promote durable findings to their canonical owner and keep temporary review detail temporary.

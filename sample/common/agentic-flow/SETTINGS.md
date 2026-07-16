@@ -1,16 +1,19 @@
 # Agentic workflow settings
 
-Status: unconfigured
+Status: defaults
+Preset: balanced
 Agentic setup review: pending
+Root integration: pending
 Full-profile learner context: adaptive
 
-| Setting | Choice | Default |
-|---|---|---|
-| Autonomy and pauses | B | B |
-| Planning depth | B | B |
-| Validation depth | B | B |
-| Learning and records | B | B |
+| Override | Choice |
+|---|---|
+| Autonomy and pauses | inherit |
+| Planning depth | inherit |
+| Validation depth | inherit |
+| Learning depth | inherit |
+| Persistence | inherit |
 
-Until configured, use the defaults. A task-specific user instruction overrides this file.
+Use the preset without blocking routine work. A task-specific user instruction overrides this file without changing it.
 
-Configuration shorthand: `1B 2B 3B 4B`.
+Configuration shorthand: a preset name, or advanced overrides such as `1C 3C 5A`.

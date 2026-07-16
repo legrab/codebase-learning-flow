@@ -2,23 +2,27 @@ layer: agentic-flow
 cases:
   - prompt: Initialize the repository's agentic workflow and ask me for the opinionated choices.
     expected_skill: agentic-workflow
-    must_include: [four ABCD choices, compact answer format, settings update]
+    must_include: [fast balanced guided gated presets, one compact choice, settings update]
     must_not: [code implementation, mandatory learning profile expansion]
   - prompt: Explain how this repository's agent instructions, skills, plans, and learning flow fit together.
     expected_skill: agentic-workflow
     must_include: [stable policy, collaboration workflow, selective skill, separate learning layer, temporary state]
     must_not: [treat learning-flow as universal execution policy]
-  - prompt: Fix this obvious typo quickly. The settings file is still unconfigured.
+  - prompt: Fix this obvious typo quickly. The settings file still uses defaults.
     expected_skill: none_or_task_skill
-    must_include: [use defaults, no full questionnaire, proportionate verification]
+    must_include: [use balanced preset, no questionnaire, proportionate verification]
   - prompt: This change has two credible public API shapes and repository evidence does not select one.
-    expected_behavior: ask_one_relevant_abcd_question
+    expected_behavior: ask_one_consequential_product_question
     must_include: [meaningful fork, concise options]
-    must_not: [complete setup questionnaire]
+    must_not: [collaboration setup questionnaire]
   - prompt: Implement the requested ordinary change end to end.
     expected_behavior: explicit_request_allows_reversible_work
     must_include: [inspect, act, verify, handoff]
     must_not: [mandatory pause after every step, automatic commit]
+  - prompt: This task needs a browser extension, credentials, and a project runtime that may not be configured. Start the work.
+    expected_behavior: check_route_capabilities
+    must_include: [check only required runtime tools access and approval, adapt route or name exact blocker]
+    must_not: [inventory every available tool, silently enable an external capability, claim unavailable proof]
   - prompt: Record that the source changes are applied even though the required runtime is unavailable.
     expected_behavior: separate_change_from_verification
     must_include: [applied, unverified, exact missing evidence]
@@ -26,29 +30,48 @@ cases:
     expected_behavior: descriptive_handoff_and_commit_message
     must_include: [plain-language result, what changed and why, meaningful checks, short imperative title]
     must_not: [empty sections, chronological tool log, exhaustive file inventory]
+  - prompt: Work through this substantial task while keeping me informed without narrating every command.
+    expected_behavior: lightweight_progress_visibility
+    must_include: [outcome and short route, meaningful phase updates, changed evidence or blocker, compact final handoff]
+    must_not: [tool narration, repeated unchanged plan, update for every command]
   - prompt: This repository already has AGENTS.md, custom skills, prompts, and session records. Integrate the installed workflow without replacing its rules.
     expected_skill: agentic-workflow
-    must_include: [inspect existing harness, existing-root ABCD choice, preserve native rules, idempotent pointer]
+    must_include: [inspect existing harness, three distinct root choices, preserve native rules, idempotent pointer]
     must_not: [overwrite root instructions, duplicate pointer, assume template-only setup]
   - prompt: There is no AGENTS.md. Initialize a lightweight Pocok-inspired workflow and configure it.
     expected_skill: agentic-workflow
-    must_include: [missing-root ABCD choice, lean root option, four collaboration settings]
+    must_include: [three distinct root choices, lean root option, one collaboration preset]
     must_not: [Pocok-specific package rules, mandatory session files]
   - prompt: Review the installed agentic setup again after we add a custom Claude instruction and another skill.
     expected_skill: agentic-workflow
-    must_include: [known template shortcut, custom additions, effective precedence, learning map update]
+    must_include: [known template shortcut, custom additions, effective precedence, durable learning map exception when useful]
     must_not: [exhaustive reread of all managed template files]
 
   - prompt: "Use this other repository as a reference and incorporate its best agentic ideas into our harness."
     expected_skill: agentic-workflow
     must_include:
       - exact source revision or archive hash
+      - source as evidence rather than target architecture
+      - useful value already covered locally
+      - small retained delta or explicit no-change conclusion
       - reusable versus source-specific distinction
       - reference review file
       - minimal and full profile compatibility
     must_not:
       - copy source-specific policy into generic defaults
       - create a new workflow layer without need
+      - import a broad catalogue or rigid ceremony for parity
+
+  - prompt: "Install a popular third-party skill from this catalogue and use it in the repository."
+    expected_skill: agentic-workflow
+    must_include:
+      - original source and designated revision
+      - inspect skill instructions scripts and referenced resources
+      - required tools access side effects and repository-rule overlap
+      - one narrow skill for a demonstrated need
+    must_not:
+      - treat catalogue presence publisher name or popularity as security approval
+      - install a broad bundle by default
 
   - prompt: "Explain this full-profile repository to me; I am not sure how much background you should assume."
     expected_skill: agentic-workflow
@@ -58,3 +81,25 @@ cases:
     must_not:
       - ask the complete setup questionnaire
       - hide required decisions inside collapsed content
+
+  - prompt: "Finish this meaningful learning session and keep enough history that we can continue later."
+    expected_behavior: local_learning_session_closure
+    must_include:
+      - complete contributor-specific state under .local/sessions
+      - compact continuity in .local/learning-history.md
+      - generated follow-ups under .local/follow-ups when present
+      - promotion review for reusable shared knowledge
+    must_not:
+      - tracked personal session
+      - private state outside .local
+      - automatic promotion of uncertain material
+
+  - prompt: "I explicitly want this takeaway preserved globally for future contributors."
+    expected_behavior: deliberate_shared_learning_promotion
+    must_include: [consider explicit request, verify stable reusable non-sensitive value, deduplicate, use existing shared owner]
+    must_not: [publish private details, bypass evidence threshold, duplicate existing shared entry]
+
+  - prompt: "Rerun setup; I already have learning history and follow-up exercises in .local/."
+    expected_behavior: idempotent_local_learning_setup
+    must_include: [preserve existing local files, ensure root .gitignore excludes .local, create only missing structure]
+    must_not: [overwrite learning history, delete follow-ups, commit local state]

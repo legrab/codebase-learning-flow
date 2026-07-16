@@ -6,7 +6,7 @@ Follow repository-native instructions and `agentic-flow/AGENTS.md` first. These 
 
 Use this layer when the user asks to understand the repository, learn through a bug or feature, review a non-trivial mechanism, preserve reusable knowledge, or perform the initial repository baseline. Do not load it for every mechanical edit.
 
-The initial baseline always includes a compact map of the repository's actual agentic setup. Treat installed template files as known and inspect any pre-existing or custom instructions, skills, prompts, plans, records, and precedence.
+During an initial baseline, recognize the installed workflow quietly and treat managed template files as known. Inspect custom instructions, competing workflows, unresolved precedence, or stale records only when they affect the task. Record an agentic setup exception in `MAP.md` only when it is durable and useful; a normal template installation needs no status write.
 
 ## Core flow
 
@@ -14,24 +14,22 @@ The initial baseline always includes a compact map of the repository's actual ag
 Locate → Reason → Work → Explain → Recap
 ```
 
-1. Locate only the relevant boundary, vocabulary, representative path, nearest proof surface, and effective agentic instruction path when the setup is not yet mapped.
+1. Locate only the relevant domain slice, boundary, representative path, and nearest proof surface. Check the effective agentic instruction path only when evidence suggests a custom rule or conflict.
 2. Reason from an explicit symptom, behavior contract, analogue, hypothesis, or safe seam.
 3. Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 4. Ask at most one brief understanding check when settings or the user request call for it and a mistaken model would affect later work.
-5. End meaningful learning work with a three-to-five-bullet recap of mechanism, location, evidence, boundary, and transfer.
+5. When learning was central, fold up to three useful points about the model, evidence, boundary, or transfer into the normal handoff. Do not add a second recap section or fill a quota.
+
+Across branches, treat the repository territory as a system before diving into files: select the useful parts of purpose or outcome, boundary, actors or components, relationships and flows, state changes or feedback, governing rules, evidence, and nearby transfer. This is a reasoning lens, not a required form.
 
 ## Task branches
 
-- Bug: symptom → expectation → decisive probe → mechanism → fix → regression proof.
-- Feature: desired behavior → nearest valid analogue → differences → implementation seam → proof.
-- Refactor: preserved contract → smallest seam → transformation → proof → simplification.
-- Orientation: agentic setup → boundary map → vocabulary → representative path → important constraint.
+- Bug: affected outcome or rule → symptom → expectation → decisive probe → mechanism → fix → regression proof.
+- Feature: actor and outcome → capability and invariants → nearest valid analogue → differences → implementation seam → proof.
+- Refactor: behavior or domain invariant → smallest seam → transformation → proof → simplification.
+- Orientation: intended use → domain slice → boundary map → representative path → important constraint.
 
 Select one branch. Do not treat `agentic-workflow` as a second task procedure. It is for setup, configuration, and explanation of the harness itself.
-
-## Communication
-
-Use friendly, concise, summary-first explanations. Prefer the conceptual route before file-level detail. Put optional examples, exhaustive evidence, and command output in collapsible Markdown sections when useful. Keep failures and required decisions visible.
 
 ## Interaction economy
 
@@ -43,11 +41,9 @@ Use friendly, concise, summary-first explanations. Prefer the conceptual route b
 
 ## Persistence
 
-Conversation is the default storage layer.
+Conversation is the default. Close meaningful learning sessions through `agentic-flow/LOCAL.md`. Promote into `MAP.md` or `TAKEAWAYS.md` only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover; deduplicate explicit global-preservation requests before promotion.
 
-Update `MAP.md` only for durable repository orientation, including the compact agentic collaboration map from the initial baseline. Update `TAKEAWAYS.md` only when a finding is verified, repository-specific, reusable, and expensive enough to rediscover.
-
-Do not persist raw debugging history, personal notes, speculative claims, copied source, session transcripts, secrets, customer data, raw production logs, or sensitive query results.
+Keep raw history, personal or uncertain state, transcripts, checks, progress, secrets, customer data, and sensitive operational evidence under `.local/` only. Never promote sensitive content.
 
 ## Evidence
 
