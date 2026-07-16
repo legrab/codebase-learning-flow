@@ -36,6 +36,12 @@ Keep evidence labels distinct:
 - broader executable verification passed;
 - verification unavailable or incomplete.
 
+## Progress visibility
+
+For substantial work, open with the intended outcome and a two-to-four-step route. After that, update only at a meaningful phase transition, when evidence changes the route, when a blocker appears, or when a long-running step would otherwise leave the user without useful context.
+
+Use a compact `Now / Found / Next` pulse when those labels improve scanning. Report decisions and evidence, not commands already visible in tool output. Do not restate an unchanged plan.
+
 ## Handoff
 
 Lead with one or two sentences explaining what is now true and why that route was chosen. For substantial work, use this compact shape and omit any section that adds no value:

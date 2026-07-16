@@ -26,6 +26,10 @@ cases:
     expected_behavior: descriptive_handoff_and_commit_message
     must_include: [plain-language result, what changed and why, meaningful checks, short imperative title]
     must_not: [empty sections, chronological tool log, exhaustive file inventory]
+  - prompt: Work through this substantial task while keeping me informed without narrating every command.
+    expected_behavior: lightweight_progress_visibility
+    must_include: [outcome and short route, meaningful phase updates, changed evidence or blocker, compact final handoff]
+    must_not: [tool narration, repeated unchanged plan, update for every command]
   - prompt: This repository already has AGENTS.md, custom skills, prompts, and session records. Integrate the installed workflow without replacing its rules.
     expected_skill: agentic-workflow
     must_include: [inspect existing harness, existing-root ABCD choice, preserve native rules, idempotent pointer]

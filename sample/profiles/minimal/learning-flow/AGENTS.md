@@ -6,7 +6,7 @@ Follow repository-native instructions and `agentic-flow/AGENTS.md` first. These 
 
 Use this layer when the user asks to understand the repository, learn through a bug or feature, review a non-trivial mechanism, preserve reusable knowledge, or perform the initial repository baseline. Do not load it for every mechanical edit.
 
-The initial baseline always includes a compact map of the repository's actual agentic setup. Treat installed template files as known and inspect any pre-existing or custom instructions, skills, prompts, plans, records, and precedence.
+During an initial baseline, verify the installed workflow quietly and record one compact setup status in `MAP.md`. Treat managed template files as known. Expand the setup map only when custom instructions, competing workflows, unresolved precedence, or stale records materially affect the task.
 
 ## Core flow
 
@@ -14,7 +14,7 @@ The initial baseline always includes a compact map of the repository's actual ag
 Locate → Reason → Work → Explain → Recap
 ```
 
-1. Locate only the relevant boundary, vocabulary, representative path, nearest proof surface, and effective agentic instruction path when the setup is not yet mapped.
+1. Locate only the relevant boundary, vocabulary, representative path, and nearest proof surface. Check the effective agentic instruction path only when setup status is pending or evidence suggests a conflict.
 2. Reason from an explicit symptom, behavior contract, analogue, hypothesis, or safe seam.
 3. Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 4. Ask at most one brief understanding check when settings or the user request call for it and a mistaken model would affect later work.

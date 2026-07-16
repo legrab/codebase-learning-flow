@@ -607,5 +607,4 @@ esac
 
 log "Installation complete: profile=$SELECTED_PROFILE mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
 printf '\n%s\n' "Suggested first instruction:"
-printf '%s\n' "Use the agentic-workflow skill to inspect and map this repository's actual agentic setup. Treat managed template files as known, research custom instructions and procedures, resolve root integration if pending, and ask the compact A/B/C/D collaboration settings when useful."
-printf '%s\n' "Then run the selected learning baseline so learning-flow/MAP.md records the effective agentic instruction order alongside code and domain orientation."
+printf '%s\n' "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."

@@ -30,5 +30,5 @@ cases:
   - prompt: Run the initial repository learning baseline. The repo already had its own agent prompts before installation.
     expected_skill: repository-learning
     expected_branch: orientation
-    must_include: [effective agentic instruction order, custom harness, template integration, MAP update]
+    must_include: [agentic setup status, custom harness differences, template integration, MAP update]
     must_not: [re-research every managed template file, ignore pre-existing prompts]

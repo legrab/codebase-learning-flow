@@ -4,18 +4,9 @@ Keep this file compact. Prefer one small Mermaid diagram or table plus stable pa
 
 ## Agentic collaboration setup
 
-Map this during the initial baseline, even when code learning is the main goal.
+Status: _Not checked._
 
-| Concern | Effective owner or path | Notes |
-|---|---|---|
-| Instruction order | _Not mapped yet._ | Root, nested, tool-specific, installed, and custom precedence |
-| Stable repository policy | _Not mapped yet._ | Architecture, security, commands, conventions |
-| Collaboration workflow | _Not mapped yet._ | Template profile, settings status, custom workflow |
-| Task procedures | _Not mapped yet._ | Installed and custom skills or prompts |
-| Learning support | _Not mapped yet._ | Minimal or full profile and activation rules |
-| Temporary state and evidence | _Not mapped yet._ | Plans, sessions, status, ledgers, or conversation-only state |
-
-Record only repository-specific differences when the installed template is recognized. Flag meaningful overlap, conflict, or stale handoff without copying whole instruction files.
+Use one of `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. Add details only for repository-specific additions, unresolved precedence, meaningful overlap, or stale temporary state. Do not inventory managed template files.
 
 ## System boundaries
 

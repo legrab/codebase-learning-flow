@@ -476,8 +476,7 @@ try {
     Write-Step "Installation complete: profile=$selectedProfile mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
     Write-Host ""
     Write-Host "Suggested first instruction:"
-    Write-Host "Use the agentic-workflow skill to inspect and map this repository's actual agentic setup. Treat managed template files as known, research custom instructions and procedures, resolve root integration if pending, and ask the compact A/B/C/D collaboration settings when useful."
-    Write-Host "Then run the selected learning baseline so learning-flow/MAP.md records the effective agentic instruction order alongside code and domain orientation."
+    Write-Host "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."
 }
 finally {
     if (Test-Path -LiteralPath $tempRoot) {

@@ -22,8 +22,8 @@ cases:
     must_not: [alphabetical file walkthrough only, mandatory quiz]
   - prompt: Initialize the learning flow for this repository.
     expected_primary_skill: learning-bootstrap
-    must_include: [agentic setup map, effective instruction order, compact map, build and test entry points, one representative path]
-    must_not: [five prebuilt themes, contributor folder, generated sessions]
+    must_include: [agentic setup status, compact map, build and test entry points, one representative path]
+    must_not: [exhaustive agentic inventory, five prebuilt themes, contributor folder, generated sessions]
   - prompt: Fix this obvious typo and move on quickly.
     expected_primary_skill: none_or_normal_engineering
     must_include: [no learning artifact, no understanding check]

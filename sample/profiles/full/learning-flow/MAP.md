@@ -4,18 +4,9 @@ Keep this file compact and visual. It is an orientation surface, not an inventor
 
 ## Agentic collaboration setup
 
-Map this during the initial baseline.
+Status: _Not checked._
 
-| Concern | Effective owner or path | Notes |
-|---|---|---|
-| Instruction order | _Not mapped yet._ | Root, nested, tool-specific, installed, and custom precedence |
-| Stable repository policy | _Not mapped yet._ | Architecture, security, commands, conventions |
-| Collaboration workflow | _Not mapped yet._ | Template profile, settings status, custom workflow |
-| Task procedures | _Not mapped yet._ | Installed and custom skills or prompts |
-| Learning support | _Not mapped yet._ | Profile, research surfaces, and activation rules |
-| Temporary state and evidence | _Not mapped yet._ | Plans, sessions, status, ledgers, or conversation-only state |
-
-When template markers exist, treat managed content as known and map only integration, custom additions, overrides, and unresolved conflicts.
+Use one of `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. Treat managed content as known. Add details only for custom additions, unresolved precedence, meaningful overlap, or stale temporary state.
 
 ## System boundaries
 

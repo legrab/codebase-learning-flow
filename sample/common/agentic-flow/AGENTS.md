@@ -30,6 +30,9 @@ Collapse obvious steps for small work. Do not create a plan, session file, statu
 - Say concretely what changed and why it matters; prefer “changed X so Y” over dry labels or execution chronology.
 - Prefer simple language and a compact overview before implementation detail.
 - Group substantial updates into a few visually distinct, descriptive bullets by outcome, not a file-by-file inventory.
+- Start substantial work with one sentence naming the outcome and a two-to-four-step route when sequencing matters.
+- Send a compact progress pulse only when the phase changes, evidence changes the route, a blocker appears, or work runs long enough that silence would be confusing.
+- Use `Now`, `Found`, and `Next` when all three add value. Do not narrate commands or repeat the plan.
 - Match depth to the task and demonstrated user context.
 - In human-facing Markdown, place optional rationale, long evidence, command matrices, alternatives, and examples in `<details>` sections when supported.
 - Keep warnings, unresolved decisions, required actions, and validation failures visible outside collapsed sections.

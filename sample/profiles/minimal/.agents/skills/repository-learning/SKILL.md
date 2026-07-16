@@ -7,7 +7,7 @@ description: Learn and work in an unfamiliar repository through a compact task-f
 
 Read `agentic-flow/AGENTS.md`, `agentic-flow/SETTINGS.md`, and `learning-flow/AGENTS.md`, then load only the relevant section of `MAP.md` or `TAKEAWAYS.md`.
 
-For the first repository baseline, also read `agentic-flow/LEARN.md`. Detect template markers, avoid rediscovering managed template content, and map any pre-existing or custom agentic setup.
+For the first repository baseline, verify template markers and root integration quietly. Read `agentic-flow/LEARN.md` and expand the setup map only when custom agent surfaces, unresolved precedence, or conflicts affect the work.
 
 Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for planning, approvals, execution, validation, and handoff.
 
@@ -37,7 +37,7 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 ## Orientation
 
-1. If the agentic collaboration section is not mapped, identify effective instruction order, custom agent surfaces, template integration, and temporary evidence locations first.
+1. If setup status is pending, verify template integration and record one status. Map custom agent surfaces, precedence, and temporary evidence only when they materially differ or conflict.
 2. Identify the code or domain territory and intended use.
 3. Show boundaries and vocabulary before file detail.
 4. Trace one representative path.

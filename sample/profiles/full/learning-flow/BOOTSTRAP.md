@@ -13,17 +13,12 @@ Use this only for first learning-map population or a deliberate refresh. General
 ## Baseline procedure
 
 1. Inspect repository shape, entry points, existing documentation, build and test commands, configuration, current branch, and commit.
-2. Inspect the repository's actual agentic setup using `agentic-flow/LEARN.md`:
-   - root, nested, and tool-specific instructions;
-   - installed and custom skills;
-   - prompts, plans, sessions, status files, ADRs, and evidence ledgers;
-   - effective precedence, ownership, and refresh rules.
-3. When template markers exist, use the known template model and research only root integration, custom additions, overrides, and conflicts.
-4. Record a compact agentic collaboration map in `MAP.md`.
-5. Record repository identity and access boundaries in `REPOSITORIES.md` only when useful.
-6. Populate the remaining `MAP.md` sections with major system boundaries, core domain vocabulary, build and proof entry points, one representative code or domain path, and a short list of high-value unknowns.
-7. Add entries to `TAKEAWAYS.md` only when they already meet the persistence threshold.
-8. Stop.
+2. Verify template markers and root integration quietly. Record one agentic setup status in `MAP.md`.
+3. Use `agentic-flow/LEARN.md` only when custom instructions, tool-specific files, competing skills, unresolved precedence, or stale records materially affect the work. Record only those differences or conflicts.
+4. Record repository identity and access boundaries in `REPOSITORIES.md` only when useful.
+5. Populate the remaining `MAP.md` sections with major system boundaries, core domain vocabulary, build and proof entry points, one representative code or domain path, and a short list of high-value unknowns.
+6. Add entries to `TAKEAWAYS.md` only when they already meet the persistence threshold.
+7. Stop.
 
 Do not screen a fixed list of themes. Do not generate sessions or research beyond what is needed for a usable baseline.
 
@@ -31,7 +26,7 @@ Do not screen a fixed list of themes. Do not generate sessions or research beyon
 
 Follow `agentic-flow/WORKFLOW.md` for validation and handoff. Report:
 
-- effective agentic instruction order and any unresolved overlap;
+- agentic setup status and any unresolved overlap;
 - selected learning profile and settings state;
 - map entry point;
 - build and test entry points;

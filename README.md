@@ -102,14 +102,26 @@ Full-to-minimal update is rejected because automatic deletion could destroy repo
 
 ## First use
 
+Start with the real task. The agent should verify the installed workflow quietly, surface only meaningful conflicts, and teach the relevant code and domain path while working:
+
 ```text
-Use the agentic-workflow skill to inspect this repository's actual agent-facing setup.
-Recognize installed template files, map custom instructions and effective precedence,
-resolve root integration, and use balanced defaults unless a meaningful preference needs
-one compact A/B/C/D choice.
+Start with my current task. Quietly verify the installed workflow, surface only meaningful
+instruction conflicts, teach the relevant code and domain path while working, and persist
+only verified findings that will be useful again.
 ```
 
-Minimal learning:
+<details>
+<summary>Explicit setup or baseline prompts</summary>
+
+Configure or review the harness only when that is the task:
+
+```text
+Use the agentic-workflow skill to review this repository's agent-facing setup. Treat managed
+template files as known, map only custom additions or conflicts, and use balanced defaults
+unless I ask to configure another mode.
+```
+
+Minimal baseline:
 
 ```text
 Use repository-learning for the initial baseline or current task. Keep inspection narrow,
@@ -120,10 +132,12 @@ understanding check, and end with a compact recap.
 Full learning:
 
 ```text
-Use learning-bootstrap for a compact baseline, including the actual agentic setup. Ask
+Use learning-bootstrap for a compact baseline, including one agentic setup status. Ask
 about my experience only if it materially changes useful scaffolding. Do not pre-generate
 sessions or learning artifacts. Then use the narrowest primary skill for the task.
 ```
+
+</details>
 
 ## Incorporating future references
 
