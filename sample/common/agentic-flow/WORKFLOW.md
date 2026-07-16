@@ -18,6 +18,8 @@ Read native instructions and the narrowest relevant code, tests, configuration, 
 
 Choose the smallest coherent route. Use a brief plan only when sequencing, risk, or coordination benefits from it.
 
+Confirm that the route's required runtime, tools, access, and approval are available before acting. Check only capabilities material to the task; adapt the route or name the exact blocker instead of inventorying every tool or silently enabling a new external capability.
+
 If collaboration behavior materially affects the result and repository evidence does not settle it, use the configured preset or ask for one relevant override. Otherwise use `balanced`.
 
 ## Act

@@ -1,15 +1,16 @@
 .gitignore	265
 AGENTS.md	1749
-CHANGELOG.md	7559
-docs/DESIGN_NOTES.md	12754
+CHANGELOG.md	7823
+docs/DESIGN_NOTES.md	13032
 docs/INITIALIZE_LEARNING_FLOW.md	7868
-docs/README.md	926
+docs/README.md	1036
 docs/references/REFERENCE_INTEGRATION.md	4551
 docs/references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md	2317
+docs/references/REFERENCE_REVIEW_GOOSE.md	2486
 docs/references/REFERENCE_REVIEW_LITT.md	2069
 docs/references/REFERENCE_REVIEW_POCOK.md	2155
 LICENSE	2213
-README.md	7470
+README.md	7545
 sample/README.md	1414
 sample/common/.agents/skills/agentic-workflow/SKILL.md	3519
 sample/common/agentic-flow/.managed-files	148
@@ -22,7 +23,7 @@ sample/common/agentic-flow/README.md	922
 sample/common/agentic-flow/REFERENCE_INTEGRATION.md	2183
 sample/common/agentic-flow/ROOT_INTEGRATION.md	2932
 sample/common/agentic-flow/SETTINGS.md	544
-sample/common/agentic-flow/WORKFLOW.md	2791
+sample/common/agentic-flow/WORKFLOW.md	3063
 sample/profiles/full/.agents/skills/analogous-feature/SKILL.md	1389
 sample/profiles/full/.agents/skills/challenge-debugging/SKILL.md	1448
 sample/profiles/full/.agents/skills/challenge-debugging/templates/challenge.md	434
@@ -61,6 +62,6 @@ scripts/install.bat	1434
 scripts/install.ps1	26884
 scripts/install.sh	23389
 skill-evals/README.md	695
-skill-evals/agentic-cases.yaml	4979
+skill-evals/agentic-cases.yaml	5376
 skill-evals/full-cases.yaml	2048
 skill-evals/minimal-cases.yaml	1888

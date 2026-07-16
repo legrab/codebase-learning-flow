@@ -8,10 +8,12 @@
 - Reviews name useful value already covered locally and retain only a small gap-closing delta, including an explicit no-change outcome when appropriate.
 - The integration contract preserves the repository's educational core, friendly voice, and low-ceremony defaults instead of importing breadth or rigidity for parity.
 - Third-party skills now require a lightweight source, capability, and rule-overlap review; catalogue presence or popularity is not treated as endorsement.
+- The standard flow now checks only task-critical runtime, tool, access, and approval readiness before acting, then adapts or reports the exact blocker.
 
 ### Reference reviews
 
 - Reviewed `VoltAgent/awesome-agent-skills` at an exact revision and retained only the external-skill trust boundary.
+- Reviewed `aaif-goose/goose` at an exact revision and retained only a lightweight capability-readiness check.
 
 ## 0.6.0
 
