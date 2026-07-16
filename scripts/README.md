@@ -30,7 +30,7 @@ The installer never replaces an existing root file wholesale. The managed pointe
 
 - `fail`: stop on existing managed framework content or skills;
 - `merge`: add missing content and preserve existing files;
-- `update`: refresh managed common and profile files and skills while preserving `agentic-flow/SETTINGS.md` and repository-authored learning content;
+- `update`: refresh managed common and profile files and skills, remove retired framework-owned files, and preserve `agentic-flow/SETTINGS.md` plus repository-authored learning content;
 - `replace`: remove and reinstall both framework directories plus their managed skills, while preserving unrelated skills.
 
 New installations default to the minimal learning profile. Existing profile markers are retained. Minimal can upgrade to full with update mode.

@@ -148,6 +148,50 @@ function Copy-ManagedFiles([string]$Source, [string]$Destination, [string]$Manif
     return $copied
 }
 
+function Remove-RetiredManagedFiles([string]$Destination, [string]$PreviousManifestPath, [string]$CurrentManifestPath) {
+    if (-not (Test-Path -LiteralPath $PreviousManifestPath -PathType Leaf)) { return 0 }
+
+    $destinationPath = [System.IO.Path]::GetFullPath($Destination).TrimEnd([char[]]@('\', '/'))
+    $destinationRoot = $destinationPath + [System.IO.Path]::DirectorySeparatorChar
+    $current = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::Ordinal)
+    foreach ($rawLine in Get-Content -LiteralPath $CurrentManifestPath) {
+        $relative = $rawLine.Trim()
+        if (-not [string]::IsNullOrWhiteSpace($relative) -and -not $relative.StartsWith('#')) {
+            $null = $current.Add($relative.Replace('\', '/'))
+        }
+    }
+
+    $removed = 0
+    foreach ($rawLine in Get-Content -LiteralPath $PreviousManifestPath) {
+        $relative = $rawLine.Trim()
+        if ([string]::IsNullOrWhiteSpace($relative) -or $relative.StartsWith('#')) { continue }
+        $portable = $relative.Replace('\', '/')
+        if ($current.Contains($portable)) { continue }
+
+        $normalized = $portable.Replace('/', [string][System.IO.Path]::DirectorySeparatorChar)
+        $targetFile = [System.IO.Path]::GetFullPath((Join-Path $Destination $normalized))
+        if (-not $targetFile.StartsWith($destinationRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw "Unsafe path in previous managed-files manifest: $relative"
+        }
+        if (Test-Path -LiteralPath $targetFile -PathType Container) {
+            throw "Retired managed target is a directory, expected a file: $relative"
+        }
+        if (-not (Test-Path -LiteralPath $targetFile -PathType Leaf)) { continue }
+
+        Remove-Item -LiteralPath $targetFile -Force
+        $removed += 1
+        $parent = Split-Path -Parent $targetFile
+        while (-not [string]::IsNullOrWhiteSpace($parent) -and
+            $parent.StartsWith($destinationRoot, [System.StringComparison]::OrdinalIgnoreCase) -and
+            -not [System.IO.Path]::GetFullPath($parent).Equals($destinationPath, [System.StringComparison]::OrdinalIgnoreCase)) {
+            if ($null -ne (Get-ChildItem -LiteralPath $parent -Force | Select-Object -First 1)) { break }
+            Remove-Item -LiteralPath $parent -Force
+            $parent = Split-Path -Parent $parent
+        }
+    }
+    return $removed
+}
+
 function Get-ManagedSkillNames([string]$ManifestPath) {
     if (-not (Test-Path -LiteralPath $ManifestPath -PathType Leaf)) { return @() }
     $names = @(
@@ -191,6 +235,9 @@ function Install-Component(
         Write-Step "Copied $($result.Copied) files and preserved $($result.Skipped) existing files"
     }
     elseif ($InstallMode -eq "Update") {
+        $previousManagedFiles = Join-Path $Destination ".managed-files"
+        $retired = Remove-RetiredManagedFiles -Destination $Destination -PreviousManifestPath $previousManagedFiles -CurrentManifestPath $ManagedFiles
+        if ($retired -gt 0) { Write-Step "Removed $retired retired managed files from $Name" }
         Write-Step "Adding missing $Name files"
         $result = Copy-MissingTree -Source $Source -Destination $Destination
         Write-Step "Copied $($result.Copied) files and preserved $($result.Skipped) existing files"

@@ -113,9 +113,8 @@ Use clear ownership:
 - `agentic-flow/SETTINGS.md`: durable collaboration preferences only;
 - `MAP.md`: compact boundaries and representative flows;
 - `TAKEAWAYS.md`: short durable lessons;
-- full-profile `research/`: canonical evidence;
-- full-profile `materials/`: reusable teaching;
-- full-profile `contributors/`: optional personal working traces only.
+- full-profile `REPOSITORIES.md`: repository identities, baselines, and access boundaries;
+- optional task artifacts: explicitly requested durable challenges, ticket paths, or explainers placed in a repository-owned location rather than pre-created framework directories.
 
 ## Installer behavior
 

@@ -69,13 +69,8 @@ Use one owner:
 - `MAP.md`: compact domain slices, boundaries, representative flows, and high-value unknowns;
 - `TAKEAWAYS.md`: concise reusable lessons;
 - `REPOSITORIES.md`: repository identity, baseline, and access boundary;
-- `research/`: detailed canonical evidence and uncertainty;
-- `materials/`: reusable teaching derived from research;
-- `contributors/`: optional personal working traces;
-- `explainers/`: warranted non-trivial change walkthroughs;
-- `labs/`: bounded interactive harnesses.
 
-Do not copy the same explanation across surfaces. Do not create contributor folders, challenge files, explainers, labs, sessions, or materials in advance.
+Task-specific challenge, ticket-path, and change-explainer templates live inside their owning skills. Materialize one only on explicit durable need and place it in a repository-owned location. Prefer existing test and debug infrastructure over framework lab folders. Do not create personal tracking, challenge files, explainers, labs, sessions, research, or teaching materials in advance.
 
 ## Visual and evidence policy
 

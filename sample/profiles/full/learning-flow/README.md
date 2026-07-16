@@ -19,17 +19,12 @@ Prediction, tracing, comparison, and challenge activities are used only when the
 | `MAP.md` | compact domain slices, boundaries, representative paths, and high-value unknowns |
 | `TAKEAWAYS.md` | short verified lessons likely to be reused |
 | `REPOSITORIES.md` | repository identities, baselines, and access boundaries |
-| `research/` | evidence-rich canonical findings |
-| `materials/` | reusable teaching content derived from verified research |
-| `contributors/` | optional personal working traces, created only on explicit need |
-| `explainers/` | non-trivial change explanations that earn reuse |
-| `labs/` | bounded synthetic harnesses when interaction materially improves understanding |
 
-Conversation is the default. Do not create a file merely because a template exists.
+Conversation is the default. Task-specific challenge, ticket-path, and change-explainer templates travel inside their owning skills; materialize one only when the user wants a durable artifact and place it in a repository-owned location. Prefer existing test and debug infrastructure over framework lab folders. Do not create personal tracking or teaching directories by default.
 
 ## Start
 
-For a new repository, use `learning-bootstrap` to create only the compact baseline described in `BOOTSTRAP.md`. It must not pre-generate themes, sessions, contributor folders, explainers, or labs.
+For a new repository, use `learning-bootstrap` to create only the compact baseline described in `BOOTSTRAP.md`. It must not pre-generate themes, sessions, personal tracking, explainers, or labs.
 
 After baseline creation, select one primary learning skill for the current task. The `agentic-workflow` skill is only for configuring or understanding the harness itself.
 

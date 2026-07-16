@@ -274,6 +274,46 @@ copy_managed_files() {
     log "Updated $copied managed files in $(basename "$target_root")"
 }
 
+remove_retired_managed_files() {
+    target_root="$1"
+    previous_manifest="$2"
+    current_manifest="$3"
+    [ -f "$previous_manifest" ] || return 0
+
+    current_entries="$(sed '/^[[:space:]]*$/d; /^[[:space:]]*#/d' "$current_manifest")"
+    removed=0
+    while IFS= read -r relative || [ -n "$relative" ]; do
+        case "$relative" in
+            ''|'#'*) continue ;;
+            /*|..|../*|*/../*|*/..)
+                echo "Unsafe path in previous managed-files manifest: $relative" >&2
+                exit 1
+                ;;
+        esac
+        if printf '%s\n' "$current_entries" | grep -Fqx "$relative"; then
+            continue
+        fi
+
+        target_file="$target_root/$relative"
+        [ ! -d "$target_file" ] || {
+            echo "Retired managed target is a directory, expected a file: $relative" >&2
+            exit 1
+        }
+        [ -f "$target_file" ] || continue
+        rm -f "$target_file"
+        removed=$((removed + 1))
+
+        parent="$(dirname "$target_file")"
+        while [ "$parent" != "$target_root" ]; do
+            case "$parent" in "$target_root"/*) ;; *) break ;; esac
+            rmdir "$parent" 2>/dev/null || break
+            parent="$(dirname "$parent")"
+        done
+    done < "$previous_manifest"
+
+    [ "$removed" -eq 0 ] || log "Removed $removed retired managed files from $(basename "$target_root")"
+}
+
 skill_names_from_manifest() {
     manifest="$1"
     [ -f "$manifest" ] || return 0
@@ -321,6 +361,7 @@ install_component() {
         log "Merging missing $component_name files"
         copy_missing_tree "$source_root" "$target_root"
     elif [ "$MODE" = "update" ]; then
+        remove_retired_managed_files "$target_root" "$target_root/.managed-files" "$managed_files"
         log "Adding missing $component_name files"
         copy_missing_tree "$source_root" "$target_root"
         log "Updating framework-owned $component_name files"

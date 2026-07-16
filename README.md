@@ -24,7 +24,7 @@ The repository's own agentic setup is part of initial learning research. Existin
 | Profile | Use | Persistent learning | Skills |
 |---|---|---:|---:|
 | `minimal` | daily work, short engagements, token-sensitive agents | `MAP.md`, `TAKEAWAYS.md` | 1 |
-| `full` | deliberate onboarding, teaching, long-lived ownership | map, takeaways, optional research and learning artifacts | 7 |
+| `full` | deliberate onboarding, teaching, long-lived ownership | map, takeaways, repository baselines, optional task artifacts | 7 |
 
 New installations default to `minimal`. Both profiles are task-first and create no curriculum, session, contributor file, quiz, or explainer without a real reason.
 
@@ -86,7 +86,7 @@ Modes:
 - `update`: refresh framework-owned files and managed skills;
 - `replace`: replace framework directories and this framework's managed skills.
 
-`update` preserves agentic settings, maps, takeaways, research, materials, contributor traces, explainers, labs, and unrelated skills.
+`update` removes retired framework-owned files while preserving agentic settings, maps, takeaways, repository-authored artifacts, and unrelated skills.
 
 Root modes are `auto`, `integrate`, `initialize`, `preserve`, and `skip`. Existing root content is never replaced wholesale.
 
@@ -167,7 +167,7 @@ agentic-flow/
 
 Minimal adds one `repository-learning` skill and `learning-flow/{AGENTS,MAP,README,TAKEAWAYS}.md`.
 
-Full adds seven narrow learning skills plus optional research, materials, explainers, labs, and contributor surfaces that remain empty until justified.
+Full adds seven narrow learning skills. Its visible learning directory stays compact; three task-specific templates travel inside their owning skills and are materialized only when justified.
 
 </details>
 

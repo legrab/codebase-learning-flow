@@ -22,4 +22,4 @@ _Use at most one when consequential._
 
 ## Promotion decision
 
-_Keep conversational, update map/takeaways, or create canonical research. State why._
+_Keep conversational, update map/takeaways, or create a durable repository artifact. State why._
