@@ -12,9 +12,13 @@ Use one of `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. T
 
 _Not mapped yet._
 
-## Domain territories and vocabulary
+## Domain slice
 
-_Not mapped yet._
+Add one row per relevant territory, not a comprehensive business glossary.
+
+| Actor and outcome | Capability | Rule or invariant | Trigger and effect | Owning boundary and evidence |
+|---|---|---|---|---|
+| _Not mapped yet._ | | | | |
 
 ## Representative paths
 

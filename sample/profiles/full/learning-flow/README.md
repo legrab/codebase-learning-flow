@@ -16,7 +16,7 @@ Prediction, tracing, comparison, and challenge activities are used only when the
 
 | Surface | Purpose |
 |---|---|
-| `MAP.md` | compact boundaries, vocabulary, representative paths, and high-value unknowns |
+| `MAP.md` | compact domain slices, boundaries, representative paths, and high-value unknowns |
 | `TAKEAWAYS.md` | short verified lessons likely to be reused |
 | `REPOSITORIES.md` | repository identities, baselines, and access boundaries |
 | `research/` | evidence-rich canonical findings |

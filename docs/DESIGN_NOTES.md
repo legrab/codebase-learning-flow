@@ -123,7 +123,7 @@ Conversation is the default storage layer. Promotion requires verification, repo
 
 | Surface | Owns | Does not own |
 |---|---|---|
-| `MAP.md` | compact boundaries, vocabulary, representative paths, high-value unknowns | detailed evidence notes or session history |
+| `MAP.md` | compact boundaries, domain slices, representative paths, high-value unknowns | detailed evidence notes or session history |
 | `TAKEAWAYS.md` | short verified lessons worth reusing | raw debugging history or personal notes |
 | full-profile `research/` | evidence-rich canonical findings | teaching scripts or progress |
 | full-profile `materials/` | reusable teaching material derived from research | canonical source claims |

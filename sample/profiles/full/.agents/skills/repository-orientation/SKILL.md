@@ -10,12 +10,12 @@ Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, app
 Read `learning-flow/AGENTS.md`, then only relevant parts of `MAP.md`, `TAKEAWAYS.md`, and canonical research.
 
 1. If the repository agentic setup is not mapped, identify its effective instruction order and custom surfaces using `agentic-flow/LEARN.md`.
-2. Frame the code or domain territory and intended use.
-3. Show boundaries and vocabulary before file detail.
+2. Frame the intended use, actor or caller, outcome, capability, and governing rule when relevant.
+3. Show a compact domain slice and boundaries before file detail.
 4. Trace one representative execution or data path.
 5. Connect claims to source, tests, configuration, safe runtime evidence, or explicit inference.
 6. Identify the important constraint and highest-value unknown.
-7. Stop when the user can locate the territory and describe its responsibility.
+7. Stop when the user can locate the territory, describe its responsibility, and connect implementation to the intended outcome.
 
 Ask at most one consequential trace, prediction, or explain-back. Create or update an artifact only when the persistence threshold is met.
 

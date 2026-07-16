@@ -14,7 +14,7 @@ During an initial baseline, verify the installed workflow quietly and record one
 Locate → Reason → Work → Explain → Recap
 ```
 
-1. Locate only the relevant boundary, vocabulary, representative path, and nearest proof surface. Check the effective agentic instruction path only when setup status is pending or evidence suggests a conflict.
+1. Locate only the relevant domain slice, boundary, representative path, and nearest proof surface. Check the effective agentic instruction path only when setup status is pending or evidence suggests a conflict.
 2. Reason from an explicit symptom, behavior contract, analogue, hypothesis, or safe seam.
 3. Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 4. Ask at most one brief understanding check when settings or the user request call for it and a mistaken model would affect later work.
@@ -22,10 +22,10 @@ Locate → Reason → Work → Explain → Recap
 
 ## Task branches
 
-- Bug: symptom → expectation → decisive probe → mechanism → fix → regression proof.
-- Feature: desired behavior → nearest valid analogue → differences → implementation seam → proof.
-- Refactor: preserved contract → smallest seam → transformation → proof → simplification.
-- Orientation: agentic setup → boundary map → vocabulary → representative path → important constraint.
+- Bug: affected outcome or rule → symptom → expectation → decisive probe → mechanism → fix → regression proof.
+- Feature: actor and outcome → capability and invariants → nearest valid analogue → differences → implementation seam → proof.
+- Refactor: behavior or domain invariant → smallest seam → transformation → proof → simplification.
+- Orientation: intended use → domain slice → boundary map → representative path → important constraint.
 
 Select one branch. Do not treat `agentic-workflow` as a second task procedure. It is for setup, configuration, and explanation of the harness itself.
 

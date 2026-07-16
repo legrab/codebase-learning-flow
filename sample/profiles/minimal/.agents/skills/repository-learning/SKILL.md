@@ -13,7 +13,7 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 ## Bug
 
-1. State symptom and falsifiable expected behavior.
+1. State the affected outcome or rule, symptom, and falsifiable expected behavior.
 2. Find the smallest discriminating test, log, trace, or reproduction.
 3. Explain the mechanism before patching.
 4. Apply the narrowest responsible fix when requested.
@@ -21,7 +21,7 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 ## Feature
 
-1. Define observable behavior and constraints.
+1. Define the actor, intended outcome, capability, observable behavior, and governing invariants.
 2. Find the nearest valid analogue by behavior and tests, not name alone.
 3. Separate shared invariants from intentional differences.
 4. Use the smallest established extension seam.
@@ -29,7 +29,7 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 ## Refactor
 
-1. State the observable contract that must remain stable.
+1. State the behavior or domain invariant that must remain stable and the observable contract that expresses it.
 2. Find existing proof or add only necessary characterization evidence.
 3. Use the smallest safe seam and reviewable transformations.
 4. Re-run narrow checks after meaningful changes.
@@ -38,8 +38,8 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 ## Orientation
 
 1. If setup status is pending, verify template integration and record one status. Map custom agent surfaces, precedence, and temporary evidence only when they materially differ or conflict.
-2. Identify the code or domain territory and intended use.
-3. Show boundaries and vocabulary before file detail.
+2. Identify the intended use, actor or caller, outcome, capability, and governing rule when relevant.
+3. Show the compact domain slice and boundaries before file detail.
 4. Trace one representative path.
 5. Link claims to source, tests, configuration, runtime evidence, or explicit inference.
 6. Stop when the user can locate the territory, describe its responsibility, and explain which instruction layers govern work there.
@@ -48,5 +48,5 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 - Ask at most one open understanding check when consequential and compatible with setting 4 or the user's request.
 - Skip checks when understanding is already demonstrated, the task is mechanical, or fast execution was requested.
-- End meaningful learning work with a compact recap of model, location, evidence, boundary, and transfer.
+- End meaningful learning work with a compact recap of outcome, model, location, evidence, boundary, and transfer.
 - Update `MAP.md` or `TAKEAWAYS.md` only when the persistence threshold is met.

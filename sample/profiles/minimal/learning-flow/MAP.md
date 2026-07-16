@@ -12,9 +12,13 @@ Use one of `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. A
 
 _Not mapped yet._
 
-## Domain vocabulary
+## Domain slice
 
-_Not mapped yet._
+Add one row only when domain context materially improves the current or near-term work.
+
+| Actor and outcome | Capability | Rule or invariant | Trigger and effect | Owner and evidence |
+|---|---|---|---|---|
+| _Not mapped yet._ | | | | |
 
 ## Representative paths
 

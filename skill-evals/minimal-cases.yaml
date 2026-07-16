@@ -3,19 +3,19 @@ cases:
   - prompt: Diagnose this failing test and fix it.
     expected_skill: repository-learning
     expected_branch: bug
-    must_include: [symptom, decisive probe, mechanism, regression proof]
+    must_include: [affected outcome or rule, symptom, decisive probe, mechanism, regression proof]
   - prompt: Add this behavior using the existing sibling feature as a guide.
     expected_skill: repository-learning
     expected_branch: feature
-    must_include: [valid analogue, differences, proof]
+    must_include: [actor and outcome, capability, invariants, valid analogue, differences, proof]
   - prompt: Refactor this parser without changing output.
     expected_skill: repository-learning
     expected_branch: refactor
-    must_include: [preserved contract, safe seam, proof]
+    must_include: [behavior or domain invariant, preserved contract, safe seam, proof]
   - prompt: Show me where requests enter this subsystem and reach storage.
     expected_skill: repository-learning
     expected_branch: orientation
-    must_include: [boundaries, representative path, evidence]
+    must_include: [intended use, compact domain slice, boundaries, representative path, evidence]
   - prompt: Make this one-line mechanical edit quickly.
     expected_skill: optional
     must_include: [no quiz, no persistent artifact]

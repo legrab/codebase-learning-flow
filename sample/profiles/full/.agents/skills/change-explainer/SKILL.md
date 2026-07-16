@@ -10,7 +10,7 @@ Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, app
 Read `learning-flow/AGENTS.md`. Use `templates/change-explainer.md` only when a persistent artifact is warranted.
 
 1. Establish exact change range and intended outcome.
-2. Explain relevant behavior and architecture before the diff.
+2. Explain the intended outcome, governing rules or invariants, and relevant architecture before the diff.
 3. Walk through changed files in conceptual execution order.
 4. Record decisions, rejected alternatives, risks, and unchanged contracts.
 5. Connect claims to tests or safe runtime evidence.

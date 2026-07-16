@@ -2,27 +2,27 @@ profile: full
 cases:
   - prompt: Help me understand why this endpoint sometimes returns stale data.
     expected_primary_skill: challenge-debugging
-    must_include: [symptom, decisive evidence, mechanism, regression proof]
+    must_include: [affected outcome or rule, symptom, decisive evidence, mechanism, regression proof]
     must_not: [guessed patch before narrowing, multiple primary learning skills, agentic-workflow as second task skill]
   - prompt: Implement export similarly to the existing import workflow.
     expected_primary_skill: analogous-feature
-    must_include: [valid analogue, invariants, intentional differences, proof]
+    must_include: [actor and outcome, capability, valid analogue, invariants, intentional differences, proof]
     must_not: [blind copy, premature shared abstraction]
   - prompt: Clean up this service without changing its behavior.
     expected_primary_skill: safe-refactor
-    must_include: [preserved contract, evidence, smallest seam, simplification]
+    must_include: [behavior or domain invariant, preserved contract, evidence, smallest seam, simplification]
     must_not: [architecture campaign]
   - prompt: Give me the architecture and domain context for ticket ABC-123, but do not implement it yet.
     expected_primary_skill: ticket-learning-path
-    must_include: [ownership, representative path, short route, stop before implementation]
+    must_include: [actor and outcome, capability, ownership, representative path, short route, stop before implementation]
     must_not: [execution skill in the same pass]
   - prompt: Explain this non-trivial PR so I can review it responsibly.
     expected_primary_skill: change-explainer
-    must_include: [background, conceptual order, risks, proof, recap]
+    must_include: [intended outcome, governing rules or invariants, conceptual order, risks, proof, recap]
     must_not: [alphabetical file walkthrough only, mandatory quiz]
   - prompt: Initialize the learning flow for this repository.
     expected_primary_skill: learning-bootstrap
-    must_include: [agentic setup status, compact map, build and test entry points, one representative path]
+    must_include: [agentic setup status, compact domain slice, compact map, build and test entry points, one representative path]
     must_not: [exhaustive agentic inventory, five prebuilt themes, contributor folder, generated sessions]
   - prompt: Fix this obvious typo and move on quickly.
     expected_primary_skill: none_or_normal_engineering

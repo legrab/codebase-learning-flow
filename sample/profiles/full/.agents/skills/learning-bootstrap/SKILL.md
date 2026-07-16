@@ -1,6 +1,6 @@
 ---
 name: learning-bootstrap
-description: Create or refresh a compact repository baseline covering boundaries, vocabulary, build and proof entry points, and one representative path. Use for first population or deliberate baseline refresh; do not generate curricula, sessions, contributor files, explainers, or labs.
+description: Create or refresh a compact repository baseline covering a domain slice, boundaries, build and proof entry points, and one representative path. Use for first population or deliberate baseline refresh; do not generate curricula, sessions, contributor files, explainers, or labs.
 ---
 
 # Learning bootstrap
@@ -13,7 +13,7 @@ Read `learning-flow/AGENTS.md` and `learning-flow/BOOTSTRAP.md`. Load no other l
 2. Verify template markers and root integration quietly, then record one setup status in `MAP.md`.
 3. Read `agentic-flow/LEARN.md` and expand the setup map only when custom instructions, competing skills, unresolved precedence, or stale records materially affect the work.
 4. Update `REPOSITORIES.md` only for repositories actually needed.
-5. Create a compact `MAP.md` with the agentic collaboration map, major boundaries, vocabulary, proof entry points, and one representative code or domain path.
+5. Create a compact `MAP.md` with setup status, major boundaries, one domain slice, proof entry points, and one representative code or domain path.
 6. Add only already-qualified durable lessons to `TAKEAWAYS.md`.
 7. Stop with reviewable, uncommitted changes.
 

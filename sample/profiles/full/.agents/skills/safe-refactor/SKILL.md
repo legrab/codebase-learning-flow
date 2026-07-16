@@ -9,7 +9,7 @@ Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, app
 
 Read `learning-flow/AGENTS.md`. Load only material for the affected contract and territory.
 
-1. State observable behavior that must remain stable and internals allowed to change.
+1. State the behavior or domain invariant that must remain stable, its observable contract, and internals allowed to change.
 2. Inspect existing proof and add characterization only where necessary.
 3. Identify the smallest safe seam.
 4. Apply reviewable transformations.

@@ -36,8 +36,8 @@ When the user's experience cannot be inferred and it materially changes useful s
 Locate → Reason → Work → Explain → Recap
 ```
 
-- Locate the relevant boundary, vocabulary, representative path, and proof surface.
-- Reason from an explicit behavior contract, hypothesis, valid analogue, or safe seam.
+- Locate the intended actor or caller, outcome, capability, governing rule, relevant boundary, representative path, and proof surface. Skip fields that add no value.
+- Reason from an explicit domain invariant, behavior contract, hypothesis, valid analogue, or safe seam.
 - Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 - Explain through one brief retrieval or transfer check only when consequential and enabled by settings or request.
 - Recap the model, location, evidence, boundary, and nearby transfer.
@@ -66,7 +66,7 @@ Conversation is the default. Persist only verified, repository-specific findings
 
 Use one owner:
 
-- `MAP.md`: compact boundaries, vocabulary, representative flows, and high-value unknowns;
+- `MAP.md`: compact domain slices, boundaries, representative flows, and high-value unknowns;
 - `TAKEAWAYS.md`: concise reusable lessons;
 - `REPOSITORIES.md`: repository identity, baseline, and access boundary;
 - `research/`: detailed canonical evidence and uncertainty;
@@ -90,6 +90,7 @@ Rereading and agreement show exposure, not understanding. A sound explanation, p
 End meaningful learning work with three to six bullets that revisit:
 
 - central mechanism or model;
+- intended outcome and governing domain rule when relevant;
 - architecture or domain placement;
 - decisive evidence;
 - important boundary, tradeoff, or corrected misconception;

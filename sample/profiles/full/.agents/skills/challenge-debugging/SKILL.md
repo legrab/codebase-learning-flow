@@ -9,7 +9,7 @@ Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, app
 
 Read `learning-flow/AGENTS.md`. Load only material for the affected territory.
 
-1. State observable symptom and falsifiable expected behavior.
+1. State the affected outcome or rule, observable symptom, and falsifiable expected behavior.
 2. Find the smallest discriminating reproduction, test, trace, or log.
 3. Rank only credible hypotheses and test one uncertainty at a time.
 4. Explain the failure mechanism before changing code.

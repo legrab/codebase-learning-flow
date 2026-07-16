@@ -16,7 +16,7 @@ Use this only for first learning-map population or a deliberate refresh. General
 2. Verify template markers and root integration quietly. Record one agentic setup status in `MAP.md`.
 3. Use `agentic-flow/LEARN.md` only when custom instructions, tool-specific files, competing skills, unresolved precedence, or stale records materially affect the work. Record only those differences or conflicts.
 4. Record repository identity and access boundaries in `REPOSITORIES.md` only when useful.
-5. Populate the remaining `MAP.md` sections with major system boundaries, core domain vocabulary, build and proof entry points, one representative code or domain path, and a short list of high-value unknowns.
+5. Populate the remaining `MAP.md` sections with major system boundaries, one compact domain slice, build and proof entry points, one representative code or domain path, and a short list of high-value unknowns.
 6. Add entries to `TAKEAWAYS.md` only when they already meet the persistence threshold.
 7. Stop.
 

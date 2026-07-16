@@ -8,11 +8,11 @@ Locate → Reason → Work → Explain → Recap
 
 | Task | Learning route |
 |---|---|
-| Orientation | boundary map → vocabulary → representative path → constraint |
-| Bug | symptom → expectation → decisive probe → mechanism → fix → regression proof |
-| Analogous feature | behavior → valid analogue → invariants/differences → seam → implementation → proof |
-| Refactor | preserved contract → evidence → smallest seam → transformation → proof → simplification |
-| Change explanation | background → intuition → conceptual walkthrough → decisions/risks → proof |
-| Ticket path | classify → ownership map → missing context → shortest route → named handoff or stop |
+| Orientation | intended use → domain slice → boundary map → representative path → constraint |
+| Bug | affected outcome/rule → symptom → expectation → decisive probe → mechanism → fix → proof |
+| Analogous feature | actor/outcome → capability and invariants → valid analogue → differences → seam → proof |
+| Refactor | behavior/domain invariant → evidence → smallest seam → transformation → proof → simplification |
+| Change explanation | intended outcome → governing rules → conceptual walkthrough → decisions/risks → proof |
+| Ticket path | actor/outcome → capability and ownership → missing context → shortest route → handoff or stop |
 
 Use one understanding check only when consequential and enabled by the task or settings. Persist only verified, reusable findings. End meaningful learning work with a compact recap.
