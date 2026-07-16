@@ -44,7 +44,7 @@ cases:
     must_not: [Pocok-specific package rules, mandatory session files]
   - prompt: Review the installed agentic setup again after we add a custom Claude instruction and another skill.
     expected_skill: agentic-workflow
-    must_include: [known template shortcut, custom additions, effective precedence, learning map update]
+    must_include: [known template shortcut, custom additions, effective precedence, durable learning map exception when useful]
     must_not: [exhaustive reread of all managed template files]
 
   - prompt: "Use this other repository as a reference and incorporate its best agentic ideas into our harness."

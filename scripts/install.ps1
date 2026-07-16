@@ -16,7 +16,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$InstallerVersion = "0.6.1"
+$InstallerVersion = "0.6.2"
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"

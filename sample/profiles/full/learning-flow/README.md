@@ -8,7 +8,7 @@ This profile supports deliberate onboarding and long-lived repository understand
 Locate → Reason → Work → Explain → Recap
 ```
 
-The initial repository baseline also maps the actual agentic setup: existing root and tool-specific instructions, custom skills and prompts, the installed template integration, effective precedence, and temporary evidence locations. Known template files are not exhaustively re-researched.
+A requested repository baseline recognizes managed agentic setup quietly. It maps custom instructions, skills, prompts, precedence, or stale evidence only when they affect work and will be useful again.
 
 Prediction, tracing, comparison, and challenge activities are used only when they improve reasoning. Planning, approval gates, validation depth, and handoff remain governed by `agentic-flow/`.
 
@@ -24,15 +24,15 @@ Conversation is the default. Task-specific challenge, ticket-path, and change-ex
 
 ## Start
 
-For a new repository, use `learning-bootstrap` to create only the compact baseline described in `BOOTSTRAP.md`. It must not pre-generate themes, sessions, personal tracking, explainers, or labs.
+Use `learning-bootstrap` only when a compact baseline or deliberate onboarding pass is requested. An ordinary task in a new repository can start with the matching task skill. Bootstrap must not pre-generate themes, sessions, personal tracking, explainers, or labs.
 
-After baseline creation, select one primary learning skill for the current task. The `agentic-workflow` skill is only for configuring or understanding the harness itself.
+Select one primary learning skill for the current task. The `agentic-workflow` skill is only for configuring or understanding the harness itself.
 
-## Understanding and recap
+## Understanding and handoff
 
 Use at most one brief open checkpoint by default when misunderstanding would affect future reasoning and setting 4 allows it. A declined check never blocks engineering.
 
-Every meaningful learning session ends with a compact three-to-six-bullet recap revisiting the central model, repository placement, decisive evidence, important boundary or corrected misconception, and nearest transfer.
+When learning was central, fold up to three useful points about the model, decisive evidence, boundary, or transfer into the normal handoff. Skip them when the handoff already carries that value; never add a second recap section just to satisfy the framework.
 
 ## Artifact budget
 

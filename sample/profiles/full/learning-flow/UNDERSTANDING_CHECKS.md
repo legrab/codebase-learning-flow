@@ -34,6 +34,6 @@ Use multiple-choice only when distinguishing plausible mechanisms or misconcepti
 - Record `not checked` only when explicit personal tracking is active.
 - Do not infer broad competence from one answer.
 
-## Session recap
+## Learning handoff
 
-The recap is not another check. Revisit the central model, placement, decisive evidence, important boundary or correction, and nearest transfer in three to six bullets. Reuse the user's explanation where sound.
+When it helps, fold up to three points about the central model, placement, decisive evidence, boundary, correction, or transfer into the normal handoff. Reuse the user's explanation where sound. Do not add a separate recap or repeat delivery evidence.

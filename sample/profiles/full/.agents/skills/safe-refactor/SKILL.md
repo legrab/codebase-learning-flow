@@ -19,4 +19,4 @@ Read `learning-flow/AGENTS.md`. Load only material for the affected contract and
 
 Ask at most one check about the preserved contract or new responsibility boundary.
 
-Report contract, evidence before and after, transformation sequence, simplification, remaining risk, and recap.
+Report the contract, evidence before and after, transformation sequence, simplification, and remaining risk. Fold in a useful learning point only when it adds value beyond the normal handoff.

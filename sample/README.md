@@ -9,7 +9,7 @@ sample/profiles/minimal/
 sample/profiles/full/
 ```
 
-`agentic-flow/` governs general collaboration. `learning-flow/` adds optional educational support and maps the repository's actual agentic setup during the initial baseline. Keeping them separate prevents every engineering task from becoming a lesson and prevents learning preferences from silently changing approval or commit behavior.
+`agentic-flow/` governs general collaboration. `learning-flow/` adds optional educational support and records only consequential custom agentic setup exceptions during a baseline. Keeping them separate prevents every engineering task from becoming a lesson and prevents learning preferences from silently changing approval or commit behavior.
 
 Fresh installs default to the minimal learning profile. Existing installations retain their profile. Minimal can upgrade to full through update mode. Full cannot reduce to minimal without replace mode.
 

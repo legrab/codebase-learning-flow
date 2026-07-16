@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.6.2
+
+### Changed
+
+- Normal managed-template integration no longer requires an agentic setup status in the learning map; only durable custom exceptions or conflicts are recorded.
+- Full-profile bootstrap is now an explicitly requested onboarding activity rather than a prerequisite for the first real task.
+- Learning reinforcement is folded into the normal handoff, limited to a few useful points, and skipped when it would duplicate delivery evidence.
+
+### Removed
+
+- Baseline reporting of transient branch, commit, profile, settings, and ordinary template status.
+- Separate quota-shaped recap sections after the normal agentic handoff.
+
 ## 0.6.1
 
 ### Changed

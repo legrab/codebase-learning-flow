@@ -7,7 +7,7 @@ Configuration is optional. Use `balanced` by default and begin work immediately.
 | Preset | Best for | Behavior |
 |---|---|---|
 | `fast` | routine, low-risk delivery | end-to-end autonomy, minimal planning, focused checks, no learning prompts or persistence |
-| `balanced` | normal repository work | meaningful-fork autonomy, brief planning, risk-based checks, concise recap, durable findings only |
+| `balanced` | normal repository work | meaningful-fork autonomy, brief planning, risk-based checks, concise learning in the handoff, durable findings only |
 | `guided` | deliberate codebase and domain learning | balanced delivery with prediction, explanation, one consequential check, and durable findings only |
 | `gated` | high-risk or review-heavy work | pause before implementation and major scope changes, use durable phases, broad checks, and lean learning |
 
@@ -20,7 +20,7 @@ Use overrides only when the user explicitly wants finer control or one preset be
 1. **Autonomy and pauses:** `A` end to end, `B` meaningful forks, `C` plan and scope-change review, `D` gated phases.
 2. **Planning depth:** `A` minimal, `B` brief in-chat, `C` durable when justified, `D` formal phases and acceptance criteria.
 3. **Validation depth:** `A` focused, `B` risk-proportional, `C` broad, `D` repository command matrix.
-4. **Learning depth:** `A` delivery only, `B` concise recap, `C` explain-back when consequential, `D` guided prediction and teaching.
+4. **Learning depth:** `A` delivery only, `B` concise handoff reinforcement, `C` explain-back when consequential, `D` guided prediction and teaching.
 5. **Persistence:** `A` conversation only, `B` durable verified findings only, `C` explicit reusable records when justified.
 
 Avoid contradictory combinations. Autonomy controls pauses; planning controls representation. A formal plan does not silently remove a configured gate, and fast autonomy does not require formal planning.

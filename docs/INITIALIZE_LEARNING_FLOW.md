@@ -86,13 +86,7 @@ Locate → Reason → Work → Explain → Recap
 
 Keep routine inspection uninterrupted. Use one brief explanation, prediction, trace, comparison, or boundary check only when misunderstanding would affect later work. Skip it when the user already demonstrated understanding or requested fast execution.
 
-Every meaningful learning session ends with a short recap that revisits:
-
-- the central mechanism;
-- where it lives;
-- the decisive evidence;
-- the important boundary or corrected misconception;
-- one nearby transfer.
+When learning was central, fold up to three useful points about the mechanism, placement, evidence, boundary, or nearby transfer into the normal handoff. Skip them when that value is already present; do not add a second recap section.
 
 ## Persistence policy
 
@@ -143,9 +137,9 @@ Update only manifest-owned framework files and managed skills. Preserve reposito
 
 ## Existing agentic setup as learning material
 
-The initial repository baseline must inspect and map the repository's effective agentic system, not only the installed template. Cover root, nested, and tool-specific instructions; installed and custom skills; prompts, plans, sessions, status records, and evidence ledgers; precedence; ownership; and refresh rules.
+The initial repository baseline recognizes the installed template without mapping it. Inspect root, nested, and tool-specific instructions, custom skills, prompts, plans, sessions, status records, or evidence ledgers only when repository evidence suggests they affect the task. Reserve a complete precedence and ownership map for an explicit agentic setup review.
 
-Use template markers to avoid re-researching managed framework files. Map custom additions, integration, overrides, and conflicts in `MAP.md`. Root integration must support existing and missing `AGENTS.md` files through three distinct choices—link or initialize, preserve for later review, and explicit-only—and remain available after installation.
+Use template markers to avoid re-researching managed framework files. Do not write ordinary template status to `MAP.md`; map only durable custom additions, overrides, and conflicts that affect future work. Root integration must support existing and missing `AGENTS.md` files through three distinct choices—link or initialize, preserve for later review, and explicit-only—and remain available after installation.
 
 
 

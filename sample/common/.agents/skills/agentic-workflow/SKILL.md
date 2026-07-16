@@ -25,7 +25,7 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 5. Ask for one collaboration preset only during requested or guided configuration. Use advanced overrides only when explicitly needed.
 6. In full mode, ask learner context only when it changes useful depth.
 7. Update `SETTINGS.md` without rewriting unrelated instructions.
-8. Update the learning map when the setup was inspected.
+8. Update the learning map only for a durable custom instruction exception or conflict worth reusing.
 
 ## Explain the setup
 

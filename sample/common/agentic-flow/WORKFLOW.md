@@ -63,7 +63,7 @@ Open
 
 Use descriptive bullets grouped by outcome instead of a chronological tool log or file inventory. Put long command output, secondary rationale, alternatives, or exhaustive evidence in collapsible sections. Keep failures and required next actions visible.
 
-Add a learning recap only when `learning-flow/` was active or explanation was requested.
+When `learning-flow/` was active or explanation was requested, fold only useful learning reinforcement into this handoff. Do not add a second recap section or repeat the same outcome and evidence.
 
 ## Stop conditions
 

@@ -6,7 +6,7 @@ Follow repository-native instructions and `agentic-flow/AGENTS.md` first. This f
 
 General collaboration pace, approval gates, planning, validation depth, records, commit policy, and handoff belong to `agentic-flow/`. Do not duplicate them here.
 
-The compact initial baseline includes the repository's actual agentic setup as a learning territory. Recognize managed template files by their markers, then inspect root integration, custom instructions, tool-specific files, skills, prompts, plans, records, effective precedence, and unresolved conflicts.
+For a requested initial baseline, recognize managed template files by their markers. Inspect root integration and custom agent surfaces only when they affect repository work or reveal unresolved precedence. A normal template installation needs no learning-map status.
 
 ## Select one primary learning workflow
 
@@ -40,7 +40,7 @@ Locate → Reason → Work → Explain → Recap
 - Reason from an explicit domain invariant, behavior contract, hypothesis, valid analogue, or safe seam.
 - Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 - Explain through one brief retrieval or transfer check only when consequential and enabled by settings or request.
-- Recap the model, location, evidence, boundary, and nearby transfer.
+- Recap only useful learning by folding it into the normal handoff; do not create a second summary.
 
 Collapse or skip anything that adds no learning or engineering value.
 
@@ -82,13 +82,4 @@ Rereading and agreement show exposure, not understanding. A sound explanation, p
 
 ## Completion
 
-End meaningful learning work with three to six bullets that revisit:
-
-- central mechanism or model;
-- intended outcome and governing domain rule when relevant;
-- architecture or domain placement;
-- decisive evidence;
-- important boundary, tradeoff, or corrected misconception;
-- nearest useful transfer.
-
-Reuse and correct the user's own explanation when available. Store only durable takeaways, not a transcript.
+Use the normal `agentic-flow` handoff. When learning was central and the handoff would be stronger for it, include up to three points covering the model, decisive evidence, important boundary, or nearby transfer. Reuse and correct the user's own explanation when available. Do not add a separate recap, repeat `Changed` or `Checked`, or store a transcript.

@@ -2,11 +2,9 @@
 
 Keep this file compact and visual. It is an orientation surface, not an inventory.
 
-## Agentic collaboration setup
+## Agentic setup exceptions
 
-Status: _Not checked._
-
-Use one of `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. Treat managed content as known. Add details only for custom additions, unresolved precedence, meaningful overlap, or stale temporary state.
+_None known. Treat managed content as known. Add only custom instructions, unresolved precedence, meaningful overlap, or stale state that will affect future work._
 
 ## System boundaries
 

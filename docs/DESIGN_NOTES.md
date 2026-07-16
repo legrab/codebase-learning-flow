@@ -34,7 +34,7 @@ The reusable workflow intentionally does not copy Pocok's universal one-step app
 
 ## v0.5.1 existing-harness integration
 
-The repository's agentic setup is itself a learning territory. Initial research must explain the effective instruction order, stable policy, workflow settings, task procedures, learning support, and temporary evidence locations.
+The repository's agentic setup can be a learning territory when custom instructions or conflicts affect work. Managed template state is recognized cheaply; a full instruction-order explanation belongs to an explicit setup review, not every initial baseline.
 
 Managed template files are recognizable through version and profile markers. Agents should not spend context rediscovering their intended structure. They inspect root integration and repository-specific additions, overrides, conflicts, and stale material instead.
 
@@ -69,7 +69,7 @@ Licensing is split by material type: software remains under MIT, while original 
 
 ## v0.6 task-first learning and configuration
 
-The default entry point is now the user's real task. Template integration is verified quietly, setup mapping stays at one status unless custom behavior or conflicts matter, and substantial work uses sparse progress pulses instead of tool narration.
+The default entry point is now the user's real task. Template integration is recognized quietly, setup mapping is omitted unless durable custom behavior or conflicts matter, and substantial work uses sparse progress pulses instead of tool narration.
 
 Repository learning uses one compact domain slice to connect actor and outcome, capability, rule or invariant, trigger and effect, owning boundary, and evidence before tracing code. Full mode keeps only durable core files visible; optional task templates travel inside their owning skills.
 
@@ -86,6 +86,12 @@ Third-party skill catalogues are discovery surfaces, not trust boundaries. The f
 The Goose review retained one execution detail: a chosen route should be feasible with the runtime, tools, access, and approval actually available. This is a narrow `Decide` check, not a setup questionnaire, extension catalogue, tool-count target, or second permission system.
 
 The Best of Agent Harnesses review clarified the product boundary without changing behavior. Codebase Learning Flow is a small, portable configuration layer for a host agent, not a runtime that owns tools, sandboxes, retries, or durable execution. Its task-first entry, minimal default, optional presets, and open Markdown artifacts already favor the lowest adoption surface that solves its educational job.
+
+## v0.6.2 remove residual learning ceremony
+
+A normal managed installation no longer creates learning-map work. Baselines recognize it cheaply and write only durable custom instruction exceptions or conflicts. The map therefore describes the repository, not whether the framework inspected itself.
+
+Deliberate bootstrap is optional even in the full profile; a real task can start with its matching skill. Learning reinforcement is folded into the standard handoff, limited to a few useful points, and omitted when it would duplicate the delivery summary.
 
 ## General agentic loop
 
@@ -128,7 +134,7 @@ Locate → Reason → Work → Explain → Recap
 - `Reason`: state the behavior contract, uncertainty, analogue, hypothesis, or safe seam.
 - `Work`: investigate, implement, refactor, test, simulate, or review.
 - `Explain`: use one brief retrieval or transfer check only when consequential.
-- `Recap`: consolidate the central model, decisive evidence, boundary, and nearby transfer.
+- `Recap`: fold useful model, evidence, boundary, or transfer reinforcement into the normal handoff.
 
 Prediction remains available inside `Reason`, but is not forced into every task.
 
@@ -183,7 +189,7 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 5. Opinionated behavior is configurable through one preset with optional advanced overrides.
 6. Trivial work creates no plan, questionnaire, quiz, session file, or learning artifact.
 7. Consequential learning uses at most one understanding check by default.
-8. Meaningful learning sessions end with a concise reinforcing recap.
+8. Useful learning reinforcement is folded into the normal handoff without a duplicate recap.
 9. Persistent artifacts have non-overlapping ownership and a reuse threshold.
 10. Update preserves repository-authored settings and knowledge.
 11. The Markdown fallback works without skill support.

@@ -37,7 +37,7 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 ## Orientation
 
-1. If setup status is pending, verify template integration and record one status. Map custom agent surfaces, precedence, and temporary evidence only when they materially differ or conflict.
+1. Recognize template integration without writing a status. Map custom agent surfaces, precedence, or stale state only when they materially differ, conflict, and will be useful again.
 2. Identify the intended use, actor or caller, outcome, capability, and governing rule when relevant.
 3. Show the compact domain slice and boundaries before file detail.
 4. Trace one representative path.
@@ -48,5 +48,5 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 
 - Ask at most one open understanding check when consequential and compatible with setting 4 or the user's request.
 - Skip checks when understanding is already demonstrated, the task is mechanical, or fast execution was requested.
-- End meaningful learning work with a compact recap of outcome, model, location, evidence, boundary, and transfer.
+- Fold up to three useful learning points into the normal handoff when learning was central; do not add a second recap or fill a quota.
 - Update `MAP.md` or `TAKEAWAYS.md` only when the persistence threshold is met.

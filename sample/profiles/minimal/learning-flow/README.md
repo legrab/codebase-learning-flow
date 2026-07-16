@@ -6,7 +6,7 @@ This profile adds lightweight repository learning to the general collaboration b
 Locate → Reason → Work → Explain → Recap
 ```
 
-The initial repository baseline also maps the actual agentic setup: existing root and tool-specific instructions, custom skills and prompts, the installed template integration, effective precedence, and temporary evidence locations. Known template files are not exhaustively re-researched.
+The initial repository baseline recognizes managed agentic setup quietly. It maps custom instructions, skills, prompts, precedence, or stale evidence only when they affect work and will be useful again.
 
 It persists only:
 
@@ -15,7 +15,7 @@ It persists only:
 
 Use the `repository-learning` skill for orientation, learning through a bug or feature, safe refactoring with explanation, or understanding a non-trivial mechanism. Ordinary delivery behavior, planning, approvals, validation, and handoff come from `agentic-flow/`.
 
-Ask at most one understanding check when consequential and enabled by the current task or settings. End meaningful learning work with a compact recap. Keep everything conversational unless it meets the persistence threshold in `AGENTS.md`.
+Ask at most one understanding check when consequential and enabled by the current task or settings. When learning was central, fold a few useful learning points into the normal handoff rather than adding a second recap. Keep everything conversational unless it meets the persistence threshold in `AGENTS.md`.
 
 ## Communication
 

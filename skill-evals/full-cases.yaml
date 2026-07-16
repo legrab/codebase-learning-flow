@@ -18,12 +18,16 @@ cases:
     must_not: [execution skill in the same pass]
   - prompt: Explain this non-trivial PR so I can review it responsibly.
     expected_primary_skill: change-explainer
-    must_include: [intended outcome, governing rules or invariants, conceptual order, risks, proof, recap]
-    must_not: [alphabetical file walkthrough only, mandatory quiz]
+    must_include: [intended outcome, governing rules or invariants, conceptual order, risks, proof, useful learning in normal handoff]
+    must_not: [alphabetical file walkthrough only, mandatory quiz, separate recap section]
   - prompt: Initialize the learning flow for this repository.
     expected_primary_skill: learning-bootstrap
-    must_include: [agentic setup status, compact domain slice, compact map, build and test entry points, one representative path]
-    must_not: [exhaustive agentic inventory, five prebuilt themes, contributor folder, generated sessions]
+    must_include: [compact domain slice, compact map, build and test entry points, one representative path]
+    must_not: [normal template status write, transient branch or commit report, profile or settings report, exhaustive agentic inventory, five prebuilt themes, contributor folder, generated sessions]
+  - prompt: Help me understand this subsystem while fixing its current bug; do not run a separate onboarding pass.
+    expected_primary_skill: challenge-debugging
+    must_include: [task starts directly, model and evidence folded into handoff]
+    must_not: [learning-bootstrap first, separate recap section, setup status write]
   - prompt: Fix this obvious typo and move on quickly.
     expected_primary_skill: none_or_normal_engineering
     must_include: [no learning artifact, no understanding check]

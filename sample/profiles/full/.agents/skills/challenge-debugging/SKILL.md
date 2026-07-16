@@ -19,4 +19,4 @@ Read `learning-flow/AGENTS.md`. Load only material for the affected territory. U
 
 Use at most one prediction or explain-back when consequential. Do not keep a hypothesis diary.
 
-Report symptom, expectation, decisive evidence, mechanism, fix or seam, regression proof, untested boundary, and compact recap.
+Report symptom, expectation, decisive evidence, mechanism, fix or seam, regression proof, and the untested boundary. Fold in a useful learning point only when it adds value beyond the normal handoff.

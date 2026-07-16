@@ -15,4 +15,4 @@ Locate → Reason → Work → Explain → Recap
 | Change explanation | intended outcome → governing rules → conceptual walkthrough → decisions/risks → proof |
 | Ticket path | actor/outcome → capability and ownership → missing context → shortest route → handoff or stop |
 
-Use one understanding check only when consequential and enabled by the task or settings. Persist only verified, reusable findings. End meaningful learning work with a compact recap.
+Use one understanding check only when consequential and enabled by the task or settings. Persist only verified, reusable findings. Fold useful learning into the normal handoff without adding a second recap.

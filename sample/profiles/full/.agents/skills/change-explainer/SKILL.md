@@ -15,6 +15,6 @@ Read `learning-flow/AGENTS.md`. Use `templates/change-explainer.md` only when th
 4. Record decisions, rejected alternatives, risks, and unchanged contracts.
 5. Connect claims to tests or safe runtime evidence.
 6. Use at most one understanding check unless the user explicitly requests a quiz covering independent mechanisms.
-7. End with a compact reinforcing recap.
+7. Fold up to three useful learning points into the normal handoff; do not add a second recap.
 
 Keep the explanation conversational unless it meets the persistence threshold. Promote durable findings to their canonical owner and keep temporary review detail temporary.

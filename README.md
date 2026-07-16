@@ -4,7 +4,7 @@ A repository-native harness for safe agentic collaboration and deliberate codeba
 
 It is portable repository configuration, not an agent runtime. The host agent remains responsible for tool execution, sandboxing, retries, and durable resumption.
 
-Version 0.6.1 keeps two concerns separate:
+Version 0.6.2 keeps two concerns separate:
 
 - `agentic-flow/` governs framing, planning, autonomy, validation, records, and handoff;
 - `learning-flow/` adds optional orientation, explanation, understanding checks, maps, and durable takeaways.
@@ -19,7 +19,7 @@ One selective task procedure
 Optional learning-flow: Locate → Reason → Work → Explain → Recap
 ```
 
-The repository's own agentic setup is part of initial learning research. Existing instructions, skills, prompts, plans, and records are mapped; known template files are recognized without wasting context.
+Managed agentic setup is recognized without ceremony. Custom instructions, skills, prompts, plans, or records are mapped only when they affect work or expose a durable conflict.
 
 ## Profiles
 
@@ -128,15 +128,15 @@ Minimal baseline:
 ```text
 Use repository-learning for the initial baseline or current task. Keep inspection narrow,
 persist only verified reusable map or takeaway content, ask at most one consequential
-understanding check, and end with a compact recap.
+understanding check, and fold useful learning into the normal handoff without a second recap.
 ```
 
 Full learning:
 
 ```text
-Use learning-bootstrap for a compact baseline, including one agentic setup status. Ask
-about my experience only if it materially changes useful scaffolding. Do not pre-generate
-sessions or learning artifacts. Then use the narrowest primary skill for the task.
+Use learning-bootstrap for a compact baseline. Treat normal template integration as known
+and record only durable custom instruction conflicts. Ask about my experience only if it
+materially changes useful scaffolding. Do not pre-generate sessions or learning artifacts.
 ```
 
 </details>

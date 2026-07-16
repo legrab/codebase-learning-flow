@@ -12,13 +12,11 @@
 
 _Use at most one when consequential._
 
-## Recap
+## Reusable learning (optional)
 
 - **Model:**
-- **Where:**
 - **Evidence:**
 - **Boundary:**
-- **Transfer:**
 
 ## Promotion decision
 

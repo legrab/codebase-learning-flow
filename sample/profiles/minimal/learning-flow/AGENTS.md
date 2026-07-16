@@ -6,7 +6,7 @@ Follow repository-native instructions and `agentic-flow/AGENTS.md` first. These 
 
 Use this layer when the user asks to understand the repository, learn through a bug or feature, review a non-trivial mechanism, preserve reusable knowledge, or perform the initial repository baseline. Do not load it for every mechanical edit.
 
-During an initial baseline, verify the installed workflow quietly and record one compact setup status in `MAP.md`. Treat managed template files as known. Expand the setup map only when custom instructions, competing workflows, unresolved precedence, or stale records materially affect the task.
+During an initial baseline, recognize the installed workflow quietly and treat managed template files as known. Inspect custom instructions, competing workflows, unresolved precedence, or stale records only when they affect the task. Record an agentic setup exception in `MAP.md` only when it is durable and useful; a normal template installation needs no status write.
 
 ## Core flow
 
@@ -14,11 +14,11 @@ During an initial baseline, verify the installed workflow quietly and record one
 Locate → Reason → Work → Explain → Recap
 ```
 
-1. Locate only the relevant domain slice, boundary, representative path, and nearest proof surface. Check the effective agentic instruction path only when setup status is pending or evidence suggests a conflict.
+1. Locate only the relevant domain slice, boundary, representative path, and nearest proof surface. Check the effective agentic instruction path only when evidence suggests a custom rule or conflict.
 2. Reason from an explicit symptom, behavior contract, analogue, hypothesis, or safe seam.
 3. Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
 4. Ask at most one brief understanding check when settings or the user request call for it and a mistaken model would affect later work.
-5. End meaningful learning work with a three-to-five-bullet recap of mechanism, location, evidence, boundary, and transfer.
+5. When learning was central, fold up to three useful points about the model, evidence, boundary, or transfer into the normal handoff. Do not add a second recap section or fill a quota.
 
 ## Task branches
 
@@ -45,7 +45,7 @@ Use friendly, concise, summary-first explanations. Prefer the conceptual route b
 
 Conversation is the default storage layer.
 
-Update `MAP.md` only for durable repository orientation, including the compact agentic collaboration map from the initial baseline. Update `TAKEAWAYS.md` only when a finding is verified, repository-specific, reusable, and expensive enough to rediscover.
+Update `MAP.md` only for durable repository orientation or a consequential agentic setup exception. Update `TAKEAWAYS.md` only when a finding is verified, repository-specific, reusable, and expensive enough to rediscover.
 
 Do not persist raw debugging history, personal notes, speculative claims, copied source, session transcripts, secrets, customer data, raw production logs, or sensitive query results.
 

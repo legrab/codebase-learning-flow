@@ -14,10 +14,8 @@
 
 ## Optional understanding check
 
-## Reinforcing recap
+## Reusable learning (optional)
 
 - **Model:**
-- **Where:**
 - **Evidence:**
 - **Boundary:**
-- **Transfer:**
