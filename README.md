@@ -2,6 +2,8 @@
 
 A repository-native harness for safe agentic collaboration and deliberate codebase learning.
 
+It is portable repository configuration, not an agent runtime. The host agent remains responsible for tool execution, sandboxing, retries, and durable resumption.
+
 Version 0.6.1 keeps two concerns separate:
 
 - `agentic-flow/` governs framing, planning, autonomy, validation, records, and handoff;
@@ -146,6 +148,7 @@ Read [`docs/references/REFERENCE_INTEGRATION.md`](docs/references/REFERENCE_INTE
 Current reference reviews:
 
 - [`REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md`](docs/references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md)
+- [`REFERENCE_REVIEW_BEST_OF_AGENT_HARNESSES.md`](docs/references/REFERENCE_REVIEW_BEST_OF_AGENT_HARNESSES.md)
 - [`REFERENCE_REVIEW_GOOSE.md`](docs/references/REFERENCE_REVIEW_GOOSE.md)
 - [`REFERENCE_REVIEW_POCOK.md`](docs/references/REFERENCE_REVIEW_POCOK.md)
 - [`REFERENCE_REVIEW_LITT.md`](docs/references/REFERENCE_REVIEW_LITT.md)

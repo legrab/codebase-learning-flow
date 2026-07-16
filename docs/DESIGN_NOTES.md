@@ -85,6 +85,8 @@ Third-party skill catalogues are discovery surfaces, not trust boundaries. The f
 
 The Goose review retained one execution detail: a chosen route should be feasible with the runtime, tools, access, and approval actually available. This is a narrow `Decide` check, not a setup questionnaire, extension catalogue, tool-count target, or second permission system.
 
+The Best of Agent Harnesses review clarified the product boundary without changing behavior. Codebase Learning Flow is a small, portable configuration layer for a host agent, not a runtime that owns tools, sandboxes, retries, or durable execution. Its task-first entry, minimal default, optional presets, and open Markdown artifacts already favor the lowest adoption surface that solves its educational job.
+
 ## General agentic loop
 
 ```text
