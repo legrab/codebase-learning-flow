@@ -10,5 +10,6 @@ The repository root keeps only the files needed for discovery, release history, 
 ## External references
 
 - [`references/REFERENCE_INTEGRATION.md`](references/REFERENCE_INTEGRATION.md): repeatable external-source integration procedure
+- [`references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md`](references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md): VoltAgent Awesome Agent Skills review
 - [`references/REFERENCE_REVIEW_POCOK.md`](references/REFERENCE_REVIEW_POCOK.md): Pocok source review
 - [`references/REFERENCE_REVIEW_LITT.md`](references/REFERENCE_REVIEW_LITT.md): Geoffrey Litt source review

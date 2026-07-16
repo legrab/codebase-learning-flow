@@ -145,6 +145,7 @@ Read [`docs/references/REFERENCE_INTEGRATION.md`](docs/references/REFERENCE_INTE
 
 Current reference reviews:
 
+- [`REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md`](docs/references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md)
 - [`REFERENCE_REVIEW_POCOK.md`](docs/references/REFERENCE_REVIEW_POCOK.md)
 - [`REFERENCE_REVIEW_LITT.md`](docs/references/REFERENCE_REVIEW_LITT.md)
 

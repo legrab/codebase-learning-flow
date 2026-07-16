@@ -13,6 +13,10 @@ Do not assume this template is the repository's only harness. Respect existing i
 
 When the setup is not mapped, use `LEARN.md` and `ROOT_INTEGRATION.md` to distinguish stable repository policy, collaboration behavior, task procedures, learning support, and temporary state. Recognize managed template files cheaply and inspect custom additions, overrides, and effective precedence.
 
+## External skill adoption
+
+Treat a third-party skill as executable instruction, not passive documentation. Before adding or first using one, inspect its original source at a designated revision, including referenced scripts or resources; check required tools, network or secret access, side effects, and overlap with repository rules. A catalogue listing, publisher name, or popularity is useful discovery evidence, not a security review or endorsement. Prefer one narrow, maintained skill for a demonstrated need over a broad bundle.
+
 ## Default behavior
 
 Use the repository as current truth. Treat plans, status notes, and previous summaries as evidence that may have drifted.
