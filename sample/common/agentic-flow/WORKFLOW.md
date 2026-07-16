@@ -63,7 +63,7 @@ Open
 
 Use descriptive bullets grouped by outcome instead of a chronological tool log or file inventory. Put long command output, secondary rationale, alternatives, or exhaustive evidence in collapsible sections. Keep failures and required next actions visible.
 
-When `learning-flow/` was active or explanation was requested, fold only useful learning reinforcement into this handoff. Do not add a second recap section or repeat the same outcome and evidence.
+When `learning-flow/` or a meaningful generic learning session was active, close private continuity under `.local/` according to `LOCAL.md`, then fold only useful learning reinforcement into this handoff. Do not add a second recap section, repeat the same outcome and evidence, or expose private session detail through shared records.
 
 ## Stop conditions
 

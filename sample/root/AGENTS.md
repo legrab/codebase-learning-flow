@@ -18,6 +18,6 @@ For repository learning, onboarding, explanation, and durable understanding,
 follow `learning-flow/AGENTS.md` when relevant.
 <!-- codebase-learning-flow:end -->
 
-Repository-specific architecture, security, commands, conventions, and release rules belong in this file or narrower nested instructions. Temporary task handoff belongs in the conversation or a clearly temporary task artifact.
+Repository-specific architecture, security, commands, conventions, and release rules belong in this file or narrower nested instructions. Private learning history, contributor progress, checks, and temporary task handoff belong in the conversation or ignored `.local/`, never stable instructions or shared learning records.
 
 Do not commit, push, publish, merge, rewrite history, or perform destructive Git operations unless explicitly requested.

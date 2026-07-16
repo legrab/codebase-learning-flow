@@ -1,32 +1,45 @@
 # Codebase Learning Flow
 
-A repository-native harness for safe agentic collaboration and deliberate codebase learning.
+A lightweight harness for safe agentic collaboration, deliberate codebase learning, and conversational learning about any subject.
 
 It is portable repository configuration, not an agent runtime. The host agent remains responsible for tool execution, sandboxing, retries, and durable resumption.
 
-Version 0.6.2 keeps two concerns separate:
+Version 0.7.0 keeps four concerns separate:
 
 - `agentic-flow/` governs framing, planning, autonomy, validation, records, and handoff;
-- `learning-flow/` adds optional orientation, explanation, understanding checks, maps, and durable takeaways.
+- `learning-flow/` adds optional repository orientation, explanation, understanding checks, maps, and durable takeaways;
+- `learn-anything` uses the same learning rhythm for chat-like exploration without treating the repository as its subject;
+- `.local/` holds private learning continuity before deliberate promotion to shared records.
 
 ```text
 Repository instructions
   ↓
-agentic-flow: Frame → Inspect → Decide → Act → Verify → Handoff
-  ↓
-One selective task procedure
-  ↓
-Optional learning-flow: Locate → Reason → Work → Explain → Recap
+Agentic collaboration: Frame → Inspect → Decide → Act → Verify → Handoff
+  ├─ ordinary repository work
+  ├─ repository learning lens: Locate → Reason → Work → Explain → Recap
+  └─ general-topic learning: Locate → Reason → Work → Explain → Recap
+
+Private continuity in .local/ → deliberate promotion → shared learning records
 ```
 
 Managed agentic setup is recognized without ceremony. Custom instructions, skills, prompts, plans, or records are mapped only when they affect work or expose a durable conflict.
 
+## Educational core
+
+Flow keeps learning connected to a real question or activity. The system lens keeps explanations causal rather than encyclopedic:
+
+```text
+Purpose → Boundary → Parts and relationships → Change and feedback → Evidence → Transfer
+```
+
+Use only the elements that clarify the current subject. Start with the whole, trace one representative interaction, test the model against evidence or an example, and revisit it when the learner's reasoning exposes a gap. This is an adaptive loop, not a phase gate or worksheet.
+
 ## Profiles
 
-| Profile | Use | Persistent learning | Skills |
-|---|---|---:|---:|
-| `minimal` | daily work, short engagements, token-sensitive agents | `MAP.md`, `TAKEAWAYS.md` | 1 |
-| `full` | deliberate onboarding, teaching, long-lived ownership | map, takeaways, repository baselines, optional task artifacts | 7 |
+| Profile | Use | Private learning | Shared learning | Learning skills |
+|---|---|---|---|---:|
+| `minimal` | daily work, short engagements, token-sensitive agents | `.local/` sessions and history | `MAP.md`, `TAKEAWAYS.md` | 2 |
+| `full` | deliberate onboarding, teaching, long-lived ownership | `.local/` sessions, history, and follow-ups | map, takeaways, repository baselines, promoted artifacts | 8 |
 
 New installations default to `minimal`. Both profiles are task-first and create no curriculum, session, contributor file, quiz, or explainer without a real reason.
 
@@ -112,6 +125,29 @@ instruction conflicts, teach the relevant code and domain path while working, an
 only verified findings that will be useful again.
 ```
 
+## Learn anything
+
+Use this repository as a conversational learning tool without making the repository itself the lesson:
+
+```text
+Use learn-anything to help me understand <topic>. Keep it conversational: build a compact
+mental model, use one helpful example or practice step, and let my questions steer the depth.
+Do not inspect repository code or create tracked learning files. If this becomes a meaningful
+session, retain its private continuity only under .local/ at natural closure.
+```
+
+This route works for history, science, languages, arts, mathematics, general technical concepts, or any other subject. It reuses `Locate → Reason → Work → Explain → Recap`, but locates the learner's question rather than repository code. Conversation stays primary; meaningful sessions retain private continuity only at natural closure.
+
+## Local learning memory
+
+Both this repository and installed templates follow one rule:
+
+> Learn locally first. Promote only reusable knowledge deliberately.
+
+Fresh installation creates an ignored repository-root `.local/` workspace; this source checkout initializes the same structure lazily when first needed. Meaningful learning sessions save complete private state under `.local/sessions/`, maintain compact continuity in `.local/learning-history.md`, and place generated revision or quiz material under `.local/follow-ups/`. Later sessions read only relevant history so they can revise prior concepts and avoid teaching the same material from scratch.
+
+Tracked `learning-flow/MAP.md`, `TAKEAWAYS.md`, and other existing shared owners receive only deliberately promoted, stable, reusable, non-sensitive knowledge. Explicit requests to preserve something globally trigger this promotion review; uncertain or personal information remains local.
+
 <details>
 <summary>Explicit setup or baseline prompts</summary>
 
@@ -159,7 +195,12 @@ Current reference reviews:
 Common:
 
 ```text
+.local/
+├── learning-history.md
+├── sessions/
+└── follow-ups/
 .agents/skills/agentic-workflow/SKILL.md
+.agents/skills/learn-anything/SKILL.md
 agentic-flow/
 ├── AGENTS.md
 ├── WORKFLOW.md
@@ -167,12 +208,13 @@ agentic-flow/
 ├── ROOT_INTEGRATION.md
 ├── SETTINGS.md
 ├── LEARN.md
+├── LOCAL.md
 └── REFERENCE_INTEGRATION.md
 ```
 
 Minimal adds one `repository-learning` skill and `learning-flow/{AGENTS,MAP,README,TAKEAWAYS}.md`.
 
-Full adds seven narrow learning skills. Its visible learning directory stays compact; three task-specific templates travel inside their owning skills and are materialized only when justified.
+Full adds seven narrow repository-learning skills. Its visible learning directory stays compact; three task-specific templates travel inside their owning skills and are materialized only when justified. Both profiles also receive the common `learn-anything` skill.
 
 </details>
 

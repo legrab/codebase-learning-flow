@@ -20,7 +20,7 @@ Prediction, tracing, comparison, and challenge activities are used only when the
 | `TAKEAWAYS.md` | short verified lessons likely to be reused |
 | `REPOSITORIES.md` | repository identities, baselines, and access boundaries |
 
-Conversation is the default. Task-specific challenge, ticket-path, and change-explainer templates travel inside their owning skills; materialize one only when the user wants a durable artifact and place it in a repository-owned location. Prefer existing test and debug infrastructure over framework lab folders. Do not create personal tracking or teaching directories by default.
+Meaningful learning sessions keep complete private state, progress, check history, and compact continuation memory under ignored repository-root `.local/`. Task-specific challenge, ticket-path, and change-explainer templates travel inside their owning skills; put contributor-specific instances in `.local/` and promote only reusable, stable, non-sensitive knowledge to the tracked surfaces above. Prefer existing test and debug infrastructure over framework lab folders.
 
 ## Start
 
@@ -38,7 +38,7 @@ When learning was central, fold up to three useful points about the model, decis
 
 Create or update a persistent artifact only when the result is verified, repository-specific, likely to be reused, costly enough to rediscover, and owned by exactly one surface.
 
-Contributor identity is never needed for shared repository learning. Personal tracking is explicit opt-in.
+Contributor identity is never needed for shared repository learning. Personal tracking stays local and may use a contributor label only when needed to distinguish local learners.
 
 ## Communication
 

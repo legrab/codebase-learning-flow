@@ -5,11 +5,13 @@ The installer combines one common agentic layer with one learning profile:
 ```text
 sample/common/agentic-flow/
 sample/common/.agents/skills/agentic-workflow/
+sample/common/.agents/skills/learn-anything/
+sample/common/local/learning-history.md
 sample/profiles/minimal/
 sample/profiles/full/
 ```
 
-`agentic-flow/` governs general collaboration. `learning-flow/` adds optional educational support and records only consequential custom agentic setup exceptions during a baseline. Keeping them separate prevents every engineering task from becoming a lesson and prevents learning preferences from silently changing approval or commit behavior.
+`agentic-flow/` governs general collaboration. `learning-flow/` adds optional repository education and shared durable knowledge. `learn-anything` provides a separate conversational route for non-repository subjects. Both learning routes keep contributor-specific sessions, progress, checks, summaries, and follow-up material under ignored repository-root `.local/`; only reusable stable knowledge is promoted to tracked learning records.
 
 Fresh installs default to the minimal learning profile. Existing installations retain their profile. Minimal can upgrade to full through update mode. Full cannot reduce to minimal without replace mode.
 

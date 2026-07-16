@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learn Anything"
+  short_description: "Explore topics with private learning continuity"
+  default_prompt: "Use $learn-anything to help me learn a topic conversationally and retain useful private continuity in .local/."

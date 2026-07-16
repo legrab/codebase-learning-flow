@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.7.0
+
+### Added
+
+- A common `learn-anything` skill for friendly, adaptive learning conversations about non-repository topics.
+- Source-repository instructions and routing checks that keep general learning chat-like and send codebase questions back to repository learning.
+- An ignored repository-root `.local/` workspace for complete private learning sessions, compact cross-session history, and generated follow-up material.
+
+### Changed
+
+- The shared `Locate → Reason → Work → Explain → Recap` loop can now locate a learner's question as well as repository evidence, while retaining one selective route at a time.
+- Both profiles install the generic learning skill without adding private study records to tracked learning surfaces.
+- Session closure now saves contributor-specific state locally and promotes only stable, reusable, non-sensitive knowledge into existing shared records.
+- Installers initialize `.local/` idempotently, preserve existing history, and ensure the directory is excluded through `.gitignore`.
+- Repository and general-topic learning now share a selective system lens covering purpose, boundaries, relationships, change or feedback, evidence, and transfer.
+
 ## 0.6.2
 
 ### Changed

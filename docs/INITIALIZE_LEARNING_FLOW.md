@@ -15,7 +15,7 @@ Install two distinct layers:
 1. `agentic-flow/` for general collaboration behavior;
 2. `learning-flow/` for optional educational support.
 
-Repository-native instructions remain authoritative for architecture, security, commands, conventions, and hard boundaries. Temporary handoff must not be embedded in stable instructions.
+Repository-native instructions remain authoritative for architecture, security, commands, conventions, and hard boundaries. Private learning and temporary handoff must live in the conversation or ignored repository-root `.local/`, not stable instructions.
 
 ## General agentic flow
 
@@ -52,7 +52,7 @@ Include a small optional module explaining:
 - the common agentic workflow and settings;
 - selectively loaded task skills or plans;
 - the separate learning framework;
-- temporary task state and evidence.
+- private learning continuity and temporary task evidence under `.local/`.
 
 Show how an ordinary request resolves through these layers. Offer at most one brief explain-back, prediction, trace, or ownership check unless the user requests a quiz.
 
@@ -70,13 +70,13 @@ Install only:
 - `TAKEAWAYS.md` for verified reusable lessons;
 - profile and update manifests.
 
-Do not create contributor folders, curricula, activity files, labs, explainers, progress states, or research/material layers.
+Do not create tracked contributor folders, curricula, activity files, labs, explainers, progress states, or research/material layers. Private continuity for sessions that actually occur belongs under `.local/`.
 
 ### Full profile
 
 Use for deliberate onboarding, long-lived ownership development, or teaching programs.
 
-Retain selective learning skills and optional research, materials, contributor traces, explainers, labs, and templates. Populate them only when a verified result will be reused.
+Retain selective learning skills, compact shared maps and takeaways, repository baselines, and task templates inside their owning skills. Keep contributor-specific sessions and template instances under `.local/`; add a tracked artifact only after deliberate promotion for clear team-wide reuse.
 
 ## Shared learning flow
 
@@ -86,11 +86,13 @@ Locate → Reason → Work → Explain → Recap
 
 Keep routine inspection uninterrupted. Use one brief explanation, prediction, trace, comparison, or boundary check only when misunderstanding would affect later work. Skip it when the user already demonstrated understanding or requested fast execution.
 
+Use a compact system lens across repository and general-topic learning: purpose, boundary, parts and relationships, change or feedback, evidence, and transfer. Select only what improves causal understanding, trace one representative interaction, and revise the model when evidence or learner reasoning contradicts it.
+
 When learning was central, fold up to three useful points about the mechanism, placement, evidence, boundary, or nearby transfer into the normal handoff. Skip them when that value is already present; do not add a second recap section.
 
 ## Persistence policy
 
-Conversation is the default. Persist only findings that are:
+Conversation is the live interaction layer. Meaningful learning sessions save complete contributor-specific state, compact cross-session history, and generated follow-ups under ignored `.local/`. Persist to shared tracked surfaces only findings that are:
 
 - verified;
 - repository-specific;
@@ -99,11 +101,12 @@ Conversation is the default. Persist only findings that are:
 
 Use clear ownership:
 
+- `.local/`: private sessions, progress, explanations, attempts, quiz history, summaries, uncertainty, and generated follow-ups;
 - `agentic-flow/SETTINGS.md`: durable collaboration preferences only;
 - `MAP.md`: compact boundaries and representative flows;
 - `TAKEAWAYS.md`: short durable lessons;
 - full-profile `REPOSITORIES.md`: repository identities, baselines, and access boundaries;
-- optional task artifacts: explicitly requested durable challenges, ticket paths, or explainers placed in a repository-owned location rather than pre-created framework directories.
+- optional promoted artifacts: explicitly requested challenges, ticket paths, or explainers with stable team-wide reuse value; contributor-specific instances remain under `.local/`.
 
 ## Installer behavior
 
@@ -113,6 +116,8 @@ New installs default to minimal. Existing installations retain their profile aut
 
 Update only manifest-owned framework files and managed skills. Preserve repository-authored settings and knowledge plus unrelated skills.
 
+Fresh setup must create `.local/{sessions,follow-ups}`, seed `.local/learning-history.md` only when missing, and ensure `/.local/` is ignored. Repeated setup must preserve all existing local content. Retire only framework-owned legacy contributor placeholders automatically; move contributor-authored tracked state only through an explicit verified migration.
+
 ## Safety and restraint
 
 - Never store secrets, personal data, customer data, raw production logs, or sensitive query results.
@@ -120,6 +125,7 @@ Update only manifest-owned framework files and managed skills. Preserve reposito
 - Do not commit, push, publish, or release automatically.
 - Do not duplicate repository-native engineering rules into the generic framework.
 - Do not create a new artifact when conversation or an existing owned surface is sufficient.
+- Never store contributor-specific learning state outside `.local/` during normal use.
 
 ## Avoid
 

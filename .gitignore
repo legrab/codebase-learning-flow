@@ -16,6 +16,7 @@ Desktop.ini
 *.temp
 *.bak
 *.log
+/.local/
 
 # Locally generated distribution archives
 /INITIALIZE_LEARNING_FLOW_*.zip

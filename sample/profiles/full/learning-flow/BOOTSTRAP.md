@@ -7,7 +7,7 @@ Use this only for a requested first learning-map population or deliberate refres
 - Read root, nested, and tool-specific repository instructions, then `agentic-flow/AGENTS.md`.
 - Follow `learning-flow/AGENTS.md`.
 - Do not modify application code unless the user explicitly combines bootstrap with implementation.
-- Do not create personal tracking, sessions, explainers, labs, research, or learning materials.
+- Do not pre-generate personal tracking, sessions, explainers, labs, research, or learning materials. If bootstrap becomes a meaningful learning session, close its actual private state under `.local/`.
 - Do not exhaustively reread known managed template files.
 
 ## Baseline procedure

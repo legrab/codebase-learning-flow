@@ -5,7 +5,7 @@ description: Initialize, integrate, configure, explain, map, review, or improve 
 
 # Agentic workflow
 
-Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant section of `ROOT_INTEGRATION.md`, `CONFIGURE.md`, `WORKFLOW.md`, `LEARN.md`, or `REFERENCE_INTEGRATION.md`.
+Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant section of `ROOT_INTEGRATION.md`, `CONFIGURE.md`, `WORKFLOW.md`, `LEARN.md`, `LOCAL.md`, or `REFERENCE_INTEGRATION.md`.
 
 ## Discover the actual setup
 
@@ -13,7 +13,7 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 2. Find skills, prompts, plans, sessions, status files, ADRs, evidence ledgers, and refresh rules.
 3. Detect known template markers.
 4. Treat managed template content as known; inspect custom additions, overrides, conflicts, and integration points.
-5. Separate stable policy, collaboration behavior, task procedure, learning support, and temporary state.
+5. Separate stable policy, collaboration behavior, task procedure, shared learning, and private or temporary `.local/` state.
 6. Determine effective instruction order from repository evidence.
 
 ## Initialize or integrate
@@ -51,6 +51,6 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 
 ## Review an existing harness
 
-Look for temporary handoff in stable instructions, mandatory ceremony unrelated to risk, duplicated rules, unchecked completion claims, competing workflows, learning mixed into universal execution, stale records without owners, and ambiguous root integration.
+Look for temporary handoff in stable instructions, contributor-specific learning outside ignored `.local/`, mandatory ceremony unrelated to risk, duplicated rules, unchecked completion claims, competing workflows, learning mixed into universal execution, stale records without owners, and ambiguous root integration.
 
 Recommend the smallest consolidation. Preserve coherent custom structures. Do not add a framework layer unless it removes more complexity than it adds.

@@ -1,6 +1,6 @@
 ---
 name: repository-learning
-description: Learn and work in an unfamiliar repository through a compact task-first flow. Use for orientation, bugs, analogous features, safe refactors, or explanations when deliberate understanding support is useful. General execution behavior comes from agentic-flow; persistence stays limited to durable map and takeaway updates.
+description: Learn and work in an unfamiliar repository through a compact task-first flow. Use for orientation, bugs, analogous features, safe refactors, or explanations when deliberate understanding support is useful. General execution behavior comes from agentic-flow; private session continuity stays under .local and only durable reusable knowledge is promoted to maps or takeaways.
 ---
 
 # Repository learning
@@ -49,4 +49,5 @@ Use one branch as the learning route. Follow `agentic-flow/WORKFLOW.md` for plan
 - Ask at most one open understanding check when consequential and compatible with setting 4 or the user's request.
 - Skip checks when understanding is already demonstrated, the task is mechanical, or fast execution was requested.
 - Fold up to three useful learning points into the normal handoff when learning was central; do not add a second recap or fill a quota.
+- Close meaningful learning sessions through `agentic-flow/LOCAL.md`, keeping complete contributor state local before considering shared promotion.
 - Update `MAP.md` or `TAKEAWAYS.md` only when the persistence threshold is met.

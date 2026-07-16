@@ -2,12 +2,21 @@
 
 ## Purpose
 
-Maintain a small repository-native harness for safe agentic collaboration and deliberate codebase learning. Preserve the separation between:
+Maintain a small harness for safe agentic collaboration, deliberate codebase learning, and conversational learning about general topics. Preserve the separation between:
 
 - repository-specific engineering rules;
 - general collaboration behavior in `agentic-flow/`;
 - optional learning behavior in `learning-flow/`;
-- temporary task state.
+- generic conversation behavior in the common `learn-anything` skill;
+- private learning and temporary task state under `.local/`.
+
+## Generic conversational learning
+
+When the user explicitly wants to learn a non-repository topic, treat this checkout as the host rather than the subject. Stay in the conversation and follow `Locate → Reason → Work → Explain → Recap`: find the learner's question, build a compact system model from the useful parts of purpose, boundary, relationships, change or feedback, evidence, and transfer, use one helpful example or practice step, and close without repeating the answer.
+
+Do not inspect repository code for this route. For a meaningful learning session, use `.local/` as described in `sample/common/agentic-flow/LOCAL.md`: retain the complete private session and compact cross-session history there, then promote only clearly reusable framework knowledge deliberately. General programming concepts are in scope; questions about this codebase continue to use the repository-learning flow.
+
+If this source checkout has no `.local/` workspace yet, create `.local/{sessions,follow-ups}` and seed `.local/learning-history.md` from `sample/common/local/learning-history.md`. Never overwrite existing local state.
 
 ## Working rules
 

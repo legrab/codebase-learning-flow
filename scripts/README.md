@@ -3,9 +3,12 @@
 The PowerShell, POSIX shell, and batch entry points install:
 
 1. the common `agentic-flow/` directory;
-2. the common `agentic-workflow` skill unless skills are skipped;
+2. the common `agentic-workflow` and `learn-anything` skills unless skills are skipped;
 3. the selected minimal or full `learning-flow/` profile and its managed skills;
-4. optional root `AGENTS.md` integration.
+4. an ignored repository-root `.local/` learning workspace;
+5. optional root `AGENTS.md` integration.
+
+The local workspace contains `learning-history.md`, `sessions/`, and `follow-ups/`. Setup appends `/.local/` to `.gitignore` when no equivalent rule exists, creates missing local surfaces, and never overwrites existing local history. Repeated installation is idempotent.
 
 ## Root integration
 
@@ -34,5 +37,7 @@ Interactive setup presents only three distinct outcomes: link or initialize, pre
 - `replace`: remove and reinstall both framework directories plus their managed skills, while preserving unrelated skills.
 
 New installations default to the minimal learning profile. Existing profile markers are retained. Minimal can upgrade to full with update mode.
+
+Old framework-owned contributor placeholders are retired through managed-file cleanup. Contributor-authored legacy state is not deleted automatically; migrate it to `.local/`, verify the copy, and remove the tracked original as an explicit repository change.
 
 Use `--skip-skills` or `-SkipSkills` for the Markdown-only fallback.

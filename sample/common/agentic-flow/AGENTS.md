@@ -4,14 +4,15 @@
 
 1. Follow root, nested, and tool-specific repository instructions first.
 2. Follow this agentic workflow for collaboration behavior.
-3. Load `learning-flow/AGENTS.md` for deliberate learning, orientation, explanation, or initial mapping of the repository's agentic setup.
-4. Load one task skill when useful. Do not stack workflows by default.
+3. Load `learning-flow/AGENTS.md` for deliberate repository learning, orientation, explanation, or initial mapping of the repository's agentic setup.
+4. Use `learn-anything` directly for conversational learning about a non-repository topic; do not load repository-learning instructions for that route.
+5. Load one task skill when useful. Do not stack workflows by default.
 
 ## Instruction discovery
 
 Do not assume this template is the repository's only harness. Respect existing instructions, skills, prompts, plans, records, and agent-specific files.
 
-When the setup is not mapped, use `LEARN.md` and `ROOT_INTEGRATION.md` to distinguish stable repository policy, collaboration behavior, task procedures, learning support, and temporary state. Recognize managed template files cheaply and inspect custom additions, overrides, and effective precedence.
+When the setup is not mapped, use `LEARN.md`, `LOCAL.md`, and `ROOT_INTEGRATION.md` to distinguish stable repository policy, collaboration behavior, task procedures, shared learning, and private or temporary state. Recognize managed template files cheaply and inspect custom additions, overrides, and effective precedence.
 
 ## External skill adoption
 
@@ -26,6 +27,12 @@ Frame → Inspect → Decide → Act → Verify → Handoff
 ```
 
 Collapse obvious steps for small work. Do not create a plan, session file, status artifact, or lesson merely because the framework supports one.
+
+## Generic conversational learning
+
+For a non-repository subject, keep the work in chat and use `Locate → Reason → Work → Explain → Recap`: identify the learner's question, form a compact system model, use one helpful example or practice step, offer at most one useful understanding check, and close naturally. Use only the helpful parts of purpose, boundary, relationships, change or feedback, evidence, and transfer. Collapse stages for direct questions.
+
+Do not inspect repository code for this route. A meaningful learning session may retain private continuity only under `.local/` according to `LOCAL.md`; general programming concepts belong here, while questions requiring current codebase evidence return to repository learning.
 
 ## Communication style
 
@@ -56,7 +63,8 @@ An explicit implementation request permits ordinary reversible work within scope
 - Small tasks need no formal plan.
 - Multi-step tasks use a short in-chat plan by default.
 - Create a plan file only when risk, configuration, handoff, or duration justifies it.
-- Session records, ledgers, and status files are optional evidence tools.
+- For ordinary work, session records, ledgers, and status files remain optional evidence tools.
+- For a meaningful learning session, save complete contributor-specific state and compact continuity under `.local/` at natural closure; do not store it elsewhere.
 - Keep temporary handoff out of stable instruction files.
 
 ## Execution and verification

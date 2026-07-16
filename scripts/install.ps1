@@ -16,10 +16,67 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$InstallerVersion = "0.6.2"
+$InstallerVersion = "0.7.0"
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
+}
+
+function Initialize-LocalLearningWorkspace([string]$TargetRoot, [string]$HistoryTemplate) {
+    if (-not (Test-Path -LiteralPath $HistoryTemplate -PathType Leaf)) {
+        throw "Local learning-history template is missing: $HistoryTemplate"
+    }
+
+    $changed = $false
+    $ignorePath = Join-Path $TargetRoot ".gitignore"
+    if (Test-Path -LiteralPath $ignorePath -PathType Container) {
+        throw "$ignorePath exists but is not a file."
+    }
+
+    $hasLocalIgnore = $false
+    if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
+        $hasLocalIgnore = $null -ne (
+            Get-Content -LiteralPath $ignorePath |
+                Where-Object { $_.Trim() -in @("/.local/", ".local/", "/.local", ".local") } |
+                Select-Object -First 1
+        )
+    }
+    if (-not $hasLocalIgnore) {
+        $newline = "`n"
+        if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
+            $content = [System.IO.File]::ReadAllText($ignorePath)
+            if ($content.Contains("`r`n")) { $newline = "`r`n" }
+            $entry = "/.local/$newline"
+            if ($content.Length -gt 0 -and -not $content.EndsWith("`n")) { $entry = "$newline$entry" }
+            [System.IO.File]::AppendAllText($ignorePath, $entry, [System.Text.UTF8Encoding]::new($false))
+        }
+        else {
+            [System.IO.File]::WriteAllText($ignorePath, "/.local/$newline", [System.Text.UTF8Encoding]::new($false))
+        }
+        $changed = $true
+    }
+
+    $localRoot = Join-Path $TargetRoot ".local"
+    if (Test-Path -LiteralPath $localRoot -PathType Leaf) {
+        throw "$localRoot exists but is not a directory."
+    }
+    foreach ($directory in @($localRoot, (Join-Path $localRoot "sessions"), (Join-Path $localRoot "follow-ups"))) {
+        if (-not (Test-Path -LiteralPath $directory -PathType Container)) {
+            New-Item -ItemType Directory -Path $directory -Force | Out-Null
+            $changed = $true
+        }
+    }
+
+    $historyPath = Join-Path $localRoot "learning-history.md"
+    if (-not (Test-Path -LiteralPath $historyPath)) {
+        Copy-Item -LiteralPath $HistoryTemplate -Destination $historyPath
+        $changed = $true
+    }
+    elseif (-not (Test-Path -LiteralPath $historyPath -PathType Leaf)) {
+        throw "$historyPath exists but is not a file."
+    }
+
+    if ($changed) { Write-Step "Initialized private learning state under .local/" }
 }
 
 function Resolve-RemoteCommit([string]$RepositoryName, [string]$RequestedRef) {
@@ -456,6 +513,7 @@ try {
     $sourceCommonSkills = Join-Path $sourceCommon ".agents/skills"
     $sourceAgenticManagedFiles = Join-Path $sourceAgentic ".managed-files"
     $sourceAgenticManagedSkills = Join-Path $sourceAgentic ".managed-skills"
+    $sourceLocalHistory = Join-Path $sourceCommon "local/learning-history.md"
 
     $sourceProfile = Join-Path $archiveRoot "sample/profiles/$selectedProfile"
     $sourceLearning = Join-Path $sourceProfile "learning-flow"
@@ -470,7 +528,7 @@ try {
             throw "Required framework directory is missing: $requiredDirectory"
         }
     }
-    foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills)) {
+    foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills, $sourceLocalHistory)) {
         if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
             throw "Required framework manifest is missing: $requiredFile"
         }
@@ -498,6 +556,7 @@ try {
 
     Install-Component -Name "agentic-flow" -Source $sourceAgentic -Destination $targetAgentic -ManagedFiles $sourceAgenticManagedFiles -InstallMode $Mode
     Install-Component -Name "learning-flow/$selectedProfile" -Source $sourceLearning -Destination $targetLearning -ManagedFiles $sourceLearningManagedFiles -InstallMode $Mode
+    Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
 
     if (-not $SkipSkills) {
         New-Item -ItemType Directory -Path $targetSkills -Force | Out-Null

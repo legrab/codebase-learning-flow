@@ -20,6 +20,8 @@ Locate → Reason → Work → Explain → Recap
 4. Ask at most one brief understanding check when settings or the user request call for it and a mistaken model would affect later work.
 5. When learning was central, fold up to three useful points about the model, evidence, boundary, or transfer into the normal handoff. Do not add a second recap section or fill a quota.
 
+Across branches, treat the repository territory as a system before diving into files: select the useful parts of purpose or outcome, boundary, actors or components, relationships and flows, state changes or feedback, governing rules, evidence, and nearby transfer. This is a reasoning lens, not a required form.
+
 ## Task branches
 
 - Bug: affected outcome or rule → symptom → expectation → decisive probe → mechanism → fix → regression proof.
@@ -43,11 +45,13 @@ Use friendly, concise, summary-first explanations. Prefer the conceptual route b
 
 ## Persistence
 
-Conversation is the default storage layer.
+Conversation is the default during the session. When a meaningful learning session reaches a natural stopping point, save its complete contributor-specific state and update compact continuity under repository-root `.local/` according to `agentic-flow/LOCAL.md`.
 
 Update `MAP.md` only for durable repository orientation or a consequential agentic setup exception. Update `TAKEAWAYS.md` only when a finding is verified, repository-specific, reusable, and expensive enough to rediscover.
 
-Do not persist raw debugging history, personal notes, speculative claims, copied source, session transcripts, secrets, customer data, raw production logs, or sensitive query results.
+Treat an explicit request to preserve something globally as a promotion request. Deduplicate first, promote only stable non-sensitive knowledge useful to future contributors, and keep uncertain or personal information local.
+
+Do not persist raw debugging history, personal notes, speculative claims, copied source, session transcripts, quiz results, individual progress, secrets, customer data, raw production logs, or sensitive query results outside `.local/`. Never promote secrets or sensitive operational data.
 
 ## Evidence
 

@@ -21,7 +21,7 @@ Use overrides only when the user explicitly wants finer control or one preset be
 2. **Planning depth:** `A` minimal, `B` brief in-chat, `C` durable when justified, `D` formal phases and acceptance criteria.
 3. **Validation depth:** `A` focused, `B` risk-proportional, `C` broad, `D` repository command matrix.
 4. **Learning depth:** `A` delivery only, `B` concise handoff reinforcement, `C` explain-back when consequential, `D` guided prediction and teaching.
-5. **Persistence:** `A` conversation only, `B` durable verified findings only, `C` explicit reusable records when justified.
+5. **Persistence:** `A` no learning history beyond the conversation, `B` private learning continuity in `.local/` plus durable verified shared findings, `C` explicit reusable shared records when justified.
 
 Avoid contradictory combinations. Autonomy controls pauses; planning controls representation. A formal plan does not silently remove a configured gate, and fast autonomy does not require formal planning.
 
@@ -46,4 +46,4 @@ Update `SETTINGS.md`, set `Status: configured`, and record the preset. Keep over
 
 Set `Agentic setup review` to `template-linked`, `custom-mapped`, `conflict`, or `explicit-only`. Set `Root integration` to `linked`, `pending`, or `explicit-only`. Task-specific instructions override stored preferences. Do not turn a one-off request into a permanent setting unless asked.
 
-Legacy settings without a preset or persistence row remain valid: infer `balanced` from the existing B defaults and treat persistence as `B` unless repository instructions say otherwise.
+Legacy settings without a preset or persistence row remain valid: infer `balanced` from the existing B defaults and treat persistence as `B` unless repository instructions say otherwise. Persistence settings never move personal or uncertain state out of `.local/`.

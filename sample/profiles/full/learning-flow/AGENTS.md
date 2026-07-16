@@ -44,6 +44,8 @@ Locate → Reason → Work → Explain → Recap
 
 Collapse or skip anything that adds no learning or engineering value.
 
+Treat the selected territory as a system before diving into files. Choose only the useful parts of purpose or outcome, boundary, actors or components, relationships and flows, state changes or feedback, governing rules, evidence, and nearby transfer. Prefer one representative interaction over an inventory; this is a reasoning lens, not a required form.
+
 ## Context economy
 
 - Search narrowly before reading broad directories, documentation, history, or generated files.
@@ -62,7 +64,9 @@ Do not re-check the same concept unless later reasoning contradicts the earlier 
 
 ## Persistence and ownership
 
-Conversation is the default. Persist only verified, repository-specific findings likely to be reused and costly to rediscover.
+Conversation is the default during the session. At natural closure of a meaningful learning session, save complete contributor-specific state and update compact cross-session continuity under repository-root `.local/` according to `agentic-flow/LOCAL.md`.
+
+Promote only verified, repository-specific, non-sensitive findings likely to be reused and costly to rediscover. Treat an explicit request to preserve something globally as a promotion request; deduplicate first, and keep uncertain or personal information local.
 
 Use one owner:
 
@@ -70,7 +74,7 @@ Use one owner:
 - `TAKEAWAYS.md`: concise reusable lessons;
 - `REPOSITORIES.md`: repository identity, baseline, and access boundary;
 
-Task-specific challenge, ticket-path, and change-explainer templates live inside their owning skills. Materialize one only on explicit durable need and place it in a repository-owned location. Prefer existing test and debug infrastructure over framework lab folders. Do not create personal tracking, challenge files, explainers, labs, sessions, research, or teaching materials in advance.
+Task-specific challenge, ticket-path, and change-explainer templates live inside their owning skills. Put contributor-specific instances under `.local/`; use a tracked repository-owned location only after deliberate shared promotion. Prefer existing test and debug infrastructure over framework lab folders. Do not create personal tracking, challenge files, explainers, labs, sessions, research, or teaching materials in advance.
 
 ## Visual and evidence policy
 

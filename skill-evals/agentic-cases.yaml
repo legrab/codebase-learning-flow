@@ -81,3 +81,25 @@ cases:
     must_not:
       - ask the complete setup questionnaire
       - hide required decisions inside collapsed content
+
+  - prompt: "Finish this meaningful learning session and keep enough history that we can continue later."
+    expected_behavior: local_learning_session_closure
+    must_include:
+      - complete contributor-specific state under .local/sessions
+      - compact continuity in .local/learning-history.md
+      - generated follow-ups under .local/follow-ups when present
+      - promotion review for reusable shared knowledge
+    must_not:
+      - tracked personal session
+      - private state outside .local
+      - automatic promotion of uncertain material
+
+  - prompt: "I explicitly want this takeaway preserved globally for future contributors."
+    expected_behavior: deliberate_shared_learning_promotion
+    must_include: [consider explicit request, verify stable reusable non-sensitive value, deduplicate, use existing shared owner]
+    must_not: [publish private details, bypass evidence threshold, duplicate existing shared entry]
+
+  - prompt: "Rerun setup; I already have learning history and follow-up exercises in .local/."
+    expected_behavior: idempotent_local_learning_setup
+    must_include: [preserve existing local files, ensure root .gitignore excludes .local, create only missing structure]
+    must_not: [overwrite learning history, delete follow-ups, commit local state]

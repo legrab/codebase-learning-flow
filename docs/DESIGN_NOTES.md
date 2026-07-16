@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The harness should keep a developer able to reason about a repository while collaborating with an agent. It should improve delivery, code and architecture understanding, domain reasoning, debugging, and ownership growth without making workflow administration or learning administration the primary activity.
+The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
 ## v0.5 separation of concerns
 
@@ -93,6 +93,18 @@ A normal managed installation no longer creates learning-map work. Baselines rec
 
 Deliberate bootstrap is optional even in the full profile; a real task can start with its matching skill. Learning reinforcement is folded into the standard handoff, limited to a few useful points, and omitted when it would duplicate the delivery summary.
 
+## v0.7.0 add conversational learning without repository ceremony
+
+The framework now has a common `learn-anything` skill for non-repository subjects. It reuses the established learning loop but changes its evidence surface: `Locate` finds the learner's question and starting point, `Work` uses a small example or practice exchange, and the conversation remains the default storage layer.
+
+This is a sibling route rather than another layer over engineering work. It does not load repository-learning instructions or inspect repository code. It may retain meaningful private session continuity under `.local/`, but it does not write shared `MAP.md`, `TAKEAWAYS.md`, curricula, or tracked progress records for generic personal learning. General programming concepts use this route; questions that require current codebase evidence return to a repository-learning skill.
+
+The skill is common to both profiles so minimal and full remain behaviorally compatible without duplicated instructions. Root maintenance guidance contains a compact Markdown fallback, allowing this source repository itself to host the same style of conversation.
+
+Private learning continuity follows the same ownership rule in the source repository and installed templates: **learn locally first; promote only reusable knowledge deliberately**. Meaningful sessions retain complete contributor-specific state in ignored `.local/sessions/`, compact cross-session memory in `.local/learning-history.md`, and generated follow-ups in `.local/follow-ups/`. This supports revision and later checks without turning personal history into shared repository content.
+
+At session closure, the local record is completed before promotion is considered. `MAP.md`, `TAKEAWAYS.md`, and existing shared owners receive only stable, reusable, non-sensitive knowledge after deduplication. An explicit request for global preservation triggers that review but does not override privacy or evidence requirements. Uncertain material stays local.
+
 ## General agentic loop
 
 ```text
@@ -118,11 +130,11 @@ No setting grants permission to commit, push, publish, release, disclose sensiti
 
 ### Minimal
 
-Designed for daily use and token economy. It persists only a map and durable takeaways, loads one learning skill, and creates no identity-based folders or activity files.
+Designed for daily use and token economy. Its shared tracked learning is limited to a map and durable takeaways; private session continuity uses the common ignored `.local/` workspace. It loads one repository-learning skill and creates no tracked identity-based folders or activity files.
 
 ### Full
 
-Designed for deliberate onboarding and long-lived learning programs. It keeps only maps, takeaways, repository baselines, and task-specific learning skills visible by default. Optional challenge, ticket-path, and change-explainer templates live inside their owning skills and are materialized only on explicit durable need.
+Designed for deliberate onboarding and long-lived learning programs. It keeps only maps, takeaways, repository baselines, and task-specific learning skills tracked by default. Private sessions and contributor-specific template instances use `.local/`; promoted shared artifacts remain exceptional. Optional challenge, ticket-path, and change-explainer templates live inside their owning skills and are materialized only on explicit need.
 
 ## Shared learning loop
 
@@ -138,22 +150,31 @@ Locate → Reason → Work → Explain → Recap
 
 Prediction remains available inside `Reason`, but is not forced into every task.
 
+Both repository and general-topic learning use a compact system lens:
+
+```text
+Purpose → Boundary → Parts and relationships → Change and feedback → Evidence → Transfer
+```
+
+The lens is selective. It favors causal relationships, one representative interaction, explicit uncertainty, and model revision over inventories or a mandatory worksheet.
+
 ## Knowledge ownership and persistence
 
-Conversation is the default storage layer. Promotion requires verification, repository specificity, likely reuse, and meaningful rediscovery cost.
+Conversation is the live interaction layer. `.local/` is the private continuity layer for meaningful learning sessions. Shared promotion requires verification, repository specificity or framework value, likely reuse, meaningful rediscovery cost, and no sensitive or contributor-specific detail.
 
 | Surface | Owns | Does not own |
 |---|---|---|
+| `.local/` | complete private sessions, progress, explanations, attempts, quiz history, compact continuity, generated follow-ups | shared canonical knowledge or committed content |
 | `MAP.md` | compact boundaries, domain slices, representative paths, high-value unknowns | detailed evidence notes or session history |
 | `TAKEAWAYS.md` | short verified lessons worth reusing | raw debugging history or personal notes |
 | full-profile `REPOSITORIES.md` | repository identity, baseline, and access boundaries | detailed research or personal progress |
-| Optional task artifacts | explicitly requested durable challenges, ticket paths, or explainers placed in a repository-owned location | pre-created directories or default output for ordinary tasks |
+| Optional promoted artifacts | explicitly requested challenges, ticket paths, or explainers with stable team-wide reuse value | contributor-specific instances, pre-created directories, or default output for ordinary tasks |
 
 ## Skill routing
 
-The common `agentic-workflow` skill initializes, configures, explains, or reviews the workflow. It is not loaded as a second engineering procedure during an ordinary task.
+The common `agentic-workflow` skill initializes, configures, explains, or reviews the workflow. It is not loaded as a second engineering procedure during an ordinary task. The separate common `learn-anything` skill owns general learning conversations and does not inspect the repository by default.
 
-The full learning profile keeps seven narrow skills for progressive disclosure, but one skill owns the current task. The minimal profile uses one `repository-learning` skill with compact branches for bug, feature, refactor, and orientation work.
+The full learning profile keeps seven narrow repository skills for progressive disclosure, but one skill owns the current task. The minimal profile uses one `repository-learning` skill with compact branches for bug, feature, refactor, and orientation work. Both add the common generic conversation skill without changing their repository-learning profile.
 
 ## Installer lifecycle
 
@@ -163,7 +184,7 @@ The common layer and each learning profile include managed-file and managed-skil
 - `update` refreshes only managed framework files and skills;
 - `replace` performs an explicit framework reset while preserving unrelated skills.
 
-`agentic-flow/SETTINGS.md`, `MAP.md`, `TAKEAWAYS.md`, repository research, materials, contributor traces, explainers, and labs remain untouched by update mode.
+`agentic-flow/SETTINGS.md`, `MAP.md`, `TAKEAWAYS.md`, repository research, materials, and `.local/` history remain untouched by update mode. Retired framework-owned contributor placeholders are removed through the prior managed-file manifest; contributor-authored legacy state requires an explicit copy-verify-remove migration into `.local/`.
 
 Minimal-to-full update is supported. Full-to-minimal update is rejected because safe automatic deletion cannot be inferred.
 
@@ -177,7 +198,8 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 - pre-generated curricula and sessions;
 - default person-specific folders;
 - generic skills for token efficiency or determinism;
-- persistent transcripts and hypothesis diaries;
+- generic learning that silently inspects or writes into the host repository;
+- committed personal transcripts and hypothesis diaries;
 - a dashboard, database, vector store, orchestration service, or LMS.
 
 ## Final review checklist
@@ -187,10 +209,10 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 3. One primary task procedure owns the work.
 4. Applied changes and executable proof are reported separately.
 5. Opinionated behavior is configurable through one preset with optional advanced overrides.
-6. Trivial work creates no plan, questionnaire, quiz, session file, or learning artifact.
+6. Trivial work creates no plan, questionnaire, quiz, session file, or learning artifact; meaningful learning sessions close into `.local/`.
 7. Consequential learning uses at most one understanding check by default.
 8. Useful learning reinforcement is folded into the normal handoff without a duplicate recap.
-9. Persistent artifacts have non-overlapping ownership and a reuse threshold.
+9. Private `.local/` state and promoted shared artifacts have non-overlapping ownership and a reuse threshold.
 10. Update preserves repository-authored settings and knowledge.
 11. The Markdown fallback works without skill support.
 12. No workflow requires contributor identity unless the user explicitly wants personal tracking.

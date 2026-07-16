@@ -22,12 +22,16 @@ cases:
     must_not: [alphabetical file walkthrough only, mandatory quiz, separate recap section]
   - prompt: Initialize the learning flow for this repository.
     expected_primary_skill: learning-bootstrap
-    must_include: [compact domain slice, compact map, build and test entry points, one representative path]
+    must_include: [compact system model, purpose and boundaries, relationships and flow, compact map, build and test entry points, one representative path]
     must_not: [normal template status write, transient branch or commit report, profile or settings report, exhaustive agentic inventory, five prebuilt themes, contributor folder, generated sessions]
   - prompt: Help me understand this subsystem while fixing its current bug; do not run a separate onboarding pass.
     expected_primary_skill: challenge-debugging
     must_include: [task starts directly, model and evidence folded into handoff]
     must_not: [learning-bootstrap first, separate recap section, setup status write]
+  - prompt: Close our repository-learning session, keep my quiz and progress history private, and preserve any takeaway useful to the whole team.
+    expected_primary_skill: selected_task_learning_skill
+    must_include: [complete local session, updated local history, quiz and progress under .local, deliberate deduplicated shared promotion]
+    must_not: [tracked contributor state, private shared detail, uncertain promotion]
   - prompt: Fix this obvious typo and move on quickly.
     expected_primary_skill: none_or_normal_engineering
     must_include: [no learning artifact, no understanding check]

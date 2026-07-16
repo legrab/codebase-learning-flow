@@ -11,7 +11,7 @@ One task procedure or skill
   ↓
 Optional learning support
   ↓
-Temporary evidence and handoff
+Private learning and temporary state in .local/
 ```
 
 ## First pass
@@ -22,7 +22,8 @@ Show:
 - which workflow governs planning, autonomy, validation, and handoff;
 - which skills load only for particular tasks;
 - where learning support lives;
-- where temporary plans, sessions, status, or evidence are stored;
+- how `.local/` owns private sessions, progress, checks, generated follow-ups, and temporary evidence;
+- which verified reusable findings may be promoted to shared learning records;
 - the effective precedence when rules overlap.
 
 Known template files need only recognition. Spend research effort on custom instructions, tool-specific files, overrides, conflicts, stale state, and repository-specific conventions.

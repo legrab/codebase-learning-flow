@@ -31,6 +31,41 @@ log() {
     printf '%s\n' "[learning-flow] $*"
 }
 
+initialize_local_learning_workspace() {
+    target_root="$1"
+    history_template="$2"
+    ignore_path="$target_root/.gitignore"
+    local_root="$target_root/.local"
+    changed="false"
+
+    [ -f "$history_template" ] || { echo "Local learning-history template is missing: $history_template" >&2; exit 1; }
+    if [ -e "$ignore_path" ] && [ ! -f "$ignore_path" ]; then
+        echo "$ignore_path exists but is not a file." >&2
+        exit 1
+    fi
+    if [ ! -f "$ignore_path" ] || ! grep -Eq '^[[:space:]]*/?\.local/?[[:space:]]*$' "$ignore_path"; then
+        if [ -s "$ignore_path" ]; then printf '\n/.local/\n' >> "$ignore_path"; else printf '/.local/\n' > "$ignore_path"; fi
+        changed="true"
+    fi
+
+    if [ -e "$local_root" ] && [ ! -d "$local_root" ]; then
+        echo "$local_root exists but is not a directory." >&2
+        exit 1
+    fi
+    for directory in "$local_root" "$local_root/sessions" "$local_root/follow-ups"; do
+        if [ ! -d "$directory" ]; then mkdir -p "$directory"; changed="true"; fi
+    done
+    if [ ! -e "$local_root/learning-history.md" ]; then
+        cp "$history_template" "$local_root/learning-history.md"
+        changed="true"
+    elif [ ! -f "$local_root/learning-history.md" ]; then
+        echo "$local_root/learning-history.md exists but is not a file." >&2
+        exit 1
+    fi
+
+    if [ "$changed" = "true" ]; then log "Initialized private learning state under .local/"; fi
+}
+
 require_value() {
     option="$1"
     remaining="$2"
@@ -579,6 +614,7 @@ SOURCE_AGENTIC="$SOURCE_COMMON/agentic-flow"
 SOURCE_COMMON_SKILLS="$SOURCE_COMMON/.agents/skills"
 SOURCE_AGENTIC_MANAGED_FILES="$SOURCE_AGENTIC/.managed-files"
 SOURCE_AGENTIC_MANAGED_SKILLS="$SOURCE_AGENTIC/.managed-skills"
+SOURCE_LOCAL_HISTORY="$SOURCE_COMMON/local/learning-history.md"
 SOURCE_PROFILE="$ARCHIVE_ROOT/sample/profiles/$SELECTED_PROFILE"
 SOURCE_LEARNING="$SOURCE_PROFILE/learning-flow"
 SOURCE_PROFILE_SKILLS="$SOURCE_PROFILE/.agents/skills"
@@ -590,7 +626,7 @@ SOURCE_ROOT_POINTER="$ARCHIVE_ROOT/sample/root/AGENTS.pointer.md"
 for required in "$SOURCE_AGENTIC" "$SOURCE_LEARNING"; do
     [ -d "$required" ] || { echo "Required framework directory is missing: $required" >&2; exit 1; }
 done
-for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS"; do
+for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS" "$SOURCE_LOCAL_HISTORY"; do
     [ -f "$required" ] || { echo "Required framework manifest is missing: $required" >&2; exit 1; }
 done
 if [ "$SKIP_SKILLS" != "true" ]; then
@@ -623,6 +659,7 @@ fi
 
 install_component "agentic-flow" "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_MANAGED_FILES"
 install_component "learning-flow/$SELECTED_PROFILE" "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_MANAGED_FILES"
+initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY"
 
 if [ "$SKIP_SKILLS" != "true" ]; then
     mkdir -p "$TARGET_SKILLS"
