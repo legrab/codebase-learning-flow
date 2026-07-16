@@ -1,32 +1,38 @@
-# Installer scripts
+# Installers
 
-These scripts install `sample/learning-flow/` into another repository and optionally create a minimal root `AGENTS.md`.
+The PowerShell, POSIX shell, and batch entry points install:
 
-## Files
+1. the common `agentic-flow/` directory;
+2. the common `agentic-workflow` skill unless skills are skipped;
+3. the selected minimal or full `learning-flow/` profile and its managed skills;
+4. optional root `AGENTS.md` integration.
 
-- `install.ps1`: native PowerShell implementation.
-- `install.sh`: POSIX-oriented shell implementation using `curl` or `wget` and `unzip`.
-- `install.bat`: Windows Command Prompt wrapper around `install.ps1`.
+## Root integration
 
-## Safety behavior
+Use:
 
-Default mode is `fail`.
+```text
+--root-agents auto|integrate|initialize|preserve|skip
+-RootAgents Auto|Integrate|Initialize|Preserve|Skip
+```
 
-The installers:
+- `auto`: asks in an interactive terminal; non-interactive runs preserve an existing root file and initialize the lean root when none exists;
+- `integrate`: append the idempotent managed pointer to an existing root file, or create the lean root when missing;
+- `initialize`: create the lean Pocok-informed root when missing and otherwise append only the pointer;
+- `preserve`: leave root instructions untouched or absent;
+- `skip`: do not perform root integration.
 
-- operate in the current directory unless another target is supplied;
-- download a GitHub archive into a temporary directory;
-- copy only the `sample/learning-flow/` tree;
-- create root `AGENTS.md` only when it does not already exist;
-- do not append to existing agent instructions;
-- do not run Git commands;
-- do not commit;
-- clean their temporary files.
+`--skip-root-agents` and `-SkipRootAgents` remain compatibility aliases for `skip`.
 
-## Supported modes
+The installer never replaces an existing root file wholesale. The managed pointer is not appended twice.
 
-- `fail`: abort when the target learning directory contains files.
-- `merge`: add only files that do not already exist.
-- `replace`: delete and recreate the target learning directory.
+## Framework modes
 
-`replace` destroys the existing learning directory. Use it only for fresh or disposable installations.
+- `fail`: stop on existing managed framework content or skills;
+- `merge`: add missing content and preserve existing files;
+- `update`: refresh managed common and profile files and skills while preserving `agentic-flow/SETTINGS.md` and repository-authored learning content;
+- `replace`: remove and reinstall both framework directories plus their managed skills, while preserving unrelated skills.
+
+New installations default to the minimal learning profile. Existing profile markers are retained. Minimal can upgrade to full with update mode.
+
+Use `--skip-skills` or `-SkipSkills` for the Markdown-only fallback.

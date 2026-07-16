@@ -1,0 +1,34 @@
+profile: minimal
+cases:
+  - prompt: Diagnose this failing test and fix it.
+    expected_skill: repository-learning
+    expected_branch: bug
+    must_include: [symptom, decisive probe, mechanism, regression proof]
+  - prompt: Add this behavior using the existing sibling feature as a guide.
+    expected_skill: repository-learning
+    expected_branch: feature
+    must_include: [valid analogue, differences, proof]
+  - prompt: Refactor this parser without changing output.
+    expected_skill: repository-learning
+    expected_branch: refactor
+    must_include: [preserved contract, safe seam, proof]
+  - prompt: Show me where requests enter this subsystem and reach storage.
+    expected_skill: repository-learning
+    expected_branch: orientation
+    must_include: [boundaries, representative path, evidence]
+  - prompt: Make this one-line mechanical edit quickly.
+    expected_skill: optional
+    must_include: [no quiz, no persistent artifact]
+  - prompt: Save everything we discussed as learning notes.
+    expected_skill: repository-learning
+    must_include: [persist only verified reusable takeaways]
+    must_not: [transcript, person-specific folder]
+  - prompt: Configure how agents should plan and pause in this repository.
+    expected_skill: agentic-workflow
+    must_include: [agentic-flow settings]
+    must_not: [repository-learning as second setup skill]
+  - prompt: Run the initial repository learning baseline. The repo already had its own agent prompts before installation.
+    expected_skill: repository-learning
+    expected_branch: orientation
+    must_include: [effective agentic instruction order, custom harness, template integration, MAP update]
+    must_not: [re-research every managed template file, ignore pre-existing prompts]

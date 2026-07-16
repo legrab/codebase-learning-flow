@@ -1,6 +1,31 @@
-MIT License
+# Codebase Learning Flow licensing
 
 Copyright (c) 2026 Barnabás Gellér
+
+This repository uses two licenses so its software and its reusable written
+material each have appropriate terms.
+
+## Documentation and templates: CC BY 4.0
+
+Unless a file says otherwise, the original documentation, agent instructions,
+workflow and skill text, templates, examples, and evaluation content in this
+repository are licensed under the Creative Commons Attribution 4.0
+International License (CC BY 4.0):
+
+https://creativecommons.org/licenses/by/4.0/
+
+You may share and adapt that material for any purpose, including commercially,
+provided that you give appropriate credit, link to the license, and indicate
+whether you made changes. A suitable credit is:
+
+> Adapted from Codebase Learning Flow by Barnabás Gellér
+> (https://github.com/legrab/codebase-learning-flow), licensed under CC BY 4.0.
+> Changes were made.
+
+## Software: MIT
+
+Executable software and source code, including the files under `scripts/`, are
+licensed under the MIT License:
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +44,8 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Exceptions
+
+Third-party material remains under its original terms. Material that names a
+different license or copyright notice is governed by that notice.
