@@ -39,11 +39,11 @@ Collapse obvious steps for small work. Do not create a plan, session file, statu
 
 ## Questions and approvals
 
-Read `SETTINGS.md`. If unconfigured, use defaults without blocking routine work.
+Read `SETTINGS.md`. Use `balanced` without blocking routine work when the preset is missing or still at defaults. Read the preset table in `CONFIGURE.md` only when another preset or an advanced override is active.
 
 Ask only when a consequential product, architecture, dependency, compatibility, safety, or irreversible choice is unresolved; evidence cannot distinguish responsible options; configured mode requests a gate; or root integration is the task.
 
-When an opinionated default matters, ask the smallest relevant A/B/C/D question from `CONFIGURE.md` or `ROOT_INTEGRATION.md`. Do not repeat full questionnaires during ordinary work.
+When collaboration behavior needs configuration, ask for one preset from `CONFIGURE.md`. Ask for an individual override only when one preset behavior is a poor fit, and ask the three-way root choice only when root integration is unresolved. Do not run questionnaires during ordinary work.
 
 An explicit implementation request permits ordinary reversible work within scope. It does not permit destructive Git operations, publishing, release actions, secret access, or unrelated changes.
 

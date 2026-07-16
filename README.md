@@ -2,7 +2,7 @@
 
 A repository-native harness for safe agentic collaboration and deliberate codebase learning.
 
-Version 0.5.3 keeps two concerns separate:
+Version 0.6.0 keeps two concerns separate:
 
 - `agentic-flow/` governs framing, planning, autonomy, validation, records, and handoff;
 - `learning-flow/` adds optional orientation, explanation, understanding checks, maps, and durable takeaways.
@@ -88,7 +88,7 @@ Modes:
 
 `update` removes retired framework-owned files while preserving agentic settings, maps, takeaways, repository-authored artifacts, and unrelated skills.
 
-Root modes are `auto`, `integrate`, `initialize`, `preserve`, and `skip`. Existing root content is never replaced wholesale.
+Root modes are `auto`, `integrate`, `initialize`, `preserve`, and `skip`. Interactive setup exposes three distinct outcomes—linked, pending review, or explicit-only—and records the result in settings. Existing root content is never replaced wholesale.
 
 A minimal installation can upgrade safely:
 
@@ -117,8 +117,8 @@ Configure or review the harness only when that is the task:
 
 ```text
 Use the agentic-workflow skill to review this repository's agent-facing setup. Treat managed
-template files as known, map only custom additions or conflicts, and use balanced defaults
-unless I ask to configure another mode.
+template files as known, map only custom additions or conflicts, and use the balanced preset
+unless I ask for fast, guided, gated, or an advanced override.
 ```
 
 Minimal baseline:

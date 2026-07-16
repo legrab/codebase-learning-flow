@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.6.0
+
+### Added
+
+- Task-first onboarding that verifies the installed workflow quietly and surfaces only meaningful conflicts.
+- Sparse `Now / Found / Next` progress pulses for substantial work without command narration.
+- A compact domain slice connecting actors, outcomes, capabilities, invariants, triggers, effects, ownership, and evidence.
+- `fast`, `balanced`, `guided`, and `gated` collaboration presets with optional advanced overrides.
+
+### Changed
+
+- Initial learning records one agentic setup status instead of inventorying the framework before useful work.
+- Learning routes start from the affected domain outcome or rule before tracing implementation.
+- The full profile keeps only its durable core visible; task templates now travel inside their owning skills.
+- Root integration exposes three behaviorally distinct choices and records `linked`, `pending`, or `explicit-only` in settings.
+- Learning depth and persistence are independently configurable.
+- Update mode removes retired framework-owned files while preserving repository-authored content.
+
+### Removed
+
+- Pre-created full-profile research, material, contributor, explainer, lab, and general template directories.
+- The superseded pre-profile `sample/learning-flow/` tree.
+
 ## 0.5.3
 
 ### Added

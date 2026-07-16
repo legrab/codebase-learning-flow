@@ -18,6 +18,7 @@ Root integration is configurable:
 - `sample/root/AGENTS.md` is the lean Pocok-informed template for repositories without root instructions;
 - `sample/root/AGENTS.pointer.md` is the idempotent block used to connect existing instructions;
 - existing root content is never replaced wholesale;
-- integration can be performed during installation or later through the `agentic-workflow` skill.
+- interactive setup offers only linked, pending-review, and explicit-only outcomes;
+- the result is recorded in settings and can be revised later through the `agentic-workflow` skill.
 
 The common agentic layer also includes `REFERENCE_INTEGRATION.md` for learning from external repositories or ZIPs without copying source-specific policy.

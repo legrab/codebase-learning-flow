@@ -67,6 +67,14 @@ Maintenance documentation lives under `docs/`, with external-reference integrati
 
 Licensing is split by material type: software remains under MIT, while original documentation, workflow text, templates, and evaluation content use CC BY 4.0 so reuse stays broad but requires attribution.
 
+## v0.6 task-first learning and configuration
+
+The default entry point is now the user's real task. Template integration is verified quietly, setup mapping stays at one status unless custom behavior or conflicts matter, and substantial work uses sparse progress pulses instead of tool narration.
+
+Repository learning uses one compact domain slice to connect actor and outcome, capability, rule or invariant, trigger and effect, owning boundary, and evidence before tracing code. Full mode keeps only durable core files visible; optional task templates travel inside their owning skills.
+
+Configuration starts from one named preset—`fast`, `balanced`, `guided`, or `gated`—with advanced overrides available on request. Learning depth and persistence are independent. Root integration uses three distinct choices and persists its result.
+
 ## General agentic loop
 
 ```text
@@ -82,14 +90,9 @@ Frame → Inspect → Decide → Act → Verify → Handoff
 
 ## Configurable opinionated behavior
 
-Four compact A/B/C/D choices govern:
+Four named presets cover the common collaboration modes: `fast`, `balanced`, `guided`, and `gated`. Balanced defaults let routine work start immediately. Setup asks for at most one preset rather than a matrix.
 
-1. autonomy and pauses;
-2. planning depth;
-3. validation depth;
-4. learning and records.
-
-Balanced defaults let routine work start immediately. The agent asks the full set only during setup or explicit configuration. During normal work it asks at most one relevant choice when an unresolved preference would materially change a substantial task.
+Autonomy, planning, validation, learning depth, and persistence remain available as advanced overrides. Learning and persistence are separate so teaching depth does not silently create repository records. Root integration is a separate three-way filesystem choice whose result is recorded explicitly.
 
 No setting grants permission to commit, push, publish, release, disclose sensitive data, or perform irreversible work. Those actions still require explicit request or repository-native authorization.
 
@@ -165,7 +168,7 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 2. Stable repository rules, collaboration workflow, learning support, and temporary state have distinct owners.
 3. One primary task procedure owns the work.
 4. Applied changes and executable proof are reported separately.
-5. Opinionated behavior is configurable through compact A/B/C/D choices.
+5. Opinionated behavior is configurable through one preset with optional advanced overrides.
 6. Trivial work creates no plan, questionnaire, quiz, session file, or learning artifact.
 7. Consequential learning uses at most one understanding check by default.
 8. Meaningful learning sessions end with a concise reinforcing recap.

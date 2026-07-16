@@ -18,7 +18,7 @@ Read native instructions and the narrowest relevant code, tests, configuration, 
 
 Choose the smallest coherent route. Use a brief plan only when sequencing, risk, or coordination benefits from it.
 
-If an opinionated choice materially affects the result and repository evidence does not settle it, ask one relevant A/B/C/D question. Otherwise use the configured default.
+If collaboration behavior materially affects the result and repository evidence does not settle it, use the configured preset or ask for one relevant override. Otherwise use `balanced`.
 
 ## Act
 

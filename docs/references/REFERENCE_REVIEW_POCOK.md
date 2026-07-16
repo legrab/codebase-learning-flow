@@ -40,7 +40,7 @@ These controls remain available when risk, team coordination, or configured pref
 
 ## Resulting framework changes
 
-Pocok directly informed the separate `agentic-flow/` layer, risk-based planning and validation, evidence-status language, optional session records, root integration support, and the A/B/C/D collaboration settings.
+Pocok directly informed the separate `agentic-flow/` layer, risk-based planning and validation, evidence-status language, optional session records, root integration support, and configurable collaboration behavior.
 
 <details>
 <summary>Main design concern found in the source</summary>

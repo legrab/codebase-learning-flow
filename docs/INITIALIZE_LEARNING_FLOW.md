@@ -38,14 +38,9 @@ Do not require a plan file, session record, one-step approval loop, one commit p
 
 ## Opinionated setup
 
-Provide four compact A/B/C/D choices:
+Provide four simple presets: `fast`, `balanced`, `guided`, and `gated`. Use `balanced` by default and ask for one preset only during explicit or guided configuration.
 
-1. autonomy and pauses;
-2. planning depth;
-3. validation depth;
-4. learning and records.
-
-Use balanced defaults when the repository is unconfigured. Ask all four only during initialization or explicit configuration. During ordinary tasks, ask at most one relevant choice when it would materially change substantial work.
+Keep autonomy, planning, validation, learning depth, and persistence as advanced overrides. Do not ask them as an onboarding questionnaire. Learning depth and persistence remain independent so guided explanation does not require repository records.
 
 Task-specific user instructions override stored preferences. No preference grants permission to commit, push, publish, release, disclose sensitive content, or perform irreversible work.
 
@@ -150,7 +145,7 @@ Update only manifest-owned framework files and managed skills. Preserve reposito
 
 The initial repository baseline must inspect and map the repository's effective agentic system, not only the installed template. Cover root, nested, and tool-specific instructions; installed and custom skills; prompts, plans, sessions, status records, and evidence ledgers; precedence; ownership; and refresh rules.
 
-Use template markers to avoid re-researching managed framework files. Map custom additions, integration, overrides, and conflicts in `MAP.md`. Root integration must support existing and missing `AGENTS.md` files through compact A/B/C/D choices and remain available after installation.
+Use template markers to avoid re-researching managed framework files. Map custom additions, integration, overrides, and conflicts in `MAP.md`. Root integration must support existing and missing `AGENTS.md` files through three distinct choices—link or initialize, preserve for later review, and explicit-only—and remain available after installation.
 
 
 

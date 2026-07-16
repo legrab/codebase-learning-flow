@@ -18,20 +18,18 @@ Preserve repository-specific rules. Connect the installed layers rather than rep
 Ask one compact choice when integration has not already been decided:
 
 - **A. Link now:** append the managed pointer block and preserve all existing content.
-- **B. Review first:** inspect overlaps or conflicts, then propose the smallest integration patch.
-- **C. Preserve:** leave the root file untouched and use the installed layers only when explicitly requested.
-- **D. Later:** defer integration and record no permanent choice.
+- **B. Preserve for review:** leave the root file untouched, record integration as pending, and inspect overlaps only when they affect work.
+- **C. Explicit only:** leave the root file untouched and load the installed layers only when explicitly invoked.
 
-Use A only when the existing file does not already point to both installed layers. Use B when the existing file already owns planning, approval, validation, session, or learning behavior that may conflict.
+Use A only when the existing file does not already point to both installed layers. Use B when it may already own overlapping workflow behavior. Each choice records a distinct root-integration state in `SETTINGS.md`.
 
 ## When no root `AGENTS.md` exists
 
 Ask one compact choice:
 
-- **A. Initialize lean:** create the Pocok-informed root template, then ask the four collaboration settings.
-- **B. Initialize defaults:** create the lean root template and keep balanced settings until configured later.
-- **C. Tailor first:** inspect the repository and propose a repository-specific root file before creating it.
-- **D. No root file:** leave the repository without a root `AGENTS.md`; collaborators must invoke the installed layers explicitly.
+- **A. Initialize lean, default:** create the Pocok-informed root template and use the balanced preset.
+- **B. Tailor later:** leave the root absent, record integration as pending, and propose repository-specific instructions only when needed.
+- **C. Explicit only:** leave the root absent and load the installed layers only when explicitly invoked.
 
 The lean template keeps only reusable discipline:
 

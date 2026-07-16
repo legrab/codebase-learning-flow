@@ -14,7 +14,7 @@ Start with `AGENTS.md`. Use balanced defaults from `SETTINGS.md` unless configur
 <summary>Supporting guides</summary>
 
 - `WORKFLOW.md`: execution loop, evidence labels, and descriptive handoff shape
-- `CONFIGURE.md`: compact A/B/C/D preferences and optional full-profile learner context
+- `CONFIGURE.md`: simple presets, optional advanced overrides, and full-profile learner context
 - `ROOT_INTEGRATION.md`: connecting existing or missing root instructions
 - `LEARN.md`: understanding the effective repository harness
 - `REFERENCE_INTEGRATION.md`: incorporating high-value patterns from another repository or ZIP

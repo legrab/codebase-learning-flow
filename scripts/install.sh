@@ -123,7 +123,7 @@ read_tty_choice() {
     printf '%s' "$prompt" > /dev/tty
     IFS= read -r answer < /dev/tty || answer=""
     answer="$(printf '%s' "$answer" | tr 'a-z' 'A-Z')"
-    case "$answer" in A|B|C|D) printf '%s\n' "$answer" ;; *) printf '%s\n' "$default_choice" ;; esac
+    case "$answer" in A|B|C) printf '%s\n' "$answer" ;; *) printf '%s\n' "$default_choice" ;; esac
 }
 
 resolve_root_agents_mode() {
@@ -141,14 +141,12 @@ resolve_root_agents_mode() {
   A. Append the managed agentic-flow and learning-flow pointer now
   B. Preserve it and review overlaps with the agent later (default)
   C. Preserve it and use explicit workflow invocation only
-  D. Skip root integration entirely
 EOF
             choice="$(read_tty_choice 'Choice [B]: ' B)"
             case "$choice" in
                 A) printf '%s\n' integrate ;;
                 B) printf '%s\n' preserve ;;
-                C) printf '%s\n' preserve ;;
-                D) printf '%s\n' skip ;;
+                C) printf '%s\n' skip ;;
             esac
         else
             printf '%s\n' preserve
@@ -157,17 +155,15 @@ EOF
         if is_interactive_terminal; then
             cat > /dev/tty <<'EOF'
 [learning-flow] No root AGENTS.md found. Choose initialization:
-  A. Create the lean Pocok-informed root and configure with the agent next
-  B. Create the lean root with balanced defaults; configure later (default)
-  C. Leave it absent and ask the agent to propose a tailored root later
-  D. Skip root integration entirely
+  A. Create the lean Pocok-informed root with the balanced preset (default)
+  B. Leave it absent for later review or tailoring
+  C. Leave it absent and use explicit workflow invocation only
 EOF
-            choice="$(read_tty_choice 'Choice [B]: ' B)"
+            choice="$(read_tty_choice 'Choice [A]: ' A)"
             case "$choice" in
                 A) printf '%s\n' initialize ;;
-                B) printf '%s\n' initialize ;;
-                C) printf '%s\n' preserve ;;
-                D) printf '%s\n' skip ;;
+                B) printf '%s\n' preserve ;;
+                C) printf '%s\n' skip ;;
             esac
         else
             printf '%s\n' initialize
@@ -186,6 +182,38 @@ append_root_pointer() {
     cat "$pointer_file" >> "$target_file"
     printf '\n' >> "$target_file"
     log "Connected existing root AGENTS.md to agentic-flow and learning-flow"
+}
+
+set_root_integration_state() {
+    settings_file="$1"
+    resolved_mode="$2"
+    [ -f "$settings_file" ] || return 0
+
+    case "$resolved_mode" in
+        integrate|initialize) state="linked" ;;
+        preserve) state="pending" ;;
+        skip) state="explicit-only" ;;
+        *) echo "Unsupported root integration mode: $resolved_mode" >&2; exit 1 ;;
+    esac
+
+    has_root=0
+    grep -q '^Root integration:' "$settings_file" && has_root=1
+    settings_tmp="$settings_file.tmp.$$"
+    if ! awk -v state="$state" -v has_root="$has_root" '
+        /^Root integration:/ { print "Root integration: " state; next }
+        { print }
+        !has_root && !inserted && /^Agentic setup review:/ {
+            print "Root integration: " state
+            inserted = 1
+        }
+        END {
+            if (!has_root && !inserted) print "Root integration: " state
+        }
+    ' "$settings_file" > "$settings_tmp"; then
+        rm -f "$settings_tmp"
+        exit 1
+    fi
+    mv "$settings_tmp" "$settings_file"
 }
 
 parse_bootstrap_source() {
@@ -645,6 +673,8 @@ case "$RESOLVED_ROOT_AGENTS_MODE" in
         ;;
     skip) log "Root AGENTS.md integration skipped" ;;
 esac
+
+set_root_integration_state "$TARGET_AGENTIC/SETTINGS.md" "$RESOLVED_ROOT_AGENTS_MODE"
 
 log "Installation complete: profile=$SELECTED_PROFILE mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
 printf '\n%s\n' "Suggested first instruction:"

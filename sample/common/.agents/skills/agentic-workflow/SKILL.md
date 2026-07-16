@@ -19,10 +19,10 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 ## Initialize or integrate
 
 1. Preserve repository-specific engineering rules.
-2. Use `ROOT_INTEGRATION.md` for the smallest relevant A/B/C/D choice.
+2. Use `ROOT_INTEGRATION.md` for the matching three-way filesystem choice.
 3. Append the managed pointer only when chosen and never duplicate it.
 4. Create the lean root only when chosen. Do not invent architecture rules before inspection.
-5. Ask collaboration settings only during requested or guided configuration.
+5. Ask for one collaboration preset only during requested or guided configuration. Use advanced overrides only when explicitly needed.
 6. In full mode, ask learner context only when it changes useful depth.
 7. Update `SETTINGS.md` without rewriting unrelated instructions.
 8. Update the learning map when the setup was inspected.

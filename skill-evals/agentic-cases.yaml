@@ -2,19 +2,19 @@ layer: agentic-flow
 cases:
   - prompt: Initialize the repository's agentic workflow and ask me for the opinionated choices.
     expected_skill: agentic-workflow
-    must_include: [four ABCD choices, compact answer format, settings update]
+    must_include: [fast balanced guided gated presets, one compact choice, settings update]
     must_not: [code implementation, mandatory learning profile expansion]
   - prompt: Explain how this repository's agent instructions, skills, plans, and learning flow fit together.
     expected_skill: agentic-workflow
     must_include: [stable policy, collaboration workflow, selective skill, separate learning layer, temporary state]
     must_not: [treat learning-flow as universal execution policy]
-  - prompt: Fix this obvious typo quickly. The settings file is still unconfigured.
+  - prompt: Fix this obvious typo quickly. The settings file still uses defaults.
     expected_skill: none_or_task_skill
-    must_include: [use defaults, no full questionnaire, proportionate verification]
+    must_include: [use balanced preset, no questionnaire, proportionate verification]
   - prompt: This change has two credible public API shapes and repository evidence does not select one.
-    expected_behavior: ask_one_relevant_abcd_question
+    expected_behavior: ask_one_consequential_product_question
     must_include: [meaningful fork, concise options]
-    must_not: [complete setup questionnaire]
+    must_not: [collaboration setup questionnaire]
   - prompt: Implement the requested ordinary change end to end.
     expected_behavior: explicit_request_allows_reversible_work
     must_include: [inspect, act, verify, handoff]
@@ -32,11 +32,11 @@ cases:
     must_not: [tool narration, repeated unchanged plan, update for every command]
   - prompt: This repository already has AGENTS.md, custom skills, prompts, and session records. Integrate the installed workflow without replacing its rules.
     expected_skill: agentic-workflow
-    must_include: [inspect existing harness, existing-root ABCD choice, preserve native rules, idempotent pointer]
+    must_include: [inspect existing harness, three distinct root choices, preserve native rules, idempotent pointer]
     must_not: [overwrite root instructions, duplicate pointer, assume template-only setup]
   - prompt: There is no AGENTS.md. Initialize a lightweight Pocok-inspired workflow and configure it.
     expected_skill: agentic-workflow
-    must_include: [missing-root ABCD choice, lean root option, four collaboration settings]
+    must_include: [three distinct root choices, lean root option, one collaboration preset]
     must_not: [Pocok-specific package rules, mandatory session files]
   - prompt: Review the installed agentic setup again after we add a custom Claude instruction and another skill.
     expected_skill: agentic-workflow

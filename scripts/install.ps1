@@ -16,7 +16,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$InstallerVersion = "0.5.3"
+$InstallerVersion = "0.6.0"
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
@@ -298,11 +298,10 @@ function Resolve-RootAgentsMode([string]$TargetRoot, [string]$RequestedMode) {
             Write-Host "  A. Append the managed agentic-flow and learning-flow pointer now"
             Write-Host "  B. Preserve it and review overlaps with the agent later (default)"
             Write-Host "  C. Preserve it and use explicit workflow invocation only"
-            Write-Host "  D. Skip root integration entirely"
             $choice = (Read-Host "Choice [B]").Trim().ToUpperInvariant()
             switch ($choice) {
                 "A" { return "Integrate" }
-                "D" { return "Skip" }
+                "C" { return "Skip" }
                 default { return "Preserve" }
             }
         }
@@ -311,14 +310,13 @@ function Resolve-RootAgentsMode([string]$TargetRoot, [string]$RequestedMode) {
 
     if (Test-InteractiveTerminal) {
         Write-Host "[learning-flow] No root AGENTS.md found. Choose initialization:"
-        Write-Host "  A. Create the lean Pocok-informed root and configure with the agent next"
-        Write-Host "  B. Create the lean root with balanced defaults; configure later (default)"
-        Write-Host "  C. Leave it absent and ask the agent to propose a tailored root later"
-        Write-Host "  D. Skip root integration entirely"
-        $choice = (Read-Host "Choice [B]").Trim().ToUpperInvariant()
+        Write-Host "  A. Create the lean Pocok-informed root with the balanced preset (default)"
+        Write-Host "  B. Leave it absent for later review or tailoring"
+        Write-Host "  C. Leave it absent and use explicit workflow invocation only"
+        $choice = (Read-Host "Choice [A]").Trim().ToUpperInvariant()
         switch ($choice) {
-            "C" { return "Preserve" }
-            "D" { return "Skip" }
+            "B" { return "Preserve" }
+            "C" { return "Skip" }
             default { return "Initialize" }
         }
     }
@@ -335,6 +333,40 @@ function Add-RootPointer([string]$TargetFile, [string]$PointerFile) {
     $separator = if ($content.EndsWith("`n")) { "`n" } else { "`n`n" }
     [System.IO.File]::AppendAllText($TargetFile, $separator + $pointer.TrimEnd() + "`n", [System.Text.UTF8Encoding]::new($false))
     Write-Step "Connected existing root AGENTS.md to agentic-flow and learning-flow"
+}
+
+function Set-RootIntegrationState([string]$SettingsPath, [string]$ResolvedMode) {
+    if (-not (Test-Path -LiteralPath $SettingsPath -PathType Leaf)) { return }
+    $state = switch ($ResolvedMode) {
+        { $_ -in @("Integrate", "Initialize") } { "linked"; break }
+        "Preserve" { "pending"; break }
+        "Skip" { "explicit-only"; break }
+        default { throw "Unsupported root integration mode: $ResolvedMode" }
+    }
+
+    $content = [System.IO.File]::ReadAllText($SettingsPath)
+    $newline = if ($content.Contains("`r`n")) { "`r`n" } else { "`n" }
+    $hadTrailingNewline = $content.EndsWith("`n")
+    $lines = @([regex]::Split($content.TrimEnd([char[]]@("`r", "`n")), "\r?\n"))
+    $hasRootLine = $null -ne ($lines | Where-Object { $_ -match '^Root integration:' } | Select-Object -First 1)
+    $inserted = $false
+    $updated = [System.Collections.Generic.List[string]]::new()
+    foreach ($line in $lines) {
+        if ($line -match '^Root integration:') {
+            $updated.Add("Root integration: $state")
+            $inserted = $true
+            continue
+        }
+        $updated.Add($line)
+        if (-not $hasRootLine -and -not $inserted -and $line -match '^Agentic setup review:') {
+            $updated.Add("Root integration: $state")
+            $inserted = $true
+        }
+    }
+    if (-not $inserted) { $updated.Add("Root integration: $state") }
+    $result = [string]::Join($newline, $updated)
+    if ($hadTrailingNewline) { $result += $newline }
+    [System.IO.File]::WriteAllText($SettingsPath, $result, [System.Text.UTF8Encoding]::new($false))
 }
 
 if ($Repository -like "__GITHUB_OWNER__/*") {
@@ -519,6 +551,8 @@ try {
         }
         "Skip" { Write-Step "Root AGENTS.md integration skipped" }
     }
+
+    Set-RootIntegrationState -SettingsPath (Join-Path $targetAgentic "SETTINGS.md") -ResolvedMode $resolvedRootAgents
 
     Write-Step "Installation complete: profile=$selectedProfile mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
     Write-Host ""

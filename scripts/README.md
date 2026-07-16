@@ -19,12 +19,12 @@ Use:
 - `auto`: asks in an interactive terminal; non-interactive runs preserve an existing root file and initialize the lean root when none exists;
 - `integrate`: append the idempotent managed pointer to an existing root file, or create the lean root when missing;
 - `initialize`: create the lean Pocok-informed root when missing and otherwise append only the pointer;
-- `preserve`: leave root instructions untouched or absent;
-- `skip`: do not perform root integration.
+- `preserve`: leave root instructions untouched or absent and record integration as pending;
+- `skip`: leave root instructions untouched or absent and record the workflow as explicit-only.
 
 `--skip-root-agents` and `-SkipRootAgents` remain compatibility aliases for `skip`.
 
-The installer never replaces an existing root file wholesale. The managed pointer is not appended twice.
+Interactive setup presents only three distinct outcomes: link or initialize, preserve for later review, and explicit-only. The result is recorded in `agentic-flow/SETTINGS.md`. The installer never replaces an existing root file wholesale, and the managed pointer is not appended twice.
 
 ## Framework modes
 
