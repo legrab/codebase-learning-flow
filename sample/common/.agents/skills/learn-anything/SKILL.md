@@ -5,7 +5,7 @@ description: Guide a friendly, adaptive conversation for learning, exploring, or
 
 # Learn Anything
 
-Keep the learning conversational and do not inspect repository code. When a meaningful session has relevant prior history, read only the needed parts of `.local/learning-history.md` and recent session state instead of reteaching from scratch.
+Keep the learning conversational and do not inspect repository code. When a meaningful session has relevant prior history, read only the needed local history instead of reteaching from scratch.
 
 ## Conversation loop
 
@@ -47,11 +47,6 @@ Prefer one representative interaction through the system over an inventory of fa
 
 ## Local continuity
 
-Follow `agentic-flow/LOCAL.md` when a repository workspace is available. At a meaningful session's natural closure:
+Read `agentic-flow/LOCAL.md` only when continuity or closure applies. Do not create a session file for a one-off answer. At natural closure of a meaningful session, save its complete private state, update compact history, retain any generated follow-up material, and apply the documented promotion test.
 
-1. save the complete session under `.local/sessions/`, including the goal, explanations, learned or revised concepts, questions, check or quiz results, progress, summary, and next directions;
-2. update `.local/learning-history.md` with compact continuity for future revision and relevant checks;
-3. place generated follow-up practice or quizzes under `.local/follow-ups/`;
-4. consider shared promotion only when knowledge is stable, non-sensitive, deduplicated, and useful to this framework or future contributors.
-
-Do not create a session file for a one-off answer. Do not write generic personal learning into repository `MAP.md` or `TAKEAWAYS.md`; an explicit request to preserve something globally still requires a suitable shared owner and the promotion test.
+Do not write generic personal learning into repository `MAP.md` or `TAKEAWAYS.md`. An explicit request to preserve something globally still requires a suitable shared owner and deliberate promotion.

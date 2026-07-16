@@ -13,6 +13,9 @@ Configuration is optional. Use `balanced` by default and begin work immediately.
 
 `balanced` is the default. A task-specific request such as “move fast,” “teach me as we work,” or “pause before implementation” overrides the stored preset for that task without rewriting settings.
 
+<details>
+<summary>Advanced overrides and optional learner context</summary>
+
 ## Optional overrides
 
 Use overrides only when the user explicitly wants finer control or one preset behavior is a poor fit. Do not ask this list as an onboarding questionnaire.
@@ -35,6 +38,8 @@ Ask this only when the full learning profile is active, the user's experience ca
 - **D. Adaptive:** infer from the task and adjust without storing a level.
 
 Do not classify the user automatically or ask again once enough context is available. Store the choice only when the user wants it reused.
+
+</details>
 
 ## Root integration
 

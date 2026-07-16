@@ -31,10 +31,6 @@ Across branches, treat the repository territory as a system before diving into f
 
 Select one branch. Do not treat `agentic-workflow` as a second task procedure. It is for setup, configuration, and explanation of the harness itself.
 
-## Communication
-
-Use friendly, concise, summary-first explanations. Prefer the conceptual route before file-level detail. Put optional examples, exhaustive evidence, and command output in collapsible Markdown sections when useful. Keep failures and required decisions visible.
-
 ## Interaction economy
 
 - Search narrowly before reading broad directories, documentation, or history.
@@ -45,13 +41,9 @@ Use friendly, concise, summary-first explanations. Prefer the conceptual route b
 
 ## Persistence
 
-Conversation is the default during the session. When a meaningful learning session reaches a natural stopping point, save its complete contributor-specific state and update compact continuity under repository-root `.local/` according to `agentic-flow/LOCAL.md`.
+Conversation is the default. Close meaningful learning sessions through `agentic-flow/LOCAL.md`. Promote into `MAP.md` or `TAKEAWAYS.md` only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover; deduplicate explicit global-preservation requests before promotion.
 
-Update `MAP.md` only for durable repository orientation or a consequential agentic setup exception. Update `TAKEAWAYS.md` only when a finding is verified, repository-specific, reusable, and expensive enough to rediscover.
-
-Treat an explicit request to preserve something globally as a promotion request. Deduplicate first, promote only stable non-sensitive knowledge useful to future contributors, and keep uncertain or personal information local.
-
-Do not persist raw debugging history, personal notes, speculative claims, copied source, session transcripts, quiz results, individual progress, secrets, customer data, raw production logs, or sensitive query results outside `.local/`. Never promote secrets or sensitive operational data.
+Keep raw history, personal or uncertain state, transcripts, checks, progress, secrets, customer data, and sensitive operational evidence under `.local/` only. Never promote sensitive content.
 
 ## Evidence
 

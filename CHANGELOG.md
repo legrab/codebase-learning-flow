@@ -15,6 +15,8 @@
 - Session closure now saves contributor-specific state locally and promotes only stable, reusable, non-sensitive knowledge into existing shared records.
 - Installers initialize `.local/` idempotently, preserve existing history, and ensure the directory is excluded through `.gitignore`.
 - Repository and general-topic learning now share a selective system lens covering purpose, boundaries, relationships, change or feedback, evidence, and transfer.
+- First-use documentation now leads with installation and a real task, while optional modes and reference inventories use progressive disclosure.
+- Always-loaded collaboration and profile instructions now defer low-frequency detail to existing canonical guides, reducing repetition without changing behavior.
 
 ## 0.6.2
 

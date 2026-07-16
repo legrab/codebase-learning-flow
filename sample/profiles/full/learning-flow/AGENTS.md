@@ -24,11 +24,9 @@ Do not load all skills. Do not use `agentic-workflow` as a second engineering pr
 
 Agents without task-skill support use `PLAYBOOKS.md`.
 
-## Communication and tailoring
+## Tailoring
 
-Use friendly, concise, summary-first explanations. Start with the conceptual map, then reveal code-level or historical detail only when useful. In human-facing Markdown, use `<details>` for secondary evidence, long examples, alternatives, and command output. Keep essential warnings and decisions visible.
-
-When the user's experience cannot be inferred and it materially changes useful scaffolding, ask the optional full-profile learner-context A/B/C/D question in `agentic-flow/CONFIGURE.md`. Do not ask routinely, classify automatically, or repeat the question after enough context exists.
+Start with the conceptual map, then reveal code or history only when useful. Ask the optional learner-context question from `agentic-flow/CONFIGURE.md` only when experience cannot be inferred and materially changes useful scaffolding; never classify automatically or ask again after enough context exists.
 
 ## Shared learning flow
 
@@ -64,9 +62,7 @@ Do not re-check the same concept unless later reasoning contradicts the earlier 
 
 ## Persistence and ownership
 
-Conversation is the default during the session. At natural closure of a meaningful learning session, save complete contributor-specific state and update compact cross-session continuity under repository-root `.local/` according to `agentic-flow/LOCAL.md`.
-
-Promote only verified, repository-specific, non-sensitive findings likely to be reused and costly to rediscover. Treat an explicit request to preserve something globally as a promotion request; deduplicate first, and keep uncertain or personal information local.
+Conversation is the default. Close meaningful learning sessions through `agentic-flow/LOCAL.md`. Promote only verified, repository-specific, non-sensitive findings likely to be reused and costly to rediscover; deduplicate explicit global-preservation requests first.
 
 Use one owner:
 
@@ -74,7 +70,7 @@ Use one owner:
 - `TAKEAWAYS.md`: concise reusable lessons;
 - `REPOSITORIES.md`: repository identity, baseline, and access boundary;
 
-Task-specific challenge, ticket-path, and change-explainer templates live inside their owning skills. Put contributor-specific instances under `.local/`; use a tracked repository-owned location only after deliberate shared promotion. Prefer existing test and debug infrastructure over framework lab folders. Do not create personal tracking, challenge files, explainers, labs, sessions, research, or teaching materials in advance.
+Task-specific templates stay inside their owning skills until needed. Put contributor-specific instances under `.local/` and track one only after deliberate promotion. Prefer existing test and debug infrastructure; do not pre-create personal tracking, challenges, explainers, labs, sessions, research, or teaching material.
 
 ## Visual and evidence policy
 
@@ -86,4 +82,4 @@ Rereading and agreement show exposure, not understanding. A sound explanation, p
 
 ## Completion
 
-Use the normal `agentic-flow` handoff. When learning was central and the handoff would be stronger for it, include up to three points covering the model, decisive evidence, important boundary, or nearby transfer. Reuse and correct the user's own explanation when available. Do not add a separate recap, repeat `Changed` or `Checked`, or store a transcript.
+Use the normal `agentic-flow` handoff. When learning was central, include only useful points about the model, decisive evidence, boundary, or transfer; reuse and correct the user's explanation when available. Do not add a second recap or store a transcript.

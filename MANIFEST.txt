@@ -1,7 +1,7 @@
 .gitattributes	40
 .gitignore	274
 AGENTS.md	3010
-CHANGELOG.md	9950
+CHANGELOG.md	10259
 docs/DESIGN_NOTES.md	17684
 docs/INITIALIZE_LEARNING_FLOW.md	9396
 docs/README.md	1185
@@ -12,15 +12,15 @@ docs/references/REFERENCE_REVIEW_GOOSE.md	2486
 docs/references/REFERENCE_REVIEW_LITT.md	2069
 docs/references/REFERENCE_REVIEW_POCOK.md	2155
 LICENSE	2213
-README.md	10932
+README.md	8266
 sample/common/.agents/skills/agentic-workflow/SKILL.md	3653
 sample/common/.agents/skills/learn-anything/agents/openai.yaml	246
-sample/common/.agents/skills/learn-anything/SKILL.md	4032
+sample/common/.agents/skills/learn-anything/SKILL.md	3606
 sample/common/agentic-flow/.managed-files	157
 sample/common/agentic-flow/.managed-skills	32
 sample/common/agentic-flow/.template-version	6
-sample/common/agentic-flow/AGENTS.md	6521
-sample/common/agentic-flow/CONFIGURE.md	3961
+sample/common/agentic-flow/AGENTS.md	5205
+sample/common/agentic-flow/CONFIGURE.md	4051
 sample/common/agentic-flow/LEARN.md	1822
 sample/common/agentic-flow/LOCAL.md	3157
 sample/common/agentic-flow/README.md	1237
@@ -43,7 +43,7 @@ sample/profiles/full/learning-flow/.managed-files	137
 sample/profiles/full/learning-flow/.managed-skills	132
 sample/profiles/full/learning-flow/.template-profile	5
 sample/profiles/full/learning-flow/.template-version	6
-sample/profiles/full/learning-flow/AGENTS.md	6064
+sample/profiles/full/learning-flow/AGENTS.md	5302
 sample/profiles/full/learning-flow/BOOTSTRAP.md	2097
 sample/profiles/full/learning-flow/MAP.md	945
 sample/profiles/full/learning-flow/PLAYBOOKS.md	1157
@@ -56,7 +56,7 @@ sample/profiles/minimal/learning-flow/.managed-files	87
 sample/profiles/minimal/learning-flow/.managed-skills	20
 sample/profiles/minimal/learning-flow/.template-profile	8
 sample/profiles/minimal/learning-flow/.template-version	6
-sample/profiles/minimal/learning-flow/AGENTS.md	4537
+sample/profiles/minimal/learning-flow/AGENTS.md	3762
 sample/profiles/minimal/learning-flow/MAP.md	811
 sample/profiles/minimal/learning-flow/README.md	1648
 sample/profiles/minimal/learning-flow/TAKEAWAYS.md	551
