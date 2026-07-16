@@ -2,7 +2,7 @@
 
 A repository-native harness for safe agentic collaboration and deliberate codebase learning.
 
-Version 0.6.0 keeps two concerns separate:
+Version 0.6.1 keeps two concerns separate:
 
 - `agentic-flow/` governs framing, planning, autonomy, validation, records, and handoff;
 - `learning-flow/` adds optional orientation, explanation, understanding checks, maps, and durable takeaways.
@@ -141,7 +141,7 @@ sessions or learning artifacts. Then use the narrowest primary skill for the tas
 
 ## Incorporating future references
 
-Read [`docs/references/REFERENCE_INTEGRATION.md`](docs/references/REFERENCE_INTEGRATION.md), or give an agent the prompt shown there with a GitHub source or ZIP. Every integration must add a concise `docs/references/REFERENCE_REVIEW_<SOURCE>.md` that records exact provenance, retained value, rejected source-specific constraints, and resulting framework changes.
+Read [`docs/references/REFERENCE_INTEGRATION.md`](docs/references/REFERENCE_INTEGRATION.md), or give an agent the prompt shown there with a GitHub source or ZIP. References are evidence, not target architectures: retain only a small gap-closing delta, and explicitly record when useful value was already covered. Every integration must add a concise `docs/references/REFERENCE_REVIEW_<SOURCE>.md` with exact provenance and the resulting decision.
 
 Current reference reviews:
 

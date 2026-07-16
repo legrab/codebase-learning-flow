@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.1
+
+### Changed
+
+- Reference integrations now treat external sources as evidence rather than target architectures.
+- Reviews name useful value already covered locally and retain only a small gap-closing delta, including an explicit no-change outcome when appropriate.
+- The integration contract preserves the repository's educational core, friendly voice, and low-ceremony defaults instead of importing breadth or rigidity for parity.
+
 ## 0.6.0
 
 ### Added

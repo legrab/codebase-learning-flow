@@ -42,10 +42,12 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 1. Read `REFERENCE_INTEGRATION.md`.
 2. Resolve the exact repository revision or archive hash.
 3. Inspect agent-facing documentation and only enough code to understand protected behavior.
-4. Retain generally reusable value, not source-specific policy.
-5. Fit changes into existing owners and preserve minimal/full behavior.
-6. Add a concise reference review with source designation, retained value, rejected constraints, and resulting changes.
-7. Review token cost, routing ambiguity, artifact burden, and migration safety.
+4. Treat the source as evidence, not a target architecture; name useful value already covered locally.
+5. Retain only a small delta that closes a clear gap, normally zero to three behavioral adjustments.
+6. Preserve the educational core, friendly voice, low ceremony, and minimal/full behavior.
+7. Fit changes into existing owners; do not add layers or catalogues without a demonstrated need.
+8. Add a concise reference review with source designation, covered and retained value, rejected constraints, and resulting changes.
+9. Review token cost, routing ambiguity, artifact burden, and migration safety.
 
 ## Review an existing harness
 

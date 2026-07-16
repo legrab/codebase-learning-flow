@@ -47,12 +47,16 @@ cases:
     expected_skill: agentic-workflow
     must_include:
       - exact source revision or archive hash
+      - source as evidence rather than target architecture
+      - useful value already covered locally
+      - small retained delta or explicit no-change conclusion
       - reusable versus source-specific distinction
       - reference review file
       - minimal and full profile compatibility
     must_not:
       - copy source-specific policy into generic defaults
       - create a new workflow layer without need
+      - import a broad catalogue or rigid ceremony for parity
 
   - prompt: "Explain this full-profile repository to me; I am not sure how much background you should assume."
     expected_skill: agentic-workflow
