@@ -2,49 +2,49 @@
 
 ## Priority and scope
 
-Follow repository-native instructions and `agentic-flow/AGENTS.md` first. These rules add learning support only.
+Follow repository-native instructions and `agentic-flow/AGENTS.md` first. This layer adds learning support only.
 
-Use this layer when the user asks to understand the repository, learn through a bug or feature, review a non-trivial mechanism, preserve reusable knowledge, or perform the initial repository baseline. Do not load it for every mechanical edit.
+Use it for repository understanding, learning through a bug or feature, a non-trivial mechanism, safe refactoring with explanation, or a requested baseline. Do not load it for every mechanical edit.
 
-During an initial baseline, recognize the installed workflow quietly and treat managed template files as known. Inspect custom instructions, competing workflows, unresolved precedence, or stale records only when they affect the task. Record an agentic setup exception in `MAP.md` only when it is durable and useful; a normal template installation needs no status write.
+Read `agentic-flow/EDUCATION.md` through the selected `repository-learning` skill. Apply only the lenses that materially improve the task.
 
 ## Core flow
 
 ```text
-Locate → Reason → Work → Explain → Recap
+Locate → Reason → Try or Work → Verify → Explain → Transfer
 ```
 
-1. Locate only the relevant domain slice, boundary, representative path, and nearest proof surface. Check the effective agentic instruction path only when evidence suggests a custom rule or conflict.
-2. Reason from an explicit symptom, behavior contract, analogue, hypothesis, or safe seam.
-3. Work through the smallest responsible investigation or change under `agentic-flow/WORKFLOW.md`.
-4. Ask at most one brief understanding check when settings or the user request call for it and a mistaken model would affect later work.
-5. When learning was central, fold up to three useful points about the model, evidence, boundary, or transfer into the normal handoff. Do not add a second recap section or fill a quota.
-
-Across branches, treat the repository territory as a system before diving into files: select the useful parts of purpose or outcome, boundary, actors or components, relationships and flows, state changes or feedback, governing rules, evidence, and nearby transfer. This is a reasoning lens, not a required form.
+1. Locate the relevant business, physical, domain, or technical system before file detail.
+2. Identify the outcome, boundary, governing rule, representative path, and nearest proof surface.
+3. Use the smallest responsible investigation, experiment, or change under `agentic-flow/WORKFLOW.md`.
+4. Validate generated and human work against decisive evidence and relevant failure modes.
+5. Ask at most one check when a mistaken model would affect later work.
+6. Fold useful learning into the normal handoff without adding a second recap.
 
 ## Task branches
 
-- Bug: affected outcome or rule → symptom → expectation → decisive probe → mechanism → fix → regression proof.
-- Feature: actor and outcome → capability and invariants → nearest valid analogue → differences → implementation seam → proof.
-- Refactor: behavior or domain invariant → smallest seam → transformation → proof → simplification.
-- Orientation: intended use → domain slice → boundary map → representative path → important constraint.
+- Bug: affected outcome or rule → symptom → expectation → decisive probe → mechanism → containment or fix → regression proof.
+- Feature: actor and outcome → should it exist → capability and invariants → valid analogue → differences → seam → proof and operational control.
+- Refactor: behavior or domain invariant → evidence → smallest seam → transformation → proof → simpler ownership.
+- Orientation: intended use → system boundary → representative path → control and failure boundary → next useful territory.
 
-Select one branch. Do not treat `agentic-workflow` as a second task procedure. It is for setup, configuration, and explanation of the harness itself.
+Select one branch. `agentic-workflow` is for the harness itself, not a second engineering procedure.
 
-## Interaction economy
+## Context and interaction economy
 
-- Search narrowly before reading broad directories, documentation, or history.
-- Reuse `MAP.md` and `TAKEAWAYS.md` before rescanning source.
-- Skip understanding checks for mechanical edits, already-demonstrated concepts, fast-execution mode, or learning setting 4A.
-- Do not repeat a check for the same concept unless later reasoning contradicts it.
-- Stop investigating when decisive evidence identifies one responsible mechanism or the remaining uncertainty is explicitly bounded.
+- Search narrowly before reading broad directories or history.
+- Reuse `MAP.md` and `TAKEAWAYS.md` before rescanning.
+- Prefer one representative flow over an inventory.
+- Stop when decisive evidence identifies the mechanism or remaining uncertainty is bounded.
+- Use trial and error only when attempts are safe, small, and informative.
+- Do not force regulatory, safety, classroom, or physical-system questions onto unrelated low-risk work.
 
 ## Persistence
 
-Conversation is the default. Close meaningful learning sessions through `agentic-flow/LOCAL.md`. Promote into `MAP.md` or `TAKEAWAYS.md` only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover; deduplicate explicit global-preservation requests before promotion.
+Conversation is the default. Close meaningful sessions through `agentic-flow/LOCAL.md`.
 
-Keep raw history, personal or uncertain state, transcripts, checks, progress, secrets, customer data, and sensitive operational evidence under `.local/` only. Never promote sensitive content.
+Promote into `MAP.md` or `TAKEAWAYS.md` only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover. Keep raw attempts, personal state, uncertainty, secrets, customer data, sensitive operational evidence, and private conflict under `.local/` only.
 
 ## Evidence
 
-Distinguish claims verified from source, configuration, tests, runtime evidence, contributor report, and inference. Do not present inferred production behavior as fact.
+Distinguish claims verified from source, configuration, tests, runtime evidence, domain evidence, contributor report, and inference. Do not present inferred production behavior as fact.

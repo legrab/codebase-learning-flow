@@ -1,22 +1,22 @@
 ---
 name: learning-bootstrap
-description: Create or refresh a compact repository baseline covering a domain slice, boundaries, build and proof entry points, and one representative path. Use for first population or deliberate baseline refresh; do not generate curricula, sessions, contributor files, explainers, or labs.
+description: Create or refresh a compact repository baseline covering the real system, domain slice, boundaries, proof and control entry points, and one representative path. Use for deliberate baseline work; do not generate curricula, personal tracking, explainers, or labs.
 ---
 
 # Learning bootstrap
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
+Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for collaboration behavior. Read `agentic-flow/EDUCATION.md`, `learning-flow/AGENTS.md`, and `learning-flow/BOOTSTRAP.md`.
 
-Read `learning-flow/AGENTS.md` and `learning-flow/BOOTSTRAP.md`. Load no other learning-flow file until needed.
+1. Inspect repository instructions, shape, entry points, build and proof commands, and relevant configuration.
+2. Recognize managed template markers quietly.
+3. Map custom instruction exceptions only when they affect work and will be useful again.
+4. Identify the real business, scientific, human, or physical system when evidence supports it.
+5. Update `REPOSITORIES.md` only for repositories actually needed.
+6. Create a compact `MAP.md` with major boundaries, one domain slice, one representative path, and proof entry points.
+7. Include failure, access, deployment, legacy, validation, or fallback boundaries only when relevant.
+8. Add only already-qualified durable lessons to `TAKEAWAYS.md`.
+9. Stop with reviewable changes.
 
-1. Inspect repository instructions, shape, entry points, build/test commands, and relevant configuration. If explanation depth depends on unknown user experience, ask the optional full-profile learner-context A/B/C/D question once.
-2. Recognize template markers and root integration quietly. Do not write a normal template status to `MAP.md`.
-3. Read `agentic-flow/LEARN.md` only when custom instructions, competing skills, unresolved precedence, or stale records materially affect the work. Record only durable exceptions worth reusing.
-4. Update `REPOSITORIES.md` only for repositories actually needed.
-5. Create a compact `MAP.md` with major boundaries, one domain slice, proof entry points, and one representative code or domain path.
-6. Add only already-qualified durable lessons to `TAKEAWAYS.md`.
-7. Stop with reviewable, uncommitted changes.
+Do not screen fixed themes or modify application code unless explicitly requested.
 
-Do not screen fixed themes, prepare sessions, or modify application code.
-
-Report a concise baseline first: map entry point, representative path, build/test commands, uncertainty, and one useful next task. Mention instruction order only when a custom rule or conflict affects work. Put long inventories and secondary evidence in collapsible sections when presenting Markdown.
+Report the system map, representative path, proof entry points, important control or failure boundary, uncertainty, and one useful next task. Put long inventories in collapsible sections.

@@ -1,23 +1,27 @@
 # Codebase Learning Flow
 
-A lightweight repository harness for safe agentic collaboration, deliberate codebase learning, and conversational learning about any subject.
+> A small repository harness for learning real systems, using AI aggressively, and keeping human judgment in charge.
 
-It configures a host agent; it is not an agent runtime. Tool execution, sandboxing, retries, and durable resumption remain the host's responsibility.
+Codebase Learning Flow configures a host coding agent. It does not provide its own runtime, sandbox, retry engine, or background worker. The repository supplies durable instructions, focused learning skills, and private local continuity.
 
-```text
-Repository instructions
-  ↓
-Agentic work: Frame → Inspect → Decide → Act → Verify → Handoff
-  ├─ ordinary repository work
-  ├─ repository learning: Locate → Reason → Work → Explain → Recap
-  └─ general learning:    Locate → Reason → Work → Explain → Recap
+> [!IMPORTANT]
+> The target is not faster code generation by itself. The target is stronger ownership: understanding the business or physical system, choosing what should be built, validating generated work, managing failure, and retaining the ability to operate without the model.
 
-Private continuity in .local/ → deliberate promotion → shared learning records
+```mermaid
+flowchart LR
+    Q[Real question or task] --> L[Locate the system]
+    L --> R[Reason about outcomes and boundaries]
+    R --> T[Test assumptions]
+    T --> W[Work with AI leverage]
+    W --> V[Verify behavior and failure modes]
+    V --> E[Explain the judgment]
+    E --> K[Keep only durable knowledge]
+    K --> L
 ```
 
-## Start here
+## Start in two minutes
 
-From the repository that should receive the harness, run one installer:
+Run one installer from the repository that should receive the framework:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1)))
@@ -27,16 +31,14 @@ From the repository that should receive the harness, run one installer:
 curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.sh | sh
 ```
 
-Then start with the real task:
+Then give the agent the real task:
 
 ```text
 Start with my current task. Quietly verify the installed workflow, surface only meaningful
-instruction conflicts, and teach the relevant code and domain path while working.
+instruction conflicts, and teach the relevant system, domain, and code path while working.
 ```
 
-New installations use the compact `minimal` profile. Expect summary-first communication, progress only when something meaningful changes, risk-proportional checks, and no curriculum or session artifact without a real reason.
-
-Remote piping executes the referenced revision. Pin a release tag or commit for team installation.
+New installations use the compact `minimal` profile.
 
 <details>
 <summary>Windows Command Prompt and local installer commands</summary>
@@ -57,54 +59,139 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://raw.githubus
 ./scripts/install.sh --mode update
 ```
 
+Remote piping executes the referenced revision. Pin a release tag or commit for a team installation.
+
 </details>
 
-## Pick a learning route
+## Choose the route
 
-For repository work, use the task prompt above. The agent follows repository instructions first, selects at most one relevant task skill, and teaches through the work instead of running a separate course.
+| You want to... | Route | What stays primary |
+|---|---|---|
+| understand or change the current repository | repository learning | the real engineering task |
+| learn a general topic | `learn-anything` | the learner's question |
+| configure or review the harness | `agentic-workflow` | repository collaboration policy |
 
-For a general subject, use this checkout as the learning host rather than the lesson:
+For a general topic:
 
 ```text
 Use learn-anything to help me understand <topic>. Keep it conversational, build a compact
-mental model, use one helpful example or practice step, and let my questions steer the depth.
+system model, use one useful example or experiment, and let my questions steer the depth.
 ```
 
-This route covers history, science, languages, arts, mathematics, and general technical concepts without inspecting repository code.
+The general route does not inspect repository code. It can cover science, history, languages, arts, mathematics, teaching, or general technical ideas.
 
-## Educational core
+## What the framework optimizes for
 
-Flow keeps learning connected to a real question or activity. A selective system lens keeps explanations causal rather than encyclopedic:
+| Human ownership | AI leverage | Resilient delivery |
+|---|---|---|
+| understand the larger system | map unfamiliar territory quickly | identify failure modes and safe boundaries |
+| decide what should be built | prototype and compare options | validate generated solutions |
+| question assumptions and authority | automate repetitive investigation | retain manual or operational fallback |
+| articulate reasoning and tradeoffs | improve teaching material | control access and deployment |
+| accept professional responsibility | build domain knowledge faster | integrate legacy and physical systems |
 
-```text
-Purpose → Boundary → Parts and relationships → Change and feedback → Evidence → Transfer
+> [!TIP]
+> AI should remove avoidable effort, not remove the learner from the causal chain. A useful session ends with a better model, stronger evidence, or clearer judgment, not merely more generated text.
+
+## The learning compass
+
+The shared educational constitution is installed as `agentic-flow/EDUCATION.md`. Each learning route selects only the lenses that improve the current task.
+
+```mermaid
+flowchart TB
+    S[System ownership] --> B[Business or physical reality]
+    S --> J[Judgment about what to build]
+    S --> F[Failure, safety, and fallback]
+    S --> H[Human responsibility]
+
+    A[AI leverage] --> M[Map larger systems]
+    A --> P[Prototype and test assumptions]
+    A --> X[Automate repetition]
+    A --> D[Preserve independence]
+
+    L[Learning practice] --> E[Trial and error]
+    L --> C[Critical and systems thinking]
+    L --> Q[Question authority]
+    L --> R[Explain reasoning]
 ```
 
-Use only what clarifies the subject. Start with the whole, trace one representative interaction, test the model against evidence or an example, and revise it when the learner's reasoning exposes a gap. This is an adaptive loop, not a worksheet.
+### Priority ownership domains
 
-| Profile | Best for | Private learning | Shared learning | Learning skills |
-|---|---|---|---|---:|
-| `minimal` | daily work and short engagements | `.local/` sessions and history | `MAP.md`, `TAKEAWAYS.md` | 2 |
-| `full` | deliberate onboarding and long-lived ownership | `.local/` sessions, history, and follow-ups | map, takeaways, baselines, promoted artifacts | 8 |
+The framework is repository-agnostic, but it asks deeper questions when work touches:
 
-Both profiles are task-first. Full mode adds narrower learning skills and may ask one optional learner-context question when the answer materially changes useful depth.
+- laboratory software;
+- industrial control and physical equipment;
+- regulated or safety-relevant software;
+- security and access control;
+- architecture and integration;
+- verification and validation;
+- education and assessment;
+- human-machine workflow design.
 
-## Local learning memory
-
-> Learn locally first. Promote only reusable knowledge deliberately.
-
-Fresh installation creates an ignored repository-root `.local/` workspace; this source checkout initializes the same structure lazily when first needed. Meaningful sessions keep complete private state in `.local/sessions/`, compact continuity in `.local/learning-history.md`, and generated revision or quiz material in `.local/follow-ups/`. Later sessions read only relevant history, so they can revisit earlier concepts without starting over.
-
-Only stable, reusable, non-sensitive knowledge is deliberately promoted into tracked owners such as `learning-flow/MAP.md` or `TAKEAWAYS.md`. An explicit request to preserve something globally triggers that review; uncertain or personal information stays local.
+These are lenses, not assumptions. A web utility does not need a pretend safety case. A laboratory controller should not be taught as if it were a CRUD demo.
 
 <details>
-<summary>Profiles, update modes, and root integration</summary>
+<summary>Human educational value</summary>
 
-Modes:
+When the topic involves teaching, teams, classrooms, onboarding, or assessment, the flow can also exercise:
+
+- leadership and standard-setting;
+- motivation without fake praise;
+- social and group learning;
+- noticing disengagement without diagnosing the learner;
+- credible assessment based on demonstrated reasoning;
+- trusted-adult responsibility and appropriate boundaries;
+- judgment, not information transfer alone.
+
+These concerns stay selective. They must not hijack a direct session goal or cause sensitive personal state to be persisted.
+
+</details>
+
+## Profiles
+
+| Profile | Best for | Shared surfaces | Learning skills |
+|---|---|---|---:|
+| `minimal` | daily work, short engagements, token-sensitive agents | `MAP.md`, `TAKEAWAYS.md` | 1 repository skill |
+| `full` | deliberate onboarding and long-lived ownership | map, takeaways, repository baselines | 7 focused skills |
+
+Both profiles use the same common collaboration layer and educational constitution. Full mode adds narrower task skills and more structured orientation, not more ceremony by default.
+
+```mermaid
+flowchart LR
+    C[agentic-flow] --> M[minimal learning-flow]
+    C --> F[full learning-flow]
+    C --> G[learn-anything]
+    M --> P1[One compact repository skill]
+    F --> P2[Focused orientation, debugging, feature, refactor, explanation skills]
+    G --> P3[General conversational learning]
+```
+
+## Private continuity
+
+> [!NOTE]
+> Learn locally first. Promote only reusable knowledge deliberately.
+
+Fresh installation creates an ignored repository-root `.local/` workspace:
+
+```text
+.local/
+├── learning-history.md
+├── sessions/
+└── follow-ups/
+```
+
+Meaningful sessions may retain attempts, revised models, checks, and useful next directions. One-off answers and ordinary engineering tasks should not create learning artifacts.
+
+Only stable, verified, non-sensitive knowledge is promoted into tracked owners such as `learning-flow/MAP.md` or `learning-flow/TAKEAWAYS.md`.
+
+<details>
+<summary>Update modes and root integration</summary>
+
+Framework modes:
 
 - `fail`: stop when managed content already exists;
 - `merge`: add missing files and preserve existing content;
-- `update`: refresh framework-owned files and skills while preserving settings, maps, takeaways, repository-authored content, `.local/`, and unrelated skills;
+- `update`: refresh framework-owned files and skills while preserving settings, maps, takeaways, `.local/`, repository-authored content, and unrelated skills;
 - `replace`: replace framework directories and this framework's managed skills.
 
 A minimal installation can upgrade safely:
@@ -125,83 +212,37 @@ Root modes are `auto`, `integrate`, `initialize`, `preserve`, and `skip`:
 ./scripts/install.sh --root-agents integrate
 ```
 
-Existing root instructions are never replaced wholesale. Interactive setup distinguishes linked, pending-review, and explicit-only outcomes and records the result in settings.
+Existing root instructions are never replaced wholesale.
 
 </details>
 
-<details>
-<summary>Explicit configuration and baseline prompts</summary>
-
-Configuration is optional; `balanced` starts work immediately. Review it only when collaboration behavior is the task:
-
-```text
-Use agentic-workflow to review this repository's agent-facing setup. Treat managed files as
-known, map only custom additions or conflicts, and keep balanced defaults unless I ask otherwise.
-```
-
-Minimal baseline:
-
-```text
-Use repository-learning for the current task or initial baseline. Keep inspection narrow,
-persist only verified reusable findings, and fold useful learning into the normal handoff.
-```
-
-Full baseline:
-
-```text
-Use learning-bootstrap for a compact baseline. Record only durable custom conflicts and do
-not pre-generate sessions or learning artifacts.
-```
-
-</details>
-
-<details>
-<summary>External reference integration</summary>
-
-Follow [`docs/references/REFERENCE_INTEGRATION.md`](docs/references/REFERENCE_INTEGRATION.md). Treat a repository, article, or ZIP as evidence rather than a target architecture: retain only a small gap-closing delta and record exact provenance in `docs/references/REFERENCE_REVIEW_<SOURCE>.md`.
-
-Current reviews:
-
-- [`Awesome Agent Skills`](docs/references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md)
-- [`Best of Agent Harnesses`](docs/references/REFERENCE_REVIEW_BEST_OF_AGENT_HARNESSES.md)
-- [`Goose`](docs/references/REFERENCE_REVIEW_GOOSE.md)
-- [`Pocok`](docs/references/REFERENCE_REVIEW_POCOK.md)
-- [`Litt`](docs/references/REFERENCE_REVIEW_LITT.md)
-
-</details>
-
-<details>
-<summary>Installed structure</summary>
+## Installed shape
 
 ```text
 .local/
-├── learning-history.md
-├── sessions/
-└── follow-ups/
-.agents/skills/
-├── agentic-workflow/
-├── learn-anything/
-└── profile-specific learning skills
 agentic-flow/
 ├── AGENTS.md
 ├── SETTINGS.md
 ├── WORKFLOW.md
-├── CONFIGURE.md
+├── EDUCATION.md
 ├── LEARN.md
 └── LOCAL.md
 learning-flow/
 ├── AGENTS.md
 ├── MAP.md
 └── TAKEAWAYS.md
+.agents/skills/
+├── agentic-workflow/
+├── learn-anything/
+└── profile-specific learning skills
 ```
 
-The full profile adds repository baselines and seven narrow repository-learning skills. Task-specific templates travel inside their owning skills and are materialized only when justified.
+Task-specific templates travel inside their owning skills and are materialized only when justified.
 
-</details>
+## Documentation
 
-## Documentation and license
-
-- [`docs/README.md`](docs/README.md): maintenance and design documentation
+- [`docs/EDUCATION_MODEL.md`](docs/EDUCATION_MODEL.md): the human learning and ownership model
+- [`docs/README.md`](docs/README.md): design and maintenance map
+- [`scripts/README.md`](scripts/README.md): installer lifecycle and safety behavior
 - [`CHANGELOG.md`](CHANGELOG.md): revision history
-- [`scripts/README.md`](scripts/README.md): complete installer behavior
-- [`LICENSE`](LICENSE): MIT software and CC BY 4.0 documentation/template terms, including a copy-ready attribution
+- [`LICENSE`](LICENSE): MIT software and CC BY 4.0 documentation and template terms

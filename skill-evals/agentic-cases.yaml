@@ -103,3 +103,8 @@ cases:
     expected_behavior: idempotent_local_learning_setup
     must_include: [preserve existing local files, ensure root .gitignore excludes .local, create only missing structure]
     must_not: [overwrite learning history, delete follow-ups, commit local state]
+
+  - prompt: "Update an existing minimal installation that has custom MAP.md and TAKEAWAYS.md to this revision."
+    expected_behavior: safe_framework_update
+    must_include: [add managed EDUCATION.md, refresh managed instructions and skills, preserve MAP.md TAKEAWAYS.md SETTINGS.md .local and unrelated skills]
+    must_not: [overwrite repository-authored learning, delete private state, downgrade full to minimal]

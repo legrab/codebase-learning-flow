@@ -1,22 +1,21 @@
 ---
 name: repository-orientation
-description: Explain or map an unfamiliar repository, subsystem, architecture boundary, domain territory, runtime path, or ownership area. Use when orientation is the primary task; do not combine it with a full bug, feature, or refactor workflow.
+description: Explain or map an unfamiliar repository, subsystem, architecture boundary, domain territory, runtime path, or ownership area. Use when orientation is primary; do not combine it with a full bug, feature, or refactor workflow.
 ---
 
 # Repository orientation
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
+Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md`, `learning-flow/AGENTS.md`, and only relevant shared records.
 
-Read `learning-flow/AGENTS.md`, then only relevant parts of `MAP.md`, `TAKEAWAYS.md`, and canonical research.
-
-1. If the repository agentic setup is not mapped, identify its effective instruction order and custom surfaces using `agentic-flow/LEARN.md`.
-2. Frame the intended use, actor or caller, outcome, capability, and governing rule when relevant.
-3. Show a compact domain slice and boundaries before file detail.
-4. Trace one representative execution or data path.
-5. Connect claims to source, tests, configuration, safe runtime evidence, or explicit inference.
-6. Identify the important constraint and highest-value unknown.
-7. Stop when the user can locate the territory, describe its responsibility, and connect implementation to the intended outcome.
+1. Identify the intended human, business, scientific, or physical outcome.
+2. Frame the actor or caller, capability, governing rule, and system boundary.
+3. Show a compact domain slice before file detail.
+4. Trace one representative execution, data, material, or decision path.
+5. Connect claims to source, tests, configuration, runtime or domain evidence, or explicit inference.
+6. Identify the important failure, access, deployment, legacy, or human control boundary when relevant.
+7. Name the highest-value unknown.
+8. Stop when the user can locate, explain, challenge, and safely continue in the territory.
 
 Ask at most one consequential trace, prediction, or explain-back. Create or update an artifact only when the persistence threshold is met.
 
-Output a compact mental model, small visual when useful, stable paths/symbols, representative path, evidence, uncertainty, and one next challenge.
+Output a compact mental model, small visual when useful, stable paths or symbols, representative path, evidence, uncertainty, control boundary, and one next challenge.

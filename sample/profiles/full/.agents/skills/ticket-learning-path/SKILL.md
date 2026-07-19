@@ -1,22 +1,23 @@
 ---
 name: ticket-learning-path
-description: Turn a real issue or planned change into a short repository learning route before implementation. Use when the user wants architecture, domain, testing, and ownership context around a ticket; do not create ceremony for a trivial localized change.
+description: Turn a real issue or planned change into a short repository learning route before implementation. Use when the user wants system, domain, validation, ownership, or risk context around a ticket; do not create ceremony for a trivial localized change.
 ---
 
 # Ticket learning path
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
+Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`.
 
-Read `learning-flow/AGENTS.md`. Use `templates/ticket-learning-path.md` only when the user explicitly wants a durable ticket artifact; keep a contributor-specific instance under `.local/` and use a tracked location only after deliberate shared promotion.
+1. Read and classify the ticket.
+2. State the actor, intended outcome, capability, and governing rule.
+3. Test whether the requested behavior should be built or automated and identify unresolved human negotiation.
+4. Locate likely ownership and one representative path from trigger to effect.
+5. Identify failure, safety, legacy, physical, regulatory, security, access, deployment, or rollback context only when relevant.
+6. Reuse existing map, takeaways, and canonical research before reading broadly.
+7. Fill only high-value missing context.
+8. Propose the shortest responsible route, usually one to three steps.
+9. Stop at preparation unless implementation was requested.
+10. Name one implementation handoff when needed: `challenge-debugging`, `analogous-feature`, or `safe-refactor`.
 
-1. Read and classify the ticket, then state the actor or caller, intended outcome, capability, and governing rule when relevant.
-2. Locate likely ownership and one representative path from trigger to effect.
-3. Reuse existing map, takeaways, and research before reading broadly.
-4. Fill only high-value missing context.
-5. Propose the shortest responsible route, usually one to three steps.
-6. Stop at preparation unless implementation was requested.
-7. When implementation is requested, name one handoff: `challenge-debugging`, `analogous-feature`, or `safe-refactor`.
+Do not execute several skills in the same pass.
 
-Do not execute several skills in the same pass. Use `change-explainer` later only when the resulting change warrants it.
-
-Report ticket summary, ownership, representative path, missing context, short route, readiness, named handoff or stop, and any ticket-local detail that should not be promoted.
+Report ticket summary, system outcome, build judgment, ownership, representative path, missing context, validation and control boundary, short route, readiness, handoff or stop, and ticket-local detail that should remain private.

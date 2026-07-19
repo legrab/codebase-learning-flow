@@ -1,20 +1,26 @@
 # Repository map
 
-Keep this file compact. Prefer one small Mermaid diagram or table plus stable paths and symbols.
+Keep this file compact and visual. It is a system ownership surface, not a file inventory.
 
 ## Agentic setup exceptions
 
-_None known. Add only repository-specific instructions, unresolved precedence, meaningful overlap, or stale state that will affect future work. Do not record ordinary managed-template status._
+_None known. Add only repository-specific instructions, unresolved precedence, meaningful overlap, or stale state that will affect future work._
 
-## System boundaries
+## System boundary
 
-_Not mapped yet._
+```mermaid
+flowchart LR
+    A[Actor or external system] --> B[Owning boundary]
+    B --> C[Observable outcome]
+```
 
-## Domain slice
+_Replace or remove the placeholder when a useful boundary is mapped._
 
-Add one row only when domain context materially improves the current or near-term work.
+## Domain slices
 
-| Actor and outcome | Capability | Rule or invariant | Trigger and effect | Owner and evidence |
+Add one row only when it improves current or near-term work.
+
+| Actor and outcome | Business or physical system | Capability and invariant | Failure, control, or fallback | Owner and evidence |
 |---|---|---|---|---|
 | _Not mapped yet._ | | | | |
 
@@ -22,10 +28,18 @@ Add one row only when domain context materially improves the current or near-ter
 
 _Not mapped yet._
 
-## Build and proof entry points
+## Build, run, debug, and proof entry points
 
 _Not mapped yet._
 
+## Access, deployment, and operational boundaries
+
+_Not mapped yet. Add only when relevant._
+
+## AI leverage and independence
+
+_Not mapped yet. Record only reusable ways AI accelerates work plus the evidence or fallback needed to avoid dependency._
+
 ## High-value unknowns
 
-- _Add only unknowns likely to affect near-term work._
+- _Add only unknowns likely to affect near-term work, safety, ownership, or validation._
