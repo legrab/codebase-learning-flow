@@ -1,18 +1,18 @@
 # Compact learning fallback
 
-Use this only when repository task skills are unavailable. General execution behavior remains in `agentic-flow/WORKFLOW.md`.
+Use this only when repository task skills are unavailable. General execution behavior remains in `agentic-flow/WORKFLOW.md`; educational behavior comes from `agentic-flow/EDUCATION.md`.
 
 ```text
-Locate → Reason → Work → Explain → Recap
+Locate → Reason → Try or Work → Verify → Explain → Transfer
 ```
 
 | Task | Learning route |
 |---|---|
-| Orientation | intended use → domain slice → boundary map → representative path → constraint |
-| Bug | affected outcome/rule → symptom → expectation → decisive probe → mechanism → fix → proof |
-| Analogous feature | actor/outcome → capability and invariants → valid analogue → differences → seam → proof |
-| Refactor | behavior/domain invariant → evidence → smallest seam → transformation → proof → simplification |
-| Change explanation | intended outcome → governing rules → conceptual walkthrough → decisions/risks → proof |
-| Ticket path | actor/outcome → capability and ownership → missing context → shortest route → handoff or stop |
+| Orientation | real outcome → system boundary → representative path → control and failure boundary → next territory |
+| Bug | affected outcome/rule → symptom → expectation → decisive probe → mechanism → containment/fix → proof |
+| Analogous feature | actor/outcome → should it exist → invariants → valid analogue → differences → seam → proof and control |
+| Refactor | behavior/invariant → evidence → failure boundary → smallest seam → transformation → proof → simpler ownership |
+| Change explanation | intended outcome → governing rules → generated/human decisions → conceptual walkthrough → risks and proof |
+| Ticket path | actor/outcome → ownership → build judgment → missing context → shortest route → handoff or stop |
 
-Use one understanding check only when consequential and enabled by the task or settings. Persist only verified, reusable findings. Fold useful learning into the normal handoff without adding a second recap.
+Use one understanding check only when consequential. Persist only verified, reusable findings. Keep AI leverage visible where useful, but retain independent evidence and fallback in proportion to risk.

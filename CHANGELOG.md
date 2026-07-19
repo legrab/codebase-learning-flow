@@ -1,5 +1,22 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- A shared `agentic-flow/EDUCATION.md` constitution used by general and repository learning.
+- Human-readable Mermaid maps, highlight blocks, and progressive disclosure across core README files.
+- Explicit resilience, responsible AI leverage, educational judgment, and domain ownership lenses.
+- Trial-and-error and independent-verification continuity in the local learning history template.
+
+### Changed
+
+- Repository learning now prioritizes the real business, scientific, human, or physical system, build judgment, failure handling, validation, access, deployment, and responsibility where relevant.
+- General learning now supports systems thinking, critical questioning, articulation, flow, motivation, and human educational value without turning every answer into a lesson plan.
+- Minimal and full maps and takeaways now retain reusable ownership, resilience, AI fallback, and control knowledge.
+- Full-profile skills now validate machine-generated work and surface operational or human control boundaries in proportion to risk.
+- Human-facing documentation now explains the framework before agentic implementation detail.
+
 ## 0.7.0
 
 ### Added

@@ -1,24 +1,43 @@
 # Minimal learning flow
 
-This profile adds lightweight repository learning to the general collaboration behavior in `agentic-flow/`.
+A compact repository-learning layer for daily work. It strengthens system ownership without creating a parallel course or documentation bureaucracy.
 
-```text
-Locate → Reason → Work → Explain → Recap
+```mermaid
+flowchart LR
+    T[Real task] --> S[System and domain slice]
+    S --> E[Decisive evidence]
+    E --> W[Small responsible work]
+    W --> V[Verification and failure boundary]
+    V --> H[Normal handoff plus useful learning]
 ```
 
-The initial repository baseline recognizes managed agentic setup quietly. It maps custom instructions, skills, prompts, precedence, or stale evidence only when they affect work and will be useful again.
+Use the `repository-learning` skill for orientation, a bug, an analogous feature, a safe refactor, or a non-trivial mechanism. Planning, approvals, validation depth, and delivery remain governed by `agentic-flow/`.
 
-It persists only:
+> [!IMPORTANT]
+> The route applies `agentic-flow/EDUCATION.md` selectively. It should improve judgment, resilience, AI independence, and domain ownership only where those lenses matter to the task.
 
-- `MAP.md` for durable repository orientation;
-- `TAKEAWAYS.md` for concise verified lessons likely to be reused.
+## Shared surfaces
 
-Use the `repository-learning` skill for orientation, learning through a bug or feature, safe refactoring with explanation, or understanding a non-trivial mechanism. Ordinary delivery behavior, planning, approvals, validation, and handoff come from `agentic-flow/`.
+| Surface | Keep |
+|---|---|
+| `MAP.md` | compact system boundaries, domain slices, controls, and representative paths |
+| `TAKEAWAYS.md` | verified lessons that are reusable and costly to rediscover |
+| `.local/` | private attempts, progress, uncertainty, checks, and session continuity |
 
-Ask at most one understanding check when consequential and enabled by the current task or settings. When learning was central, fold a few useful learning points into the normal handoff rather than adding a second recap. Keep everything conversational unless it meets the persistence threshold in `AGENTS.md`.
+The initial baseline recognizes managed setup quietly. It maps custom instructions, precedence, or stale evidence only when they affect future work.
 
-Meaningful learning sessions keep complete private state and a compact continuation history under ignored repository-root `.local/`. `MAP.md` and `TAKEAWAYS.md` receive only deliberately promoted, reusable, stable, non-sensitive knowledge.
+<details>
+<summary>Interaction and persistence</summary>
+
+- Ask at most one consequential understanding check.
+- Skip checks for mechanical work or already-demonstrated understanding.
+- Use safe trial and error when it narrows the model.
+- Fold useful learning into the normal handoff instead of adding a second recap.
+- Promote only stable, repository-specific, non-sensitive knowledge.
+- Keep personal state and raw attempts under ignored `.local/`.
+
+</details>
 
 ## Communication
 
-Lead with a short conceptual answer. Use friendly, simple wording and add detail only when it helps the current task. In Markdown, place optional examples, evidence inventories, and long command output in collapsible sections while keeping warnings and required actions visible.
+Lead with the conceptual answer or system map. Use a small Mermaid graph, sequence strip, state map, or table when it reduces prose. Keep warnings, failure boundaries, and required decisions visible.

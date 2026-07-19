@@ -6,7 +6,7 @@ cases:
     must_not: [repository inspection, tracked personal artifact, mandatory quiz]
   - prompt: Help me practice ordering food in Spanish. Start at beginner level and adapt as we talk.
     expected_skill: learn-anything
-    must_include: [practice exchange, direct kind correction, adaptation from learner response, private progress under .local]
+    must_include: [practice exchange, direct respectful correction, adaptation from learner response, private progress under .local]
     must_not: [repository learning flow, pre-generated lesson series, tracked progress record]
   - prompt: Explain recursion as a general programming concept, not in relation to this codebase.
     expected_skill: learn-anything
@@ -20,6 +20,18 @@ cases:
     expected_skill: learn-anything
     must_include: [system boundary, interacting parts and relationships, state change or feedback, evidence and uncertainty, nearby transfer]
     must_not: [fact inventory without causal model, mandatory system worksheet]
+  - prompt: I expected my small experiment to work, but the result was the opposite. Help me learn from it.
+    expected_skill: learn-anything
+    must_include: [expectation, attempt, observation, revised model, useful next test]
+    must_not: [fake praise, random retry loop, repository inspection]
+  - prompt: Use AI to help me understand this large topic quickly, but make sure I can continue without the model.
+    expected_skill: learn-anything
+    must_include: [AI leverage, independent verification, learner articulation, fallback or reconstruction knowledge]
+    must_not: [generated fluency as proof, dependency on repository files]
+  - prompt: Help me design a mixed-ability classroom activity and assess it credibly without discouraging weaker students.
+    expected_skill: learn-anything
+    must_include: [clear standards, motivation, useful group activity, credible assessment, trusted boundaries]
+    must_not: [diagnosis, fake praise, persisted sensitive learner state, mandatory repository flow]
   - prompt: Continue the topic we studied last time, revise the part I found difficult, and give me a short check based on it.
     expected_skill: learn-anything
     must_include: [read only relevant .local history, revise prior concept, check based on previous learning, update local session and history at closure]

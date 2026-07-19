@@ -1,22 +1,22 @@
 ---
 name: challenge-debugging
-description: Diagnose or teach through a concrete bug, failing test, intermittent issue, or incorrect runtime behavior. Use when the primary task is to reproduce, narrow, explain, and safely fix a symptom; do not jump to a guessed patch.
+description: Diagnose or teach through a concrete bug, failing test, intermittent issue, or incorrect runtime behavior. Use to reproduce, narrow, explain, contain, and safely fix a symptom; do not jump to a guessed patch.
 ---
 
 # Challenge debugging
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for planning, approvals, validation depth, records, and handoff. This skill owns only the learning-specific task procedure.
+Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`. Load only material for the affected territory.
 
-Read `learning-flow/AGENTS.md`. Load only material for the affected territory. Use `templates/challenge.md` only when the user explicitly wants a durable challenge artifact; keep a contributor-specific instance under `.local/` and use a tracked location only after deliberate shared promotion.
+1. State the affected real-world outcome or rule, observable symptom, and falsifiable expectation.
+2. Identify immediate safety, data, access, or operational containment when relevant.
+3. Find the smallest discriminating reproduction, test, trace, log, or safe observation.
+4. Rank credible hypotheses and test one uncertainty at a time.
+5. Explain the failure mechanism before changing code.
+6. Validate machine-generated and human hypotheses against decisive evidence.
+7. Apply the narrowest responsible containment or fix when requested.
+8. Add proportional regression evidence and name the degraded mode, fallback, or untested boundary.
+9. Stop when one mechanism explains the symptom and evidence distinguishes it from credible alternatives.
 
-1. State the affected outcome or rule, observable symptom, and falsifiable expected behavior.
-2. Find the smallest discriminating reproduction, test, trace, or log.
-3. Rank only credible hypotheses and test one uncertainty at a time.
-4. Explain the failure mechanism before changing code.
-5. Apply the narrowest responsible fix when requested.
-6. Add or improve proportional regression evidence.
-7. Stop when one mechanism explains the symptom and decisive evidence distinguishes it from credible alternatives.
+Use at most one prediction or explain-back. Do not keep a hypothesis diary.
 
-Use at most one prediction or explain-back when consequential. Do not keep a hypothesis diary.
-
-Report symptom, expectation, decisive evidence, mechanism, fix or seam, regression proof, and the untested boundary. Fold in a useful learning point only when it adds value beyond the normal handoff.
+Report symptom, expectation, containment, decisive evidence, mechanism, fix or seam, regression proof, operational boundary, and remaining risk.

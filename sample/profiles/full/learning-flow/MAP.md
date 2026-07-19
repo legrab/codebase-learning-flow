@@ -1,6 +1,6 @@
 # Repository map
 
-Keep this file compact and visual. It is an orientation surface, not an inventory.
+Keep this file compact and visual. It is an ownership surface, not an inventory.
 
 ## Agentic setup exceptions
 
@@ -8,13 +8,19 @@ _None known. Treat managed content as known. Add only custom instructions, unres
 
 ## System boundaries
 
-_Not mapped yet._
+```mermaid
+flowchart LR
+    A[Human or external system] --> B[Owning boundary]
+    B --> C[Observable outcome]
+```
 
-## Domain slice
+_Replace or remove the placeholder when a useful boundary is mapped._
 
-Add one row per relevant territory, not a comprehensive business glossary.
+## Domain slices
 
-| Actor and outcome | Capability | Rule or invariant | Trigger and effect | Owning boundary and evidence |
+Add one row per relevant territory, not a comprehensive glossary.
+
+| Actor and outcome | Business or physical system | Capability and invariant | Failure, control, or fallback | Owning boundary and evidence |
 |---|---|---|---|---|
 | _Not mapped yet._ | | | | |
 
@@ -26,13 +32,21 @@ _Not mapped yet._
 
 _Not mapped yet._
 
-## Related repositories and ownership seams
+## Access, deployment, rollback, and operational seams
+
+_Not mapped yet. Add only when relevant._
+
+## Related repositories, legacy systems, and physical integration
 
 _Not mapped yet._
 
+## AI leverage and independent capability
+
+_Not mapped yet. Record only reusable leverage plus the evidence, manual path, or reconstruction knowledge needed to avoid dependency._
+
 ## High-value unknowns
 
-- _Add only unknowns likely to affect near-term work or ownership._
+- _Add only unknowns likely to affect near-term work, validation, resilience, or ownership._
 
 ## Learning coverage
 

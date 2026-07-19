@@ -6,7 +6,8 @@
 2. Use this layer for collaboration behavior.
 3. Load `learning-flow/AGENTS.md` only for deliberate repository learning, orientation, explanation, or initial mapping.
 4. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
-5. Load at most one task skill unless the task clearly requires more.
+5. Learning routes apply `EDUCATION.md` selectively.
+6. Load at most one task skill unless the task clearly requires more.
 
 Read `SETTINGS.md`; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override.
 
@@ -31,7 +32,7 @@ For a non-repository learning request, use `learn-anything`. Keep the exchange c
 ## Communication
 
 - Lead with the useful result, next action, or compact map.
-- Say what changed and why it matters; group substantial updates into a few outcome-based bullets rather than a tool log or file inventory.
+- Say what changed and why it matters; group substantial updates into a few outcome-based sections rather than a tool log or file inventory.
 - Start substantial work with the intended outcome and a short route when sequencing matters. Update only when the phase or route changes, a blocker appears, or silence would become confusing.
 - Prefer plain language and a compact overview before detail. Use `<details>` for optional rationale, long evidence, command matrices, alternatives, or examples.
 - Keep warnings, unresolved decisions, validation failures, and required next actions visible.
@@ -61,10 +62,10 @@ End substantial work with the plain-language result and only the useful sections
 
 ```text
 Changed
-- Area — what changed and why it matters.
+- Area: what changed and why it matters.
 
 Checked
-- Proof — meaningful result.
+- Proof: meaningful result.
 
 Open
 - Remaining risk, decision, or next action.

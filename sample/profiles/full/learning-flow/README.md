@@ -1,45 +1,74 @@
 # Full learning flow
 
-This profile supports deliberate onboarding and long-lived repository understanding. It is separate from the general collaboration workflow in `agentic-flow/`.
+A focused repository-learning profile for deliberate onboarding and long-lived ownership. It adds narrower skills, not a second collaboration engine.
 
-## Learning loop
-
-```text
-Locate → Reason → Work → Explain → Recap
+```mermaid
+flowchart TB
+    B[Compact baseline] --> O[System and domain orientation]
+    O --> T{Real task}
+    T --> D[Debugging]
+    T --> F[Analogous feature]
+    T --> R[Safe refactor]
+    T --> X[Change explanation]
+    T --> P[Ticket learning path]
+    D --> K[Durable map or takeaway only when justified]
+    F --> K
+    R --> K
+    X --> K
 ```
 
-A requested repository baseline recognizes managed agentic setup quietly. It maps custom instructions, skills, prompts, precedence, or stale evidence only when they affect work and will be useful again.
-
-Prediction, tracing, comparison, and challenge activities are used only when they improve reasoning. Planning, approval gates, validation depth, and handoff remain governed by `agentic-flow/`.
+All skills apply `agentic-flow/EDUCATION.md` selectively. The goal is durable human ownership: system understanding, product judgment, credible validation, resilience, responsible AI leverage, and clear control boundaries.
 
 ## Persistent surfaces
 
 | Surface | Purpose |
 |---|---|
-| `MAP.md` | compact domain slices, boundaries, representative paths, and high-value unknowns |
-| `TAKEAWAYS.md` | short verified lessons likely to be reused |
+| `MAP.md` | compact systems, boundaries, controls, representative paths, and high-value unknowns |
+| `TAKEAWAYS.md` | verified reusable models, judgments, evidence, and failure boundaries |
 | `REPOSITORIES.md` | repository identities, baselines, and access boundaries |
+| `.local/` | private sessions, attempts, progress, uncertainty, and follow-ups |
 
-Meaningful learning sessions keep complete private state, progress, check history, and compact continuation memory under ignored repository-root `.local/`. Task-specific challenge, ticket-path, and change-explainer templates travel inside their owning skills; put contributor-specific instances in `.local/` and promote only reusable, stable, non-sensitive knowledge to the tracked surfaces above. Prefer existing test and debug infrastructure over framework lab folders.
+> [!IMPORTANT]
+> Task-specific templates travel inside their owning skills. Do not pre-create curricula, labs, personal tracking, explainers, or research folders.
 
 ## Start
 
-Use `learning-bootstrap` only when a compact baseline or deliberate onboarding pass is requested. An ordinary task in a new repository can start with the matching task skill. Bootstrap must not pre-generate themes, sessions, personal tracking, explainers, or labs.
+Use `learning-bootstrap` only for a requested baseline or deliberate onboarding pass. An ordinary task in a new repository can start with its matching task skill.
 
-Select one primary learning skill for the current task. The `agentic-workflow` skill is only for configuring or understanding the harness itself.
+Select one primary learning skill. `agentic-workflow` is only for configuring or understanding the harness itself.
 
-## Understanding and handoff
+<details>
+<summary>Skill routes</summary>
 
-Use at most one brief open checkpoint by default when misunderstanding would affect future reasoning and setting 4 allows it. A declined check never blocks engineering.
+| Need | Skill |
+|---|---|
+| compact baseline | `learning-bootstrap` |
+| architecture or domain orientation | `repository-orientation` |
+| bug or failing behavior | `challenge-debugging` |
+| feature based on existing behavior | `analogous-feature` |
+| behavior-preserving structural change | `safe-refactor` |
+| non-trivial diff or generated change | `change-explainer` |
+| context before implementation | `ticket-learning-path` |
 
-When learning was central, fold up to three useful points about the model, decisive evidence, boundary, or transfer into the normal handoff. Skip them when the handoff already carries that value; never add a second recap section just to satisfy the framework.
+</details>
+
+## Understanding and assessment
+
+Use at most one brief open checkpoint by default when a mistaken model would affect future reasoning. Credible evidence includes explanation, prediction, trace, comparison, corrected attempt, boundary identification, or transfer.
+
+A declined check never blocks engineering. Confidence, agreement, and polished wording are not proof.
 
 ## Artifact budget
 
-Create or update a persistent artifact only when the result is verified, repository-specific, likely to be reused, costly enough to rediscover, and owned by exactly one surface.
+Create or update a tracked artifact only when the result is:
 
-Contributor identity is never needed for shared repository learning. Personal tracking stays local and may use a contributor label only when needed to distinguish local learners.
+- verified;
+- repository-specific;
+- reusable;
+- costly enough to rediscover;
+- non-sensitive;
+- owned by exactly one surface.
 
 ## Communication
 
-Lead with a short conceptual answer. Use friendly, simple wording and add detail only when it helps the current task. In Markdown, place optional examples, evidence inventories, and long command output in collapsible sections while keeping warnings and required actions visible.
+Lead with a compact system model or result. Use small visuals when they reduce prose. Keep safety, failure, access, deployment, responsibility, and uncertainty visible when relevant. Fold learning into the normal handoff instead of adding a ceremonial recap.

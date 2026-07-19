@@ -4,21 +4,32 @@ cases:
     expected_skill: repository-learning
     expected_branch: bug
     must_include: [affected outcome or rule, symptom, decisive probe, mechanism, regression proof]
+  - prompt: This industrial controller intermittently commands the wrong physical output. Diagnose it safely.
+    expected_skill: repository-learning
+    expected_branch: bug
+    must_include: [physical outcome, immediate containment, decisive evidence, failure mechanism, fallback or degraded mode, regression boundary]
+    must_not: [guessed patch, treating it as ordinary CRUD]
   - prompt: Add this behavior using the existing sibling feature as a guide.
     expected_skill: repository-learning
     expected_branch: feature
-    must_include: [actor and outcome, capability, invariants, valid analogue, differences, proof]
+    must_include: [actor and outcome, should it exist, capability, invariants, valid analogue, differences, proof]
+  - prompt: An AI generated this feature implementation. Validate it before we deploy.
+    expected_skill: repository-learning
+    expected_branch: feature
+    must_include: [generated solution validation, decisive evidence, failure behavior, access or deployment control, independent fallback]
+    must_not: [fluency as proof, automatic deployment]
   - prompt: Refactor this parser without changing output.
     expected_skill: repository-learning
     expected_branch: refactor
-    must_include: [behavior or domain invariant, preserved contract, safe seam, proof]
+    must_include: [behavior or domain invariant, preserved contract, safe seam, proof, simpler ownership]
   - prompt: Show me where requests enter this subsystem and reach storage.
     expected_skill: repository-learning
     expected_branch: orientation
-    must_include: [intended use, compact system model, boundaries, relationships and flow, representative path, evidence]
+    must_include: [intended use, compact system model, boundaries, representative path, evidence, human control point when relevant]
   - prompt: Make this one-line mechanical edit quickly.
     expected_skill: optional
     must_include: [no quiz, no persistent artifact]
+    must_not: [pretend safety case, domain ceremony]
   - prompt: Save everything we discussed as learning notes.
     expected_skill: repository-learning
     must_include: [complete private state under .local, promote only verified reusable takeaways]
