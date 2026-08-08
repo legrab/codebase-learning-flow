@@ -223,6 +223,23 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 
 Extensions (currently only `regulatory`) use the same three modes along a dimension orthogonal to profile: they track their own managed-file and managed-skill manifests under distinct marker names so they never collide with the profile's own markers, and adding or removing one never touches the other's files.
 
+## Release-based distribution
+
+A checkout install (`--ref`/`-Ref`, default `main`) and a packaged-release install (`--release`/`-Release`) are two distinct trust boundaries, not two code paths for the same thing:
+
+- **Checkout** downloads GitHub's own source-archive snapshot of an arbitrary ref. It is the mutable, development-oriented path: convenient for trying the framework or tracking `main`, but nothing about it asserts that the content was reviewed as a unit.
+- **Packaged release** downloads a purpose-built artifact published against an exact, immutable tag, with a checksum the installer verifies before extracting anything. `scripts/build-release.sh` builds this artifact directly from `MANIFEST.txt`, so the package's contents and the package's own manifest never drift apart: `MANIFEST.txt` is the single declared list of "what ships," used both for CI's size/drift check and for the release build.
+
+Design decisions specific to this boundary:
+
+- **No `latest` shortcut.** Both installers reject `--release latest` outright rather than resolving and warning. An enterprise install that claims to be version-pinned should not have a silent path to "whatever the newest tag happens to be today." Pinning is enforced by the absence of the feature, not by a warning someone can miss.
+- **The installer reports its trust boundary, not just its ref.** The closing summary always states `Version:` and `Source:` distinctly for a checkout (`development checkout`) versus a packaged release (`packaged release (checksum verified)`), so a person looking at installer output (or CI logs) can tell which boundary they got without reading the flags that produced it.
+- **The release path does not require `git`.** Only the self-refresh stage (pinning the installer script itself to the release commit) touches `resolve_remote_commit`; the payload step downloads the release asset and its checksum over HTTP(S) directly, so a minimal environment with just `curl`/`wget`, `unzip`, and a SHA-256 tool can install a pinned release.
+- **The package is a curated subset, not the whole repository.** `MANIFEST.txt` already excludes CI/workflow files and maintainer-only scripts (`ci-validate.py`, `check_manifest.py`, `manifest-update.py`, `ci-install-test.sh`, and now `build-release.sh`/`ci-release-test.sh`) from "the package" -- consistent with the pre-existing convention that repository infrastructure lives outside the package manifest. The release artifact ships exactly what an installing repository needs plus the documentation required to understand and adopt it.
+- **Reproducibility is enforced, not assumed.** `scripts/build-release.sh` normalizes staged file mtimes before zipping specifically so that two independent builds of the same tree at the same version produce a byte-identical archive; CI builds twice and diffs them before anything is exercised or published.
+- **CI validates the artifact it is about to publish, not just the source tree.** The release workflow builds the package, confirms reproducibility, then runs the installer against the built package itself (minimal, full+regulatory, update-mode, and fail-mode-refusal, on both the POSIX and PowerShell installers) before a GitHub Release is created. A release that fails any of these checks is never published.
+- **A hidden `--package-file`/`-PackageFile` flag exists solely for this CI loop.** It installs directly from a local archive, bypassing both the network and self-refresh, which is what lets CI exercise a release package before that package has actually been published anywhere. It is intentionally undocumented in `--help`/user-facing docs: it is a testing seam, not a supported installation method.
+
 ## Deliberately rejected
 
 - mandatory configuration before routine work;
@@ -254,3 +271,4 @@ Extensions (currently only `regulatory`) use the same three modes along a dimens
 11. The Markdown fallback works without skill support.
 12. No workflow requires contributor identity unless the user explicitly wants personal tracking.
 13. An installed extension never changes what a profile means, and adding or removing one never touches unrelated framework or repository content.
+14. A checkout install and a packaged-release install are never ambiguous about which one ran: the installer states its version and trust boundary, and there is no path that silently resolves an unpinned "latest" release.

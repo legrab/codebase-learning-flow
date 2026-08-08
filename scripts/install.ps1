@@ -3,6 +3,14 @@ param(
     [string]$TargetPath = (Get-Location).Path,
     [string]$Repository = "legrab/codebase-learning-flow",
     [string]$Ref = "main",
+    # Exact published release tag (e.g. v0.9.0). Preferred for team/enterprise
+    # installs: downloads the packaged, checksum-verified release artifact
+    # instead of a mutable source snapshot. "latest" is deliberately not
+    # supported; pin an exact tag. Mutually exclusive with -Ref.
+    [string]$Release = "",
+    # Internal/CI hook: install directly from an already-built local release
+    # package without touching the network. Not part of the public contract.
+    [string]$PackageFile = "",
     [ValidateSet("Auto", "Minimal", "Full")]
     [string]$Profile = "Auto",
     [ValidateSet("Auto", "None", "Regulatory")]
@@ -18,10 +26,38 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$InstallerVersion = "0.8.0"
+
+if ($PSBoundParameters.ContainsKey('Ref') -and $PSBoundParameters.ContainsKey('Release')) {
+    throw "-Ref and -Release are mutually exclusive. Use -Release for a pinned packaged release, or -Ref for a development checkout."
+}
+if ($Release -match "^(?i)latest$") {
+    throw "-Release latest is not supported. Pin an exact published tag, e.g. -Release v0.9.0. Look up the current tags on the repository's Releases page."
+}
+if (-not [string]::IsNullOrWhiteSpace($Release)) {
+    $Ref = $Release
+}
+if (-not [string]::IsNullOrWhiteSpace($PackageFile)) {
+    $SkipSelfRefresh = $true
+}
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
+}
+
+function Get-Sha256([string]$Path) {
+    (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
+}
+
+function Confirm-Checksum([string]$Path, [string]$ChecksumsPath, [string]$AssetName) {
+    $line = Get-Content -LiteralPath $ChecksumsPath | Where-Object { $_ -match "\s\*?$([regex]::Escape($AssetName))$" } | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($line)) {
+        throw "No checksum entry for $AssetName in checksums.txt."
+    }
+    $expected = ($line -split "\s+")[0].ToLowerInvariant()
+    $actual = Get-Sha256 -Path $Path
+    if ($expected -ne $actual) {
+        throw "Checksum mismatch for $AssetName`: expected $expected, got $actual."
+    }
 }
 
 function Initialize-LocalLearningWorkspace([string]$TargetRoot, [string]$HistoryTemplate) {
@@ -480,19 +516,41 @@ if (-not $SkipSelfRefresh) {
     $url = "https://raw.githubusercontent.com/$Repository/$resolvedCommit/scripts/install.ps1?nocache=$nonce"
     try {
         New-Item -ItemType Directory -Path $bootstrapRoot -Force | Out-Null
-        Write-Step "Refreshing installer v$InstallerVersion from commit $resolvedCommit"
+        Write-Step "Refreshing installer from commit $resolvedCommit"
         Invoke-WebRequest -Uri $url -OutFile $latestInstaller -UseBasicParsing -Headers $headers
-        & $latestInstaller `
-            -TargetPath $TargetPath `
-            -Repository $Repository `
-            -Ref $resolvedCommit `
-            -Profile $Profile `
-            -Extension $Extension `
-            -Mode $Mode `
-            -RootAgents $RootAgents `
-            -SkipRootAgents:$($SkipRootAgents.IsPresent) `
-            -SkipSkills:$($SkipSkills.IsPresent) `
-            -SkipSelfRefresh
+        # When -Release is active, $Ref was already set equal to it above, and
+        # the child recomputes its own resolved commit for pinning purposes.
+        # Passing both -Ref and -Release here would make the re-invocation
+        # look like it received both, which the child's own mutual-exclusion
+        # check would reject.
+        if (-not [string]::IsNullOrWhiteSpace($Release)) {
+            & $latestInstaller `
+                -TargetPath $TargetPath `
+                -Repository $Repository `
+                -Release $Release `
+                -PackageFile $PackageFile `
+                -Profile $Profile `
+                -Extension $Extension `
+                -Mode $Mode `
+                -RootAgents $RootAgents `
+                -SkipRootAgents:$($SkipRootAgents.IsPresent) `
+                -SkipSkills:$($SkipSkills.IsPresent) `
+                -SkipSelfRefresh
+        }
+        else {
+            & $latestInstaller `
+                -TargetPath $TargetPath `
+                -Repository $Repository `
+                -Ref $resolvedCommit `
+                -PackageFile $PackageFile `
+                -Profile $Profile `
+                -Extension $Extension `
+                -Mode $Mode `
+                -RootAgents $RootAgents `
+                -SkipRootAgents:$($SkipRootAgents.IsPresent) `
+                -SkipSkills:$($SkipSkills.IsPresent) `
+                -SkipSelfRefresh
+        }
         return
     }
     finally {
@@ -550,21 +608,55 @@ if ($Mode -eq "Update" -and -not (Test-Path -LiteralPath $targetLearning -PathTy
 }
 
 $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("codebase-learning-flow-" + [Guid]::NewGuid().ToString("N"))
-$archivePath = Join-Path $tempRoot "source.zip"
 $extractPath = Join-Path $tempRoot "extract"
 $nonce = [DateTimeOffset]::UtcNow.ToUnixTimeMilliseconds()
-$archiveUrl = "https://github.com/$Repository/archive/$resolvedCommit.zip?nocache=$nonce"
 
 try {
     New-Item -ItemType Directory -Path $extractPath -Force | Out-Null
-    Write-Step "Downloading $Repository at commit $resolvedCommit"
-    Invoke-WebRequest -Uri $archiveUrl -OutFile $archivePath -UseBasicParsing -Headers $headers
+
+    if (-not [string]::IsNullOrWhiteSpace($PackageFile)) {
+        if (-not (Test-Path -LiteralPath $PackageFile -PathType Leaf)) {
+            throw "Package file not found: $PackageFile"
+        }
+        $archivePath = $PackageFile
+        Write-Step "Installing from local package $PackageFile"
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($Release)) {
+        $packageName = "codebase-learning-flow-$Release.zip"
+        $assetBase = "https://github.com/$Repository/releases/download/$Release"
+        $archivePath = Join-Path $tempRoot $packageName
+        $checksumsPath = Join-Path $tempRoot "checksums.txt"
+
+        Write-Step "Downloading packaged release $Release of $Repository"
+        Invoke-WebRequest -Uri "$assetBase/checksums.txt?nocache=$nonce" -OutFile $checksumsPath -UseBasicParsing -Headers $headers
+        Invoke-WebRequest -Uri "$assetBase/$packageName`?nocache=$nonce" -OutFile $archivePath -UseBasicParsing -Headers $headers
+        Confirm-Checksum -Path $archivePath -ChecksumsPath $checksumsPath -AssetName $packageName
+        Write-Step "Checksum verified for $packageName"
+    }
+    else {
+        $archivePath = Join-Path $tempRoot "source.zip"
+        $archiveUrl = "https://github.com/$Repository/archive/$resolvedCommit.zip?nocache=$nonce"
+        Write-Step "Downloading $Repository at commit $resolvedCommit"
+        Invoke-WebRequest -Uri $archiveUrl -OutFile $archivePath -UseBasicParsing -Headers $headers
+    }
+
     Write-Step "Extracting template"
     Expand-Archive -LiteralPath $archivePath -DestinationPath $extractPath -Force
 
     $archiveRootItem = Get-ChildItem -LiteralPath $extractPath -Directory | Select-Object -First 1
     if ($null -eq $archiveRootItem) { throw "The downloaded archive did not contain a repository directory." }
     $archiveRoot = $archiveRootItem.FullName
+
+    $versionFile = Join-Path $archiveRoot "VERSION"
+    if (-not [string]::IsNullOrWhiteSpace($Release) -and (Test-Path -LiteralPath $versionFile -PathType Leaf)) {
+        $packageVersion = (Get-Content -LiteralPath $versionFile -Raw).Trim()
+        if ($packageVersion -ne $Release) {
+            throw "Package VERSION ($packageVersion) does not match requested release ($Release)."
+        }
+    }
+    elseif ([string]::IsNullOrWhiteSpace($Release) -and -not [string]::IsNullOrWhiteSpace($PackageFile) -and (Test-Path -LiteralPath $versionFile -PathType Leaf)) {
+        $Release = (Get-Content -LiteralPath $versionFile -Raw).Trim()
+    }
 
     $sourceCommon = Join-Path $archiveRoot "sample/common"
     $sourceAgentic = Join-Path $sourceCommon "agentic-flow"
@@ -715,6 +807,22 @@ try {
     }
 
     Set-RootIntegrationState -SettingsPath (Join-Path $targetAgentic "SETTINGS.md") -ResolvedMode $resolvedRootAgents
+
+    Write-Host ""
+    Write-Host "Codebase Learning Flow"
+    if (-not [string]::IsNullOrWhiteSpace($Release)) {
+        Write-Host "Version: $Release"
+        if (-not [string]::IsNullOrWhiteSpace($PackageFile)) {
+            Write-Host "Source: packaged release (local package file, unverified)"
+        }
+        else {
+            Write-Host "Source: packaged release (checksum verified)"
+        }
+    }
+    else {
+        Write-Host "Version: $resolvedCommit (ref: $Ref)"
+        Write-Host "Source: development checkout (mutable unless ref is a commit or tag)"
+    }
 
     Write-Step "Installation complete: profile=$selectedProfile extension=$selectedExtension mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
     Write-Host ""

@@ -1,0 +1,116 @@
+name: Release
+
+# Simple version tags on main are the release trigger (see
+# docs/DESIGN_NOTES.md, release-based distribution). Nothing here treats
+# "latest" specially: every release is an explicit, exact tag, and every
+# tag that reaches this workflow is validated the same way main is,
+# then packaged, then exercised end to end, before anything is published.
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-validate:
+    name: Build and validate package
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install validation dependency
+        run: python -m pip install --disable-pip-version-check pyyaml
+
+      - name: Validate repository structure
+        run: python scripts/ci-validate.py
+
+      - name: Derive version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Build release package
+        run: scripts/build-release.sh "${{ steps.version.outputs.version }}"
+
+      - name: Verify the build is reproducible
+        run: |
+          set -eu
+          version="${{ steps.version.outputs.version }}"
+          mv "dist/codebase-learning-flow-$version.zip" /tmp/first-build.zip
+          rm -rf dist
+          scripts/build-release.sh "$version"
+          cmp /tmp/first-build.zip "dist/codebase-learning-flow-$version.zip"
+          echo "Two independent builds of $version produced byte-identical packages."
+
+      - name: Exercise the packaged installation (install.sh)
+        run: scripts/ci-release-test.sh "dist/codebase-learning-flow-${{ steps.version.outputs.version }}.zip"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-package
+          path: |
+            dist/codebase-learning-flow-${{ steps.version.outputs.version }}.zip
+            dist/checksums.txt
+          retention-days: 7
+
+  powershell-install-check:
+    name: Exercise the packaged installation (install.ps1)
+    needs: build-and-validate
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-package
+          path: dist
+
+      - name: Install minimal profile from the local package
+        shell: pwsh
+        run: |
+          $version = "${{ needs.build-and-validate.outputs.version }}"
+          $package = "dist/codebase-learning-flow-$version.zip"
+          $root = Join-Path $env:RUNNER_TEMP "learning-flow-release-ci"
+          New-Item -ItemType Directory -Force -Path $root | Out-Null
+          & "$PWD/scripts/install.ps1" `
+            -TargetPath $root `
+            -PackageFile $package `
+            -Profile minimal `
+            -Mode fail `
+            -SkipRootAgents
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (-not (Test-Path "$root/learning-flow")) {
+            throw "Installer did not create the learning-flow component from the packaged release."
+          }
+          if (-not (Test-Path "$root/.agents/skills")) {
+            throw "Installer did not create .agents/skills from the packaged release."
+          }
+
+  publish:
+    name: Publish GitHub Release
+    needs: [build-and-validate, powershell-install-check]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-package
+          path: dist
+
+      - name: Publish release with validated assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.build-and-validate.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/codebase-learning-flow-${{ needs.build-and-validate.outputs.version }}.zip
+            dist/checksums.txt

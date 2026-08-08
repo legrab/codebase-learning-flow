@@ -4,6 +4,11 @@
 
 ### Added
 
+- Packaged, checksum-verified release distribution: `--release`/`-Release TAG` in `install.sh`/`install.ps1` downloads the artifact and `checksums.txt` published against an exact tag, verifies the SHA-256 checksum before extracting anything, and cross-checks the package's own `VERSION` file against the requested tag. `--release latest` is rejected; an exact tag is required.
+- `scripts/build-release.sh`, which builds the release package directly from `MANIFEST.txt` (the existing package manifest), normalizing file timestamps so two independent builds of the same tree at the same version produce a byte-identical archive.
+- `scripts/ci-release-test.sh`, which installs a built package end to end (minimal, full+regulatory, update mode, fail-mode refusal, adoption-resource presence) without touching the network.
+- `.github/workflows/release.yml`: on a `v*.*.*` tag push, validates repository structure, builds the release package, verifies build reproducibility, exercises the packaged installation on both `install.sh` and `install.ps1`, and only then publishes the GitHub Release with the package and `checksums.txt` attached.
+- A closing `Version:`/`Source:` summary in both installers, distinguishing a packaged release (`packaged release (checksum verified)`) from a development checkout (`development checkout (mutable unless ref is a commit or tag)`).
 - A shared `agentic-flow/EDUCATION.md` constitution used by general and repository learning.
 - Human-readable Mermaid maps, highlight blocks, and progressive disclosure across core README files.
 - Explicit resilience, responsible AI leverage, educational judgment, and domain ownership lenses.
@@ -16,6 +21,12 @@
 - Minimal and full maps and takeaways now retain reusable ownership, resilience, AI fallback, and control knowledge.
 - Full-profile skills now validate machine-generated work and surface operational or human control boundaries in proportion to risk.
 - Human-facing documentation now explains the framework before agentic implementation detail.
+- README and `scripts/README.md` installation guidance now documents packaged-release installation as implemented behavior rather than a planned path.
+
+### Fixed
+
+- `MANIFEST.txt` was missing `docs/ARCHITECTURE.md` and `docs/AGENTIC_WORKFLOW_SANITY.md`, both of which are linked from README and `docs/README.md`; both are now declared with correct sizes.
+- `install.ps1` reported a hardcoded, unmaintained `$InstallerVersion` (stuck at `0.8.0`) in a self-refresh log line; removed in favor of the new commit/tag-based version reporting, which cannot go stale.
 
 ## 0.8.0
 

@@ -1,8 +1,10 @@
 .gitattributes	40
-.gitignore	317
+.gitignore	324
 AGENTS.md	3172
-CHANGELOG.md	13500
-docs/DESIGN_NOTES.md	23730
+CHANGELOG.md	15425
+docs/AGENTIC_WORKFLOW_SANITY.md	7795
+docs/ARCHITECTURE.md	6009
+docs/DESIGN_NOTES.md	27644
 docs/EDUCATION_MODEL.md	5452
 docs/INITIALIZE_LEARNING_FLOW.md	10880
 docs/README.md	4185
@@ -14,7 +16,7 @@ docs/references/REFERENCE_REVIEW_LEARNING_FLOW_ADJUSTMENT.md	9505
 docs/references/REFERENCE_REVIEW_LITT.md	2069
 docs/references/REFERENCE_REVIEW_POCOK.md	2155
 LICENSE	2213
-README.md	16282
+README.md	17154
 sample/common/.agents/skills/agentic-workflow/SKILL.md	4185
 sample/common/.agents/skills/learn-anything/agents/openai.yaml	246
 sample/common/.agents/skills/learn-anything/SKILL.md	3362
@@ -95,9 +97,9 @@ sample/README.md	2997
 sample/root/AGENTS.md	1339
 sample/root/AGENTS.pointer.md	296
 scripts/install.bat	1477
-scripts/install.ps1	35102
-scripts/install.sh	29472
-scripts/README.md	4900
+scripts/install.ps1	40236
+scripts/install.sh	34910
+scripts/README.md	6656
 skill-evals/agentic-cases.yaml	7109
 skill-evals/conversation-cases.yaml	3653
 skill-evals/full-cases.yaml	4248
