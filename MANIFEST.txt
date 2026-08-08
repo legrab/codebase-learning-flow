@@ -1,5 +1,5 @@
 .gitattributes	40
-.gitignore	274
+.gitignore	317
 AGENTS.md	3172
 CHANGELOG.md	11414
 docs/DESIGN_NOTES.md	17684
