@@ -1,5 +1,14 @@
 # Agentic collaboration instructions
 
+## Layer 1: Agentic Delivery
+
+This file is the common Agentic Delivery layer. It owns collaboration behavior,
+task routing, verification, handoff, and boundaries around consequential
+actions.
+
+Learning & Ownership and Optional Risk Lenses are separate layers. They may be
+selected when useful, but this layer must remain usable without either one.
+
 ## Route
 
 1. Follow root, nested, and tool-specific repository instructions first.

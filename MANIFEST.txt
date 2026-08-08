@@ -2,10 +2,10 @@
 .gitignore	317
 AGENTS.md	3172
 CHANGELOG.md	13500
-docs/DESIGN_NOTES.md	22495
+docs/DESIGN_NOTES.md	23730
 docs/EDUCATION_MODEL.md	5452
 docs/INITIALIZE_LEARNING_FLOW.md	10880
-docs/README.md	2428
+docs/README.md	3227
 docs/references/REFERENCE_INTEGRATION.md	4551
 docs/references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md	2317
 docs/references/REFERENCE_REVIEW_BEST_OF_AGENT_HARNESSES.md	2540
@@ -14,7 +14,7 @@ docs/references/REFERENCE_REVIEW_LEARNING_FLOW_ADJUSTMENT.md	9505
 docs/references/REFERENCE_REVIEW_LITT.md	2069
 docs/references/REFERENCE_REVIEW_POCOK.md	2155
 LICENSE	2213
-README.md	10942
+README.md	13264
 sample/common/.agents/skills/agentic-workflow/SKILL.md	3653
 sample/common/.agents/skills/learn-anything/agents/openai.yaml	246
 sample/common/.agents/skills/learn-anything/SKILL.md	3225
@@ -31,7 +31,7 @@ sample/common/.agents/skills/structured-change/templates/exploration.md	368
 sample/common/agentic-flow/.managed-files	170
 sample/common/agentic-flow/.managed-skills	50
 sample/common/agentic-flow/.template-version	6
-sample/common/agentic-flow/AGENTS.md	5788
+sample/common/agentic-flow/AGENTS.md	6137
 sample/common/agentic-flow/CONFIGURE.md	4475
 sample/common/agentic-flow/DECISIONS.md	963
 sample/common/agentic-flow/EDUCATION.md	5232
@@ -87,7 +87,7 @@ sample/profiles/minimal/learning-flow/.managed-files	87
 sample/profiles/minimal/learning-flow/.managed-skills	20
 sample/profiles/minimal/learning-flow/.template-profile	8
 sample/profiles/minimal/learning-flow/.template-version	6
-sample/profiles/minimal/learning-flow/AGENTS.md	3064
+sample/profiles/minimal/learning-flow/AGENTS.md	3459
 sample/profiles/minimal/learning-flow/MAP.md	1229
 sample/profiles/minimal/learning-flow/README.md	1974
 sample/profiles/minimal/learning-flow/TAKEAWAYS.md	973

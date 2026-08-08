@@ -19,6 +19,41 @@ flowchart LR
     K --> L
 ```
 
+> [!WARNING]
+> The regulatory extension is a reasoning and workflow aid, not a compliance determination or substitute for qualified regulatory/quality expertise.
+
+## What this repository is
+
+Codebase Learning Flow is both a working, literate example of repository-native agentic engineering and a reusable framework that can be installed into another repository.
+
+The repository is intentionally literate: its documentation, workflow instructions, skills, examples, and validation describe how the system is supposed to work while also serving as the system being developed. The installable part packages the reusable behavior so another repository can adopt the useful pieces without having to adopt this repository's complete workflow.
+
+The framework does not provide an agent runtime, sandbox, retry engine, or background worker. It configures a host coding agent through repository-local instructions, skills, learning surfaces, and optional risk lenses.
+
+## Three layers
+
+The framework has three explicit layers with different ownership and adoption boundaries:
+
+| Layer | Purpose | Adoption boundary |
+|---|---|---|
+| **Agentic Delivery** | Common collaboration policy, task routing, verification, and handoff | Most invasive. A repository may use it as the common agentic baseline. |
+| **Learning & Ownership** | Repository learning, general learning, private continuity, and durable knowledge | Independently adoptable into an existing agentic workflow. |
+| **Optional Risk Lenses** | Regulatory, safety, security, or other domain-specific reasoning | Selective and additive. Never a replacement for the active workflow. |
+
+The normal complete installation composes these layers, but they are not inseparable. In particular, a repository with an existing agentic workflow can adopt the learning or risk layers without replacing its own delivery model.
+
+```text
+Agentic Delivery
+      │
+      ├── may use ──► Learning & Ownership
+      │
+      └── may use ──► Optional Risk Lenses
+                         │
+                         └── elaborates the active workflow when relevant
+```
+
+This separation is deliberate. Adding a new learning or risk concern should not automatically create another global workflow layer or increase the amount of instruction every task must load.
+
 ## Start in two minutes
 
 Run one installer from the repository that should receive the framework:
