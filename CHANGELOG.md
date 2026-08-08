@@ -4,6 +4,12 @@
 
 ### Added
 
+- `docs/ARCHITECTURE.md`, establishing the three user-facing framework layers (Agentic Delivery, Learning & Ownership, Optional Risk Lenses) as the primary conceptual model across the README, installed documentation, skills, and installer, with the earlier five-layer description retained only as implementation provenance rather than a second architecture.
+- `adoption/ADOPT.md` and `adoption/README.md`, a guided-adoption protocol for a repository with its own existing custom agentic setup: the agent inspects the target repository first, then proposes adopting Learning & Ownership or an Optional Risk Lens independently of the common Agentic Delivery layer. This is structurally separate from the installer's complete-installation payload, not just a documented alternative.
+- A three-situation "Adoption situations" table in the README (no existing agentic flow; custom agentic flow per developer; lightweight existing flow without learning/regulatory concepts) that routes each to complete installation or guided adoption by name.
+- `docs/AGENTIC_WORKFLOW_SANITY.md`, a dedicated instruction-budget and context-overflow pass documenting sizing rules and sanity scenarios for the installed agentic flow.
+- A `learning-closure` skill that decides, at meaningful workflow completion (especially pull-request or change-set handoff), whether a session produced a reusable insight worth retaining and where it belongs, without treating documentation as a mandatory phase.
+- A `learning-freshness` skill that cross-checks durable repository learning and documentation against the current implementation and flags stale claims, without treating external-source claims as internally verified.
 - Packaged, checksum-verified release distribution: `--release`/`-Release TAG` in `install.sh`/`install.ps1` downloads the artifact and `checksums.txt` published against an exact tag, verifies the SHA-256 checksum before extracting anything, and cross-checks the package's own `VERSION` file against the requested tag. `--release latest` is rejected; an exact tag is required.
 - `scripts/build-release.sh`, which builds the release package directly from `MANIFEST.txt` (the existing package manifest), normalizing file timestamps so two independent builds of the same tree at the same version produce a byte-identical archive.
 - `scripts/ci-release-test.sh`, which installs a built package end to end (minimal, full+regulatory, update mode, fail-mode refusal, adoption-resource presence) without touching the network.
@@ -16,6 +22,7 @@
 
 ### Changed
 
+- The README, installed `AGENTS.md`/workflow documentation, and skills now consistently describe the three-layer model (Agentic Delivery, Learning & Ownership, Optional Risk Lenses) rather than the earlier five ownership-layer framing.
 - Repository learning now prioritizes the real business, scientific, human, or physical system, build judgment, failure handling, validation, access, deployment, and responsibility where relevant.
 - General learning now supports systems thinking, critical questioning, articulation, flow, motivation, and human educational value without turning every answer into a lesson plan.
 - Minimal and full maps and takeaways now retain reusable ownership, resilience, AI fallback, and control knowledge.
