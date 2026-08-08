@@ -9,7 +9,8 @@ Before creating or editing a root `AGENTS.md`, look for:
 - root and nested `AGENTS.md` files;
 - other agent instruction surfaces such as `CLAUDE.md`, `GEMINI.md`, `.github/copilot-instructions.md`, `.cursor/rules/`, or equivalent files;
 - existing skills, prompts, plans, session records, status files, and evidence ledgers;
-- repository-specific commands, architecture rules, security boundaries, and release gates.
+- repository-specific commands, architecture rules, security boundaries, and release gates;
+- connected systems already in use, such as an issue tracker, CI/CD, or documentation platform, and any ticket-reference or commit-convention they imply.
 
 Preserve repository-specific rules. Connect the installed layers rather than replacing working native instructions.
 

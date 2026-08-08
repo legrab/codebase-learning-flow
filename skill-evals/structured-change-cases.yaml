@@ -1,0 +1,56 @@
+layer: structured-change
+cases:
+  - prompt: Fix this null-check typo in the validation helper.
+    expected_behavior: skip_structured_change
+    must_include: [ordinary fix, no design note, no requested decision]
+    must_not: [explore design approve sequence, decision record, traceability block]
+
+  - prompt: We need to pick between an event-sourced ledger and a mutable-state ledger for the billing core, and the repository does not favor either.
+    expected_skill: structured-change
+    must_include: [explore current understanding and unknowns, compare options and tradeoffs, name a requested decision, wait for approval before implementing]
+    must_not: [implement before approval, treat this as a second delivery workflow, replace the active task skill]
+
+  - prompt: Add a small internal helper function while working the ticket.
+    expected_behavior: skip_structured_change
+    must_include: [ordinary work under the active task skill]
+    must_not: [structured-change loaded, decision record created]
+
+  - prompt: We just agreed on the approach in this conversation. Implement it.
+    expected_behavior: approval_already_satisfied
+    must_include: [prior explicit instruction satisfies approve, proceed to implement and review]
+    must_not: [ask for the decision again]
+
+  - prompt: This schema migration is hard to reverse once shipped and touches three services with no clear owner agreement.
+    expected_skill: structured-change
+    must_include: [verification plan, rollback approach only because hard to reverse, requested decision]
+    must_not: [skip the rollback question, silently choose an approach without approval]
+
+  - prompt: Record this decision so future contributors understand why we rejected the simpler option.
+    expected_behavior: durable_decision_record
+    must_include: [agentic-flow/DECISIONS.md, problem options decision rationale consequences review date, append rather than overwrite]
+    must_not: [a new per-decision file, decisions/DECISION-XXXX.md scaffold]
+
+  - prompt: This was a minor logging change. Should we log it as a decision too?
+    expected_behavior: promotion_threshold_not_met
+    must_include: [most decisions stay in conversation or .local, only record when it will matter to a later reader]
+    must_not: [record every change as a decision]
+
+  - prompt: We're about to ship a change to how the device reconciles sensor readings, and this repository is medical device software.
+    expected_skill: structured-change
+    must_include: [check regulatory-knowledge is installed and relevant, read only the specific knowledge file needed, do not invent compliance language]
+    must_not: [read the entire regulatory knowledge folder by default, apply regulatory ceremony to unrelated low-risk work]
+
+  - prompt: What does ISO 14971 actually say, clause by clause?
+    expected_behavior: no_standard_reproduction
+    must_include: [why it matters, common mistakes, review questions, practical orientation]
+    must_not: [reproduced clause text, verbatim standard summary]
+
+  - prompt: Add a Traceability section to this trivial one-line commit.
+    expected_behavior: decline_disproportionate_ceremony
+    must_include: [trivial commits need only a title, traceability reserved for consequential or regulated change]
+    must_not: [traceability block on trivial work]
+
+  - prompt: Install the regulatory extension and tell me what changes for my everyday commits.
+    expected_behavior: extension_is_additive
+    must_include: [same minimal or full profile behavior, lens applies only when the change is validated safety-relevant or audited, agents assist humans decide]
+    must_not: [every commit now requires regulatory sign-off, extension changes what the profile means]

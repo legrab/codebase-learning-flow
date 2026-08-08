@@ -13,8 +13,9 @@ flowchart LR
 - `conversation-cases.yaml` checks general-topic learning, adaptive conversation, trial and error, human educational value, AI independence, and routing back to repository learning.
 - `minimal-cases.yaml` checks the compact repository skill, resilience and ownership lenses, and persistence restraint.
 - `full-cases.yaml` checks focused skill routing, responsible machine-generated work review, domain depth, and anti-ceremony behavior.
+- `structured-change-cases.yaml` checks when Explore/Design/Approve is (and is not) warranted, decision-record promotion discipline, traceability proportionality, and the regulatory extension's additive, non-reproducing behavior.
 
-Review these fixtures when changing skill descriptions, routing, profiles, educational principles, baseline research, local continuity, understanding checks, or persistence rules.
+Review these fixtures when changing skill descriptions, routing, profiles, extensions, educational principles, baseline research, local continuity, understanding checks, or persistence rules.
 
 > [!NOTE]
 > Expected phrases describe behavioral evidence, not exact generated wording.

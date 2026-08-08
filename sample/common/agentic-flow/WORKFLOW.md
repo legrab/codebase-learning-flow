@@ -22,6 +22,8 @@ Confirm that the route's required runtime, tools, access, and approval are avail
 
 If collaboration behavior materially affects the result and repository evidence does not settle it, use the configured preset or ask for one relevant override. Otherwise use `balanced`.
 
+For a change that is architecturally significant, genuinely ambiguous between credible options, or regulated, expand Decide into a short Explore → Design → Approve sequence using `structured-change` before moving to Act: state current understanding and unknowns, propose an approach with tradeoffs and a requested decision, then get explicit approval. Keep this proportional; do not expand Decide this way for ordinary work.
+
 ## Act
 
 Make the smallest responsible change or investigation that reaches the outcome. Keep unrelated cleanup out of scope. Do not force one-file or one-commit steps when a coherent slice is safer.
@@ -64,6 +66,32 @@ Open
 Use descriptive bullets grouped by outcome instead of a chronological tool log or file inventory. Put long command output, secondary rationale, alternatives, or exhaustive evidence in collapsible sections. Keep failures and required next actions visible.
 
 When `learning-flow/` or a meaningful generic learning session was active, close private continuity under `.local/` according to `LOCAL.md`, then fold only useful learning reinforcement into this handoff. Do not add a second recap section, repeat the same outcome and evidence, or expose private session detail through shared records.
+
+## Traceability
+
+For most work, the commit shape in `AGENTS.md` is enough. For a consequential or regulated change, and only then, add a `Traceability` section to the commit body:
+
+```text
+Traceability:
+- Requirements: relevant requirement or ticket
+- Design: relevant design note or DECISIONS.md entry, if any
+- Behavior change: None / Minor / Major
+- Risk level: Low / Medium / High
+- Tests: Added / Updated / Existing / None
+- Documentation: Updated / Not required
+```
+
+When `.agents/skills/regulatory-knowledge/` is installed and relevant, append:
+
+```text
+Regulatory:
+- Validation impact: None / Low / Medium / High
+- Data integrity impact: None / Low / Medium / High
+- Auditability impact: None / Low / Medium / High
+- Requirement → design → code → test linkage: Complete / Partial / Not applicable
+```
+
+Do not add either block to a trivial or low-risk change; it dilutes the signal for the changes that actually need it.
 
 ## Stop conditions
 

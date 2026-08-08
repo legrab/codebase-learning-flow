@@ -89,7 +89,7 @@ When relevant, examine:
 
 Use deeper scrutiny for laboratory software, industrial control, regulated software, security, architecture and integration, validation, education and assessment, and human-machine workflow design.
 
-Do not force these lenses onto low-risk work.
+Do not force these lenses onto low-risk work. For the operational version of the regulation, audit, and professional-responsibility lens, use `structured-change` and, when installed, the `regulatory-knowledge` skill from the `regulatory` extension, rather than reasoning about traceability or risk acceptance from first principles each time.
 
 ## 6. Preserve human educational value
 

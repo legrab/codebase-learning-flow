@@ -18,7 +18,7 @@ This file governs learning-oriented repository work. Every selected learning ski
 | non-trivial change explanation | `change-explainer` |
 | task context before implementation | `ticket-learning-path` |
 
-Do not load all skills. Do not use `agentic-workflow` as a second engineering procedure. Agents without task-skill support use `PLAYBOOKS.md`.
+Do not load all skills. Do not use `agentic-workflow` as a second engineering procedure. Agents without task-skill support use `PLAYBOOKS.md`. For one architecturally significant, ambiguous, or regulated change within the selected skill's work, `structured-change` may run alongside it; it does not replace the selected skill.
 
 ## Shared learning flow
 

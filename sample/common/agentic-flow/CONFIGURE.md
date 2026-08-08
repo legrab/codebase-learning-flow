@@ -9,9 +9,11 @@ Configuration is optional. Use `balanced` by default and begin work immediately.
 | `fast` | routine, low-risk delivery | end-to-end autonomy, minimal planning, focused checks, no learning prompts or persistence |
 | `balanced` | normal repository work | meaningful-fork autonomy, brief planning, risk-based checks, concise learning in the handoff, durable findings only |
 | `guided` | deliberate codebase and domain learning | balanced delivery with prediction, explanation, one consequential check, and durable findings only |
-| `gated` | high-risk or review-heavy work | pause before implementation and major scope changes, use durable phases, broad checks, and lean learning |
+| `gated` | high-risk or review-heavy work | pause before implementation and major scope changes, use durable phases, broad checks, and lean learning; typically pairs with `structured-change` |
 
 `balanced` is the default. A task-specific request such as “move fast,” “teach me as we work,” or “pause before implementation” overrides the stored preset for that task without rewriting settings.
+
+`gated` sets the default posture; `structured-change` is what actually runs the Explore → Design → Approve sequence for one change, regardless of preset, when the change itself warrants it. When `.agents/skills/regulatory-knowledge/` is installed (the `regulatory` extension), that lens is available to `structured-change` automatically; it does not change the default preset.
 
 <details>
 <summary>Advanced overrides and optional learner context</summary>

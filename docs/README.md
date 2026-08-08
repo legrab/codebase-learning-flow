@@ -31,6 +31,7 @@ flowchart LR
 - [`Awesome Agent Skills`](references/REFERENCE_REVIEW_AWESOME_AGENT_SKILLS.md)
 - [`Best of Agent Harnesses`](references/REFERENCE_REVIEW_BEST_OF_AGENT_HARNESSES.md)
 - [`Goose`](references/REFERENCE_REVIEW_GOOSE.md)
+- [`Learning flow adjustment for regulatory`](references/REFERENCE_REVIEW_LEARNING_FLOW_ADJUSTMENT.md)
 - [`Pocok`](references/REFERENCE_REVIEW_POCOK.md)
 - [`Litt`](references/REFERENCE_REVIEW_LITT.md)
 

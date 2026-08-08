@@ -7,7 +7,8 @@ flowchart LR
     D[Download pinned source] --> P[Select profile]
     P --> C[Install common agentic flow]
     C --> L[Install learning profile]
-    L --> S[Install managed skills]
+    L --> Ext[Install or remove regulatory extension]
+    Ext --> S[Install managed skills]
     S --> X[Initialize ignored .local]
     X --> R[Integrate or preserve root AGENTS]
 ```
@@ -15,10 +16,11 @@ flowchart LR
 ## Installed components
 
 1. common `agentic-flow/`;
-2. common `agentic-workflow` and `learn-anything` skills unless skipped;
+2. common `agentic-workflow`, `learn-anything`, and `structured-change` skills unless skipped;
 3. the selected minimal or full `learning-flow/` profile and its managed skills;
-4. an ignored repository-root `.local/` learning workspace;
-5. optional root `AGENTS.md` integration.
+4. the `regulatory` extension's `learning-flow/REGULATORY.md` and `regulatory-knowledge` skill, only when `--extension regulatory` is selected;
+5. an ignored repository-root `.local/` learning workspace;
+6. optional root `AGENTS.md` integration.
 
 The local workspace contains `learning-history.md`, `sessions/`, and `follow-ups/`. Setup appends `/.local/` to `.gitignore` when no equivalent rule exists, creates missing surfaces, and never overwrites existing local history.
 
@@ -33,6 +35,20 @@ The local workspace contains `learning-history.md`, `sessions/`, and `follow-ups
 | `full` | no | deliberate onboarding and focused repository-learning skills |
 
 Minimal can upgrade to full in update mode. Full-to-minimal update is rejected because automatic deletion could remove repository-authored content.
+
+## Extensions
+
+| Extension | Default | Adds |
+|---|---:|---|
+| `none` | yes | nothing |
+| `regulatory` | no | `regulatory-knowledge` skill and `learning-flow/REGULATORY.md` |
+
+```text
+--extension auto|none|regulatory
+-Extension Auto|None|Regulatory
+```
+
+Extensions are orthogonal to profile: `regulatory` installs the same way under `minimal` or `full`. `auto` (the default) keeps whatever is currently installed and defaults a fresh install to `none`. Adding the extension works in any mode; removing it (`regulatory` -> `none`) requires `update` or `replace`, for the same reason a destructive profile switch does: `merge` never removes content, and `fail` only ever targets an empty installation.
 
 ## Framework modes
 

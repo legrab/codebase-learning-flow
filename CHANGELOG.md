@@ -17,6 +17,23 @@
 - Full-profile skills now validate machine-generated work and surface operational or human control boundaries in proportion to risk.
 - Human-facing documentation now explains the framework before agentic implementation detail.
 
+## 0.8.0
+
+### Added
+
+- A common `structured-change` skill that elaborates `Decide` into `Explore → Design → Approve` for one architecturally significant, ambiguous, or regulated change, available with every profile and running alongside the active route rather than replacing it.
+- `agentic-flow/DECISIONS.md`, a durable, append-only decision-record surface, treated like `SETTINGS.md` and written to only through `structured-change`'s Capture Knowledge step.
+- An optional `Traceability` section (and regulatory addendum) for commit bodies, documented in `agentic-flow/WORKFLOW.md`, used only for a consequential or regulated change.
+- Seven general-purpose engineering knowledge files inside `structured-change` (AI collaboration and anti-overengineering guidance, modernization, maintainability, testing, architecture, dependency management, documentation).
+- A new orthogonal, additive installer dimension, extensions (`--extension none|regulatory`, `-Extension None|Regulatory`), alongside the existing profile dimension, with a full add/update/remove lifecycle in `install.sh` and `install.ps1` and its own manifest markers so it never collides with profile bookkeeping.
+- A `regulatory` extension: the `regulatory-knowledge` skill, providing traceability, validation, risk-management, audit-trail, and change-control guidance plus short orientation to ISO 9001, ISO 13485, ISO 14971, ISO 17025, IEC 62304, and 21 CFR Part 11, and `learning-flow/REGULATORY.md`.
+- `docs/references/REFERENCE_REVIEW_LEARNING_FLOW_ADJUSTMENT.md`, documenting a user-requested comprehensive integration and the deliberate exception to the default small-delta review posture.
+
+### Changed
+
+- `agentic-flow/AGENTS.md`, `WORKFLOW.md`, `CONFIGURE.md`, `EDUCATION.md`, and `ROOT_INTEGRATION.md` gained short pointers to `structured-change`, `DECISIONS.md`, and the regulatory extension without changing default behavior for ordinary work.
+- The installer's final summary line and both profile `AGENTS.md` files now note the selected extension and how `structured-change` pairs with the active route.
+
 ## 0.7.0
 
 ### Added

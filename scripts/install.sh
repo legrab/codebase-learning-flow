@@ -6,6 +6,7 @@ REPOSITORY="${CODEBASE_LEARNING_FLOW_REPOSITORY:-legrab/codebase-learning-flow}"
 REF="${CODEBASE_LEARNING_FLOW_REF:-main}"
 MODE="fail"
 PROFILE="auto"
+EXTENSION="auto"
 SKIP_ROOT_AGENTS="false"
 ROOT_AGENTS_MODE="auto"
 SKIP_SKILLS="false"
@@ -19,6 +20,7 @@ Options:
   --repository OWNER/REPO          Public template repository
   --ref REF                        Branch, tag, or commit reference
   --profile auto|minimal|full      Learning profile; auto keeps an existing profile and defaults new installs to minimal
+  --extension auto|none|regulatory Additive installation dimension; auto keeps an existing extension and defaults new installs to none
   --mode fail|merge|update|replace Existing-framework behavior
   --root-agents MODE               auto|integrate|initialize|preserve|skip
   --skip-root-agents               Alias for --root-agents skip
@@ -436,6 +438,27 @@ install_component() {
     fi
 }
 
+install_extension_overlay() {
+    # Unlike install_component, this never removes target_root: it always
+    # runs after the profile is already installed into the same target_root
+    # and must only add or refresh the extension's own files.
+    component_name="$1"
+    source_root="$2"
+    target_root="$3"
+    managed_files="$4"
+
+    if [ "$MODE" = "merge" ]; then
+        log "Merging missing $component_name files"
+        copy_missing_tree "$source_root" "$target_root"
+    else
+        remove_retired_managed_files "$target_root" "$target_root/.extension-managed-files" "$managed_files"
+        log "Adding missing $component_name files"
+        copy_missing_tree "$source_root" "$target_root"
+        log "Updating framework-owned $component_name files"
+        copy_managed_files "$source_root" "$target_root" "$managed_files"
+    fi
+}
+
 install_skills_from_manifest() {
     source_skills="$1"
     manifest="$2"
@@ -521,6 +544,11 @@ while [ "$#" -gt 0 ]; do
             PROFILE="$(printf '%s' "$2" | tr 'A-Z' 'a-z')"
             shift 2
             ;;
+        --extension)
+            require_value "$1" "$#"
+            EXTENSION="$(printf '%s' "$2" | tr 'A-Z' 'a-z')"
+            shift 2
+            ;;
         --mode)
             require_value "$1" "$#"
             MODE="$(printf '%s' "$2" | tr 'A-Z' 'a-z')"
@@ -554,6 +582,7 @@ done
 
 case "$MODE" in fail|merge|update|replace) ;; *) echo "Invalid mode: $MODE" >&2; exit 2 ;; esac
 case "$PROFILE" in auto|minimal|full) ;; *) echo "Invalid profile: $PROFILE" >&2; exit 2 ;; esac
+case "$EXTENSION" in auto|none|regulatory) ;; *) echo "Invalid extension: $EXTENSION" >&2; exit 2 ;; esac
 case "$ROOT_AGENTS_MODE" in auto|integrate|initialize|preserve|skip) ;; *) echo "Invalid root agents mode: $ROOT_AGENTS_MODE" >&2; exit 2 ;; esac
 
 command -v unzip >/dev/null 2>&1 || { echo "The installer requires unzip." >&2; exit 1; }
@@ -585,6 +614,24 @@ if [ -n "$INSTALLED_PROFILE" ] && [ "$INSTALLED_PROFILE" != "$SELECTED_PROFILE" 
         echo "Profile change $INSTALLED_PROFILE -> $SELECTED_PROFILE is not supported in mode '$MODE'. Use update for minimal -> full, or replace for a destructive switch." >&2
         exit 1
     fi
+fi
+
+# Extensions are an additive dimension orthogonal to profile (e.g. --extension
+# regulatory), tracked by a marker file the same way profile is.
+INSTALLED_EXTENSION="$(read_profile_file "$TARGET_LEARNING/.extension-name")"
+case "$INSTALLED_EXTENSION" in ''|regulatory) ;; *) echo "Invalid installed extension marker: $INSTALLED_EXTENSION" >&2; exit 1 ;; esac
+
+if [ "$EXTENSION" = "auto" ]; then
+    if [ -n "$INSTALLED_EXTENSION" ]; then SELECTED_EXTENSION="$INSTALLED_EXTENSION"; else SELECTED_EXTENSION="none"; fi
+else
+    SELECTED_EXTENSION="$EXTENSION"
+fi
+
+if [ -n "$INSTALLED_EXTENSION" ] && [ "$INSTALLED_EXTENSION" != "$SELECTED_EXTENSION" ] && [ "$SELECTED_EXTENSION" = "none" ]; then
+    case "$MODE" in
+        update|replace) log "Removing $INSTALLED_EXTENSION extension" ;;
+        *) echo "Extension change $INSTALLED_EXTENSION -> none is not supported in mode '$MODE'. Use update or replace." >&2; exit 1 ;;
+    esac
 fi
 
 if [ "$MODE" = "update" ] && [ ! -d "$TARGET_LEARNING" ]; then
@@ -622,6 +669,11 @@ SOURCE_LEARNING_MANAGED_FILES="$SOURCE_LEARNING/.managed-files"
 SOURCE_LEARNING_MANAGED_SKILLS="$SOURCE_LEARNING/.managed-skills"
 SOURCE_ROOT_AGENTS="$ARCHIVE_ROOT/sample/root/AGENTS.md"
 SOURCE_ROOT_POINTER="$ARCHIVE_ROOT/sample/root/AGENTS.pointer.md"
+SOURCE_EXTENSION="$ARCHIVE_ROOT/sample/extensions/regulatory"
+SOURCE_EXTENSION_LEARNING="$SOURCE_EXTENSION/learning-flow"
+SOURCE_EXTENSION_SKILLS="$SOURCE_EXTENSION/.agents/skills"
+SOURCE_EXTENSION_MANAGED_FILES="$SOURCE_EXTENSION_LEARNING/.extension-managed-files"
+SOURCE_EXTENSION_MANAGED_SKILLS="$SOURCE_EXTENSION_LEARNING/.extension-managed-skills"
 
 for required in "$SOURCE_AGENTIC" "$SOURCE_LEARNING"; do
     [ -d "$required" ] || { echo "Required framework directory is missing: $required" >&2; exit 1; }
@@ -632,6 +684,15 @@ done
 if [ "$SKIP_SKILLS" != "true" ]; then
     [ -d "$SOURCE_COMMON_SKILLS" ] || { echo "Common skill directory is missing." >&2; exit 1; }
     [ -d "$SOURCE_PROFILE_SKILLS" ] || { echo "Profile skill directory is missing." >&2; exit 1; }
+fi
+if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
+    [ -d "$SOURCE_EXTENSION_LEARNING" ] || { echo "Required extension directory is missing: $SOURCE_EXTENSION_LEARNING" >&2; exit 1; }
+    for required in "$SOURCE_EXTENSION_MANAGED_FILES" "$SOURCE_EXTENSION_MANAGED_SKILLS"; do
+        [ -f "$required" ] || { echo "Required extension manifest is missing: $required" >&2; exit 1; }
+    done
+    if [ "$SKIP_SKILLS" != "true" ]; then
+        [ -d "$SOURCE_EXTENSION_SKILLS" ] || { echo "Extension skill directory is missing." >&2; exit 1; }
+    fi
 fi
 
 if [ "$MODE" = "fail" ]; then
@@ -650,6 +711,14 @@ if [ "$MODE" = "fail" ]; then
                 fi
             done < "$manifest"
         done
+        if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
+            while IFS= read -r skill_name || [ -n "$skill_name" ]; do
+                case "$skill_name" in ''|'#'*) continue ;; esac
+                if [ -e "$TARGET_SKILLS/$skill_name" ]; then
+                    if [ -z "$conflicts" ]; then conflicts="$skill_name"; else conflicts="$conflicts, $skill_name"; fi
+                fi
+            done < "$SOURCE_EXTENSION_MANAGED_SKILLS"
+        fi
         [ -z "$conflicts" ] || {
             echo "Managed skill folders already exist: $conflicts. Use merge, update, replace, or --skip-skills." >&2
             exit 1
@@ -659,6 +728,16 @@ fi
 
 install_component "agentic-flow" "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_MANAGED_FILES"
 install_component "learning-flow/$SELECTED_PROFILE" "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_MANAGED_FILES"
+
+if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
+    install_extension_overlay "learning-flow/regulatory (extension)" "$SOURCE_EXTENSION_LEARNING" "$TARGET_LEARNING" "$SOURCE_EXTENSION_MANAGED_FILES"
+elif [ -n "$INSTALLED_EXTENSION" ]; then
+    if [ "$MODE" = "update" ] || [ "$MODE" = "replace" ]; then
+        remove_retired_managed_files "$TARGET_LEARNING" "$TARGET_LEARNING/.extension-managed-files" /dev/null
+        log "Removed $INSTALLED_EXTENSION extension"
+    fi
+fi
+
 initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY"
 
 if [ "$SKIP_SKILLS" != "true" ]; then
@@ -668,6 +747,7 @@ if [ "$SKIP_SKILLS" != "true" ]; then
         remove_skills_from_manifest "$SOURCE_AGENTIC_MANAGED_SKILLS" "$TARGET_SKILLS"
         remove_skills_from_manifest "$ARCHIVE_ROOT/sample/profiles/minimal/learning-flow/.managed-skills" "$TARGET_SKILLS"
         remove_skills_from_manifest "$ARCHIVE_ROOT/sample/profiles/full/learning-flow/.managed-skills" "$TARGET_SKILLS"
+        remove_skills_from_manifest "$SOURCE_EXTENSION_MANAGED_SKILLS" "$TARGET_SKILLS"
     elif [ "$MODE" = "update" ]; then
         remove_skills_from_manifest "$SOURCE_AGENTIC_MANAGED_SKILLS" "$TARGET_SKILLS"
         if [ -n "$INSTALLED_PROFILE" ]; then
@@ -676,10 +756,16 @@ if [ "$SKIP_SKILLS" != "true" ]; then
         if [ "$INSTALLED_PROFILE" != "$SELECTED_PROFILE" ]; then
             remove_skills_from_manifest "$SOURCE_LEARNING_MANAGED_SKILLS" "$TARGET_SKILLS"
         fi
+        if [ "$INSTALLED_EXTENSION" = "regulatory" ]; then
+            remove_skills_from_manifest "$SOURCE_EXTENSION_MANAGED_SKILLS" "$TARGET_SKILLS"
+        fi
     fi
 
     install_skills_from_manifest "$SOURCE_COMMON_SKILLS" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$TARGET_SKILLS"
     install_skills_from_manifest "$SOURCE_PROFILE_SKILLS" "$SOURCE_LEARNING_MANAGED_SKILLS" "$TARGET_SKILLS"
+    if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
+        install_skills_from_manifest "$SOURCE_EXTENSION_SKILLS" "$SOURCE_EXTENSION_MANAGED_SKILLS" "$TARGET_SKILLS"
+    fi
 fi
 
 if [ "$SKIP_ROOT_AGENTS" = "true" ]; then
@@ -713,6 +799,6 @@ esac
 
 set_root_integration_state "$TARGET_AGENTIC/SETTINGS.md" "$RESOLVED_ROOT_AGENTS_MODE"
 
-log "Installation complete: profile=$SELECTED_PROFILE mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
+log "Installation complete: profile=$SELECTED_PROFILE extension=$SELECTED_EXTENSION mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
 printf '\n%s\n' "Suggested first instruction:"
 printf '%s\n' "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."

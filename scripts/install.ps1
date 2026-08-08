@@ -5,6 +5,8 @@ param(
     [string]$Ref = "main",
     [ValidateSet("Auto", "Minimal", "Full")]
     [string]$Profile = "Auto",
+    [ValidateSet("Auto", "None", "Regulatory")]
+    [string]$Extension = "Auto",
     [ValidateSet("Fail", "Merge", "Update", "Replace")]
     [string]$Mode = "Fail",
     [ValidateSet("Auto", "Integrate", "Initialize", "Preserve", "Skip")]
@@ -16,7 +18,7 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
-$InstallerVersion = "0.7.0"
+$InstallerVersion = "0.8.0"
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
@@ -132,6 +134,16 @@ function Get-InstalledProfile([string]$LearningPath) {
         throw "Invalid installed profile marker: $value"
     }
     if (Test-DirectoryHasContent $LearningPath) { return "full" }
+    return $null
+}
+
+function Get-InstalledExtension([string]$LearningPath) {
+    $extensionFile = Join-Path $LearningPath ".extension-name"
+    if (Test-Path -LiteralPath $extensionFile -PathType Leaf) {
+        $value = (Get-Content -LiteralPath $extensionFile -TotalCount 1).Trim().ToLowerInvariant()
+        if ($value -in @("regulatory")) { return $value }
+        throw "Invalid installed extension marker: $value"
+    }
     return $null
 }
 
@@ -311,6 +323,34 @@ function Install-Component(
     }
 }
 
+function Install-ExtensionOverlay(
+    [string]$Name,
+    [string]$Source,
+    [string]$Destination,
+    [string]$ManagedFiles,
+    [string]$InstallMode
+) {
+    # Unlike Install-Component, this never removes Destination: it always runs
+    # after the profile is already installed into the same Destination and
+    # must only add or refresh the extension's own files.
+    if ($InstallMode -eq "Merge") {
+        Write-Step "Merging missing $Name files"
+        $result = Copy-MissingTree -Source $Source -Destination $Destination
+        Write-Step "Copied $($result.Copied) files and preserved $($result.Skipped) existing files"
+    }
+    else {
+        $previousManagedFiles = Join-Path $Destination ".extension-managed-files"
+        $retired = Remove-RetiredManagedFiles -Destination $Destination -PreviousManifestPath $previousManagedFiles -CurrentManifestPath $ManagedFiles
+        if ($retired -gt 0) { Write-Step "Removed $retired retired managed files from $Name" }
+        Write-Step "Adding missing $Name files"
+        $result = Copy-MissingTree -Source $Source -Destination $Destination
+        Write-Step "Copied $($result.Copied) files and preserved $($result.Skipped) existing files"
+        Write-Step "Updating framework-owned $Name files"
+        $count = Copy-ManagedFiles -Source $Source -Destination $Destination -ManifestPath $ManagedFiles
+        Write-Step "Updated $count managed files in $Name"
+    }
+}
+
 function Install-ManagedSkills(
     [string]$SourceSkills,
     [string]$ManifestPath,
@@ -447,6 +487,7 @@ if (-not $SkipSelfRefresh) {
             -Repository $Repository `
             -Ref $resolvedCommit `
             -Profile $Profile `
+            -Extension $Extension `
             -Mode $Mode `
             -RootAgents $RootAgents `
             -SkipRootAgents:$($SkipRootAgents.IsPresent) `
@@ -487,6 +528,23 @@ if (-not [string]::IsNullOrWhiteSpace($installedProfile) -and $installedProfile 
     }
 }
 
+# Extensions are an additive dimension orthogonal to profile (e.g. -Extension
+# Regulatory), tracked by a marker file the same way profile is.
+$installedExtension = Get-InstalledExtension $targetLearning
+$requestedExtension = $Extension.ToLowerInvariant()
+$selectedExtension = if ($requestedExtension -eq "auto") {
+    if ([string]::IsNullOrWhiteSpace($installedExtension)) { "none" } else { $installedExtension }
+} else { $requestedExtension }
+
+if (-not [string]::IsNullOrWhiteSpace($installedExtension) -and $installedExtension -ne $selectedExtension -and $selectedExtension -eq "none") {
+    if ($Mode -eq "Update" -or $Mode -eq "Replace") {
+        Write-Step "Removing $installedExtension extension"
+    }
+    else {
+        throw "Extension change $installedExtension -> none is not supported in mode '$Mode'. Use Update or Replace."
+    }
+}
+
 if ($Mode -eq "Update" -and -not (Test-Path -LiteralPath $targetLearning -PathType Container)) {
     throw "$targetLearning does not exist. Use -Mode Fail or -Mode Merge for a new installation."
 }
@@ -523,6 +581,12 @@ try {
     $sourceRootAgents = Join-Path $archiveRoot "sample/root/AGENTS.md"
     $sourceRootPointer = Join-Path $archiveRoot "sample/root/AGENTS.pointer.md"
 
+    $sourceExtension = Join-Path $archiveRoot "sample/extensions/regulatory"
+    $sourceExtensionLearning = Join-Path $sourceExtension "learning-flow"
+    $sourceExtensionSkills = Join-Path $sourceExtension ".agents/skills"
+    $sourceExtensionManagedFiles = Join-Path $sourceExtensionLearning ".extension-managed-files"
+    $sourceExtensionManagedSkills = Join-Path $sourceExtensionLearning ".extension-managed-skills"
+
     foreach ($requiredDirectory in @($sourceAgentic, $sourceLearning)) {
         if (-not (Test-Path -LiteralPath $requiredDirectory -PathType Container)) {
             throw "Required framework directory is missing: $requiredDirectory"
@@ -537,6 +601,19 @@ try {
         if (-not (Test-Path -LiteralPath $sourceCommonSkills -PathType Container)) { throw "Common skill directory is missing." }
         if (-not (Test-Path -LiteralPath $sourceProfileSkills -PathType Container)) { throw "Profile skill directory is missing." }
     }
+    if ($selectedExtension -eq "regulatory") {
+        if (-not (Test-Path -LiteralPath $sourceExtensionLearning -PathType Container)) {
+            throw "Required extension directory is missing: $sourceExtensionLearning"
+        }
+        foreach ($requiredFile in @($sourceExtensionManagedFiles, $sourceExtensionManagedSkills)) {
+            if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
+                throw "Required extension manifest is missing: $requiredFile"
+            }
+        }
+        if (-not $SkipSkills) {
+            if (-not (Test-Path -LiteralPath $sourceExtensionSkills -PathType Container)) { throw "Extension skill directory is missing." }
+        }
+    }
 
     if ($Mode -eq "Fail") {
         if ((Test-DirectoryHasContent $targetAgentic) -or (Test-DirectoryHasContent $targetLearning)) {
@@ -547,6 +624,9 @@ try {
                 Get-ManagedSkillNames $sourceAgenticManagedSkills
                 Get-ManagedSkillNames $sourceLearningManagedSkills
             )
+            if ($selectedExtension -eq "regulatory") {
+                $allNames += Get-ManagedSkillNames $sourceExtensionManagedSkills
+            }
             $conflicts = @($allNames | Where-Object { Test-Path -LiteralPath (Join-Path $targetSkills $_) })
             if ($conflicts.Count -gt 0) {
                 throw "Managed skill folders already exist: $($conflicts -join ', '). Use Merge, Update, Replace, or -SkipSkills."
@@ -556,6 +636,22 @@ try {
 
     Install-Component -Name "agentic-flow" -Source $sourceAgentic -Destination $targetAgentic -ManagedFiles $sourceAgenticManagedFiles -InstallMode $Mode
     Install-Component -Name "learning-flow/$selectedProfile" -Source $sourceLearning -Destination $targetLearning -ManagedFiles $sourceLearningManagedFiles -InstallMode $Mode
+
+    if ($selectedExtension -eq "regulatory") {
+        Install-ExtensionOverlay -Name "learning-flow/regulatory (extension)" -Source $sourceExtensionLearning -Destination $targetLearning -ManagedFiles $sourceExtensionManagedFiles -InstallMode $Mode
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($installedExtension) -and ($Mode -eq "Update" -or $Mode -eq "Replace")) {
+        $removedExtensionFiles = Join-Path ([System.IO.Path]::GetTempPath()) ([Guid]::NewGuid().ToString("N") + ".txt")
+        New-Item -ItemType File -Path $removedExtensionFiles -Force | Out-Null
+        try {
+            Remove-RetiredManagedFiles -Destination $targetLearning -PreviousManifestPath (Join-Path $targetLearning ".extension-managed-files") -CurrentManifestPath $removedExtensionFiles | Out-Null
+        }
+        finally {
+            Remove-Item -LiteralPath $removedExtensionFiles -Force -ErrorAction SilentlyContinue
+        }
+        Write-Step "Removed $installedExtension extension"
+    }
+
     Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
 
     if (-not $SkipSkills) {
@@ -565,6 +661,7 @@ try {
             Remove-ManagedSkills -ManifestPath $sourceAgenticManagedSkills -TargetSkills $targetSkills
             Remove-ManagedSkills -ManifestPath (Join-Path $archiveRoot "sample/profiles/minimal/learning-flow/.managed-skills") -TargetSkills $targetSkills
             Remove-ManagedSkills -ManifestPath (Join-Path $archiveRoot "sample/profiles/full/learning-flow/.managed-skills") -TargetSkills $targetSkills
+            Remove-ManagedSkills -ManifestPath $sourceExtensionManagedSkills -TargetSkills $targetSkills
         }
         elseif ($Mode -eq "Update") {
             Remove-ManagedSkills -ManifestPath $sourceAgenticManagedSkills -TargetSkills $targetSkills
@@ -574,10 +671,16 @@ try {
             if ($installedProfile -ne $selectedProfile) {
                 Remove-ManagedSkills -ManifestPath $sourceLearningManagedSkills -TargetSkills $targetSkills
             }
+            if ($installedExtension -eq "regulatory") {
+                Remove-ManagedSkills -ManifestPath $sourceExtensionManagedSkills -TargetSkills $targetSkills
+            }
         }
 
         Install-ManagedSkills -SourceSkills $sourceCommonSkills -ManifestPath $sourceAgenticManagedSkills -TargetSkills $targetSkills -InstallMode $Mode
         Install-ManagedSkills -SourceSkills $sourceProfileSkills -ManifestPath $sourceLearningManagedSkills -TargetSkills $targetSkills -InstallMode $Mode
+        if ($selectedExtension -eq "regulatory") {
+            Install-ManagedSkills -SourceSkills $sourceExtensionSkills -ManifestPath $sourceExtensionManagedSkills -TargetSkills $targetSkills -InstallMode $Mode
+        }
     }
 
     $requestedRootAgents = if ($SkipRootAgents) { "Skip" } else { $RootAgents }
@@ -613,7 +716,7 @@ try {
 
     Set-RootIntegrationState -SettingsPath (Join-Path $targetAgentic "SETTINGS.md") -ResolvedMode $resolvedRootAgents
 
-    Write-Step "Installation complete: profile=$selectedProfile mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
+    Write-Step "Installation complete: profile=$selectedProfile extension=$selectedExtension mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
     Write-Host ""
     Write-Host "Suggested first instruction:"
     Write-Host "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."
