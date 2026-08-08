@@ -13,13 +13,34 @@ selected when useful, but this layer must remain usable without either one.
 
 1. Follow root, nested, and tool-specific repository instructions first.
 2. Use this layer for collaboration behavior.
-3. Load `learning-flow/AGENTS.md` only for deliberate repository learning, orientation, explanation, or initial mapping.
-4. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
-5. Learning routes apply `EDUCATION.md` selectively.
-6. Load at most one task skill unless the task clearly requires more.
-7. For one consequential, ambiguous, or regulated change, `structured-change` may run alongside the chosen route to sequence Explore, Design, and Approve before Act. It elaborates `Decide`; it is not a second route, and most tasks never need it.
+3. Select one primary task route. Do not load multiple task procedures unless the active route explicitly requires a narrow supporting skill.
+4. Load `learning-flow/AGENTS.md` only for deliberate repository learning, orientation, explanation, or initial mapping.
+5. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
+6. Apply `EDUCATION.md` only when a selected learning route needs it. Read only the relevant sections.
+7. For one consequential, ambiguous, or regulated change, `structured-change` may run alongside the chosen route to elaborate `Decide`. It is not a second engineering workflow, and most tasks never need it.
 
-Read `SETTINGS.md`; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override.
+Read `SETTINGS.md` when the task depends on collaboration configuration; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override. Do not load configuration documents merely because they exist.
+
+## Context budget
+
+The framework is intentionally progressive-disclosure. Context is a limited engineering resource, not a reason to load every framework document.
+
+- Start with repository-native instructions and this file.
+- Select one primary task route before loading task-specific instructions.
+- Load only the files that route names as necessary for the current question.
+- Treat indexes, manifests, and routing files as pointers, not requests to preload their entire contents.
+- Read one relevant knowledge/reference file at a time when possible.
+- Reuse current evidence instead of rescanning the same territory for another skill.
+- Stop when the evidence threshold for the decision or implementation is met.
+- Small or mechanical work should collapse the route to the smallest useful sequence.
+
+The intended default is:
+
+```text
+repository instructions → Agentic Delivery → one task route → narrow evidence
+```
+
+Learning and risk material are conditional branches. They are not part of the universal context. See `docs/AGENTIC_WORKFLOW_SANITY.md` in the framework repository for the behavioral acceptance scenarios and context-budget rationale.
 
 ## Discover the effective setup
 

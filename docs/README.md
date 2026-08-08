@@ -58,6 +58,10 @@ value already covered locally, and retain only the smallest gap-closing delta.
 
 </details>
 
+## Agentic workflow sanity checks
+
+Use [`AGENTIC_WORKFLOW_SANITY.md`](AGENTIC_WORKFLOW_SANITY.md) when changing common agent instructions or broadly loaded skills. It defines the context-budget rules and representative scenarios used to detect framework ritual and context-overflow regressions.
+
 ## Maintainer checklist
 
 1. Keep generic learning and repository learning behaviorally aligned through

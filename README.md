@@ -54,6 +54,12 @@ Agentic Delivery
 
 This separation is deliberate. Adding a new learning or risk concern should not automatically create another global workflow layer or increase the amount of instruction every task must load.
 
+## Instruction budget and workflow sanity
+
+The framework treats agent context as a limited engineering resource. The common delivery layer is the baseline; learning and risk material are conditional branches. Ordinary work should select one primary task route, load only the narrow evidence it needs, reuse current findings, and stop when the evidence threshold is met. A skill must not become a second workflow merely because it is related to the task.
+
+The framework is intentionally tested against representative low-risk, learning, consequential, and regulated scenarios to guard against the main failure mode: **making a competent developer perform framework rituals instead of making them faster and more aware**. See [`docs/AGENTIC_WORKFLOW_SANITY.md`](docs/AGENTIC_WORKFLOW_SANITY.md) for the context-budget rules and sanity scenarios.
+
 ## Start in two minutes
 
 Run one installer from the repository that should receive the framework:

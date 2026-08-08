@@ -5,7 +5,7 @@ description: Sequence Explore, Design, and Approve before Act for one consequent
 
 # Structured change
 
-Read `agentic-flow/AGENTS.md`, `agentic-flow/SETTINGS.md`, and `agentic-flow/WORKFLOW.md`. This skill elaborates one part of `Decide`. It does not replace `WORKFLOW.md`, `repository-learning`, or a full-profile task skill, and it is not a second delivery workflow running alongside them.
+Read `agentic-flow/AGENTS.md` and the relevant parts of `agentic-flow/WORKFLOW.md`. Read `SETTINGS.md` only when the configured preset affects the decision. This skill elaborates one part of `Decide`. It does not replace `WORKFLOW.md`, `repository-learning`, or a full-profile task skill, and it is not a second delivery workflow running alongside them.
 
 ## When this applies
 
@@ -31,7 +31,7 @@ Keep this conversational by default. Use `templates/exploration.md` only when a 
 1. Compare credible options against tradeoffs, risk, and migration cost.
 2. Select an approach and state what remains a requested decision for the user.
 3. Name the verification plan and, only when the change is genuinely hard to reverse, a rollback approach.
-4. When `regulatory-knowledge` is installed and relevant, note traceability, validation impact, and requirement linkage using its guidance. Do not invent compliance language the repository does not already use.
+4. When `regulatory-knowledge` is installed and relevant, read only the one or two knowledge files that answer the current question, then note traceability, validation impact, and requirement linkage using that guidance. Do not invent compliance language the repository does not already use.
 
 Use `templates/design.md` only when it earns its cost, per Scale below.
 

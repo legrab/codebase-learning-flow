@@ -5,7 +5,7 @@ description: Initialize, integrate, configure, explain, map, review, or improve 
 
 # Agentic workflow
 
-Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant section of `ROOT_INTEGRATION.md`, `CONFIGURE.md`, `WORKFLOW.md`, `LEARN.md`, `LOCAL.md`, or `REFERENCE_INTEGRATION.md`.
+Read `agentic-flow/README.md` and `AGENTS.md` first. Read `SETTINGS.md` only when configuration matters, then load only the specific section or document needed for the current operation. Do not preload the whole `agentic-flow/` directory.
 
 ## Discover the actual setup
 
@@ -15,6 +15,7 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 4. Treat managed template content as known; inspect custom additions, overrides, conflicts, and integration points.
 5. Separate stable policy, collaboration behavior, task procedure, shared learning, and private or temporary `.local/` state.
 6. Determine effective instruction order from repository evidence.
+7. Keep the active context narrow: do not load every discovered skill, plan, record, or reference merely because it exists.
 
 ## Initialize or integrate
 
@@ -54,3 +55,7 @@ Read `agentic-flow/README.md`, `AGENTS.md`, `SETTINGS.md`, and only the relevant
 Look for temporary handoff in stable instructions, contributor-specific learning outside ignored `.local/`, mandatory ceremony unrelated to risk, duplicated rules, unchecked completion claims, competing workflows, learning mixed into universal execution, stale records without owners, and ambiguous root integration.
 
 Recommend the smallest consolidation. Preserve coherent custom structures. Do not add a framework layer unless it removes more complexity than it adds.
+
+## Context budget
+
+Prefer one authoritative instruction over duplicated policy. If a rule is already owned by `agentic-flow/AGENTS.md`, a task skill should reference it rather than restate it. Do not load a second task procedure simply because it is related. When an operation can be completed from current repository evidence, stop rather than broadening the context.
