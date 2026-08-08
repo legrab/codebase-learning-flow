@@ -4,6 +4,8 @@ set -eu
 TARGET_PATH="$(pwd)"
 REPOSITORY="${CODEBASE_LEARNING_FLOW_REPOSITORY:-legrab/codebase-learning-flow}"
 REF="${CODEBASE_LEARNING_FLOW_REF:-main}"
+RELEASE_TAG=""
+PACKAGE_FILE=""
 MODE="fail"
 PROFILE="auto"
 EXTENSION="auto"
@@ -18,7 +20,10 @@ Usage: install.sh [options]
 Options:
   --target PATH                    Target repository directory
   --repository OWNER/REPO          Public template repository
-  --ref REF                        Branch, tag, or commit reference
+  --ref REF                        Branch, tag, or commit reference (development checkout path)
+  --release TAG                    Exact published release tag (e.g. v0.9.0); preferred for team/enterprise installs.
+                                    Downloads the packaged, checksum-verified release artifact instead of a mutable
+                                    source snapshot. "latest" is deliberately not supported: pin an exact tag.
   --profile auto|minimal|full      Learning profile; auto keeps an existing profile and defaults new installs to minimal
   --extension auto|none|regulatory Additive installation dimension; auto keeps an existing extension and defaults new installs to none
   --mode fail|merge|update|replace Existing-framework behavior
@@ -26,6 +31,8 @@ Options:
   --skip-root-agents               Alias for --root-agents skip
   --skip-skills                    Do not install or update .agents/skills
   -h, --help                       Show this help
+
+--ref and --release are mutually exclusive.
 EOF
 }
 
@@ -102,6 +109,46 @@ download_file() {
             --header='Cache-Control: no-cache, no-store, max-age=0' \
             --header='Pragma: no-cache' \
             "$url" -O "$output"
+    fi
+}
+
+require_checksum_tool() {
+    if command -v sha256sum >/dev/null 2>&1; then
+        CHECKSUM_CMD="sha256sum"
+    elif command -v shasum >/dev/null 2>&1; then
+        CHECKSUM_CMD="shasum"
+    elif command -v openssl >/dev/null 2>&1; then
+        CHECKSUM_CMD="openssl"
+    else
+        echo "Release installation requires sha256sum, shasum, or openssl." >&2
+        exit 1
+    fi
+}
+
+sha256_of() {
+    file="$1"
+    case "$CHECKSUM_CMD" in
+        sha256sum) sha256sum "$file" | awk '{print $1}' ;;
+        shasum) shasum -a 256 "$file" | awk '{print $1}' ;;
+        openssl) openssl dgst -sha256 "$file" | awk '{print $NF}' ;;
+    esac
+}
+
+verify_checksum() {
+    file="$1"
+    checksums_file="$2"
+    asset_name="$3"
+
+    expected="$(awk -v name="$asset_name" '$2 == name || $2 == "*" name {print $1; exit}' "$checksums_file")"
+    if [ -z "$expected" ]; then
+        echo "No checksum entry for $asset_name in checksums.txt." >&2
+        exit 1
+    fi
+
+    actual="$(sha256_of "$file")"
+    if [ "$(printf '%s' "$expected" | tr 'A-F' 'a-f')" != "$(printf '%s' "$actual" | tr 'A-F' 'a-f')" ]; then
+        echo "Checksum mismatch for $asset_name: expected $expected, got $actual." >&2
+        exit 1
     fi
 }
 
@@ -254,6 +301,8 @@ set_root_integration_state() {
 }
 
 parse_bootstrap_source() {
+    user_set_ref="false"
+    user_set_release="false"
     while [ "$#" -gt 0 ]; do
         case "$1" in
             --repository)
@@ -264,6 +313,19 @@ parse_bootstrap_source() {
             --ref)
                 [ "$#" -ge 2 ] || { echo "--ref requires a value." >&2; exit 2; }
                 REF="$2"
+                user_set_ref="true"
+                shift 2
+                ;;
+            --release)
+                [ "$#" -ge 2 ] || { echo "--release requires a value." >&2; exit 2; }
+                RELEASE_TAG="$2"
+                user_set_release="true"
+                shift 2
+                ;;
+            --package-file)
+                [ "$#" -ge 2 ] || { echo "--package-file requires a value." >&2; exit 2; }
+                PACKAGE_FILE="$2"
+                CODEBASE_LEARNING_FLOW_SKIP_SELF_REFRESH=1
                 shift 2
                 ;;
             -h|--help)
@@ -273,6 +335,22 @@ parse_bootstrap_source() {
             *) shift ;;
         esac
     done
+
+    if [ "$user_set_ref" = "true" ] && [ "$user_set_release" = "true" ]; then
+        echo "--ref and --release are mutually exclusive. Use --release for a pinned packaged release, or --ref for a development checkout." >&2
+        exit 2
+    fi
+
+    case "$RELEASE_TAG" in
+        [Ll][Aa][Tt][Ee][Ss][Tt])
+            echo "--release latest is not supported. Pin an exact published tag, e.g. --release v0.9.0. Look up the current tags on the repository's Releases page." >&2
+            exit 2
+            ;;
+    esac
+
+    if [ -n "$RELEASE_TAG" ]; then
+        REF="$RELEASE_TAG"
+    fi
 }
 
 read_profile_file() {
@@ -489,7 +567,7 @@ EOF
 }
 
 parse_bootstrap_source "$@"
-require_download_tool
+[ -n "$PACKAGE_FILE" ] || require_download_tool
 
 case "$REPOSITORY" in
     __GITHUB_OWNER__/*)
@@ -512,8 +590,16 @@ if [ "${CODEBASE_LEARNING_FLOW_SKIP_SELF_REFRESH:-0}" != "1" ]; then
     download_file "$bootstrap_url" "$bootstrap_script"
 
     set +e
-    CODEBASE_LEARNING_FLOW_SKIP_SELF_REFRESH=1 \
-        sh "$bootstrap_script" "$@" --repository "$REPOSITORY" --ref "$resolved_bootstrap_commit"
+    if [ -n "$RELEASE_TAG" ]; then
+        # "$@" already carries the original --release flag; forwarding --ref
+        # here too would make the re-exec look like it received both, which
+        # the child's own mutual-exclusion check would reject.
+        CODEBASE_LEARNING_FLOW_SKIP_SELF_REFRESH=1 \
+            sh "$bootstrap_script" "$@" --repository "$REPOSITORY"
+    else
+        CODEBASE_LEARNING_FLOW_SKIP_SELF_REFRESH=1 \
+            sh "$bootstrap_script" "$@" --repository "$REPOSITORY" --ref "$resolved_bootstrap_commit"
+    fi
     status=$?
     set -e
 
@@ -537,6 +623,16 @@ while [ "$#" -gt 0 ]; do
         --ref)
             require_value "$1" "$#"
             REF="$2"
+            shift 2
+            ;;
+        --release)
+            require_value "$1" "$#"
+            RELEASE_TAG="$2"
+            shift 2
+            ;;
+        --package-file)
+            require_value "$1" "$#"
+            PACKAGE_FILE="$2"
             shift 2
             ;;
         --profile)
@@ -639,23 +735,54 @@ if [ "$MODE" = "update" ] && [ ! -d "$TARGET_LEARNING" ]; then
     exit 1
 fi
 
-RESOLVED_COMMIT="$(resolve_remote_commit "$REPOSITORY" "$REF")"
 TEMP_ROOT="$(mktemp -d 2>/dev/null || mktemp -d -t codebase-learning-flow)"
 cleanup() { rm -rf "$TEMP_ROOT"; }
 trap cleanup EXIT HUP INT TERM
 
-ARCHIVE_PATH="$TEMP_ROOT/source.zip"
 EXTRACT_PATH="$TEMP_ROOT/extract"
 NONCE="$(date +%s)"
-ARCHIVE_URL="https://github.com/$REPOSITORY/archive/$RESOLVED_COMMIT.zip?nocache=$NONCE"
 mkdir -p "$EXTRACT_PATH"
 
-log "Downloading $REPOSITORY at commit $RESOLVED_COMMIT"
-download_file "$ARCHIVE_URL" "$ARCHIVE_PATH"
+if [ -n "$PACKAGE_FILE" ]; then
+    # Internal/CI hook: install directly from an already-built local release
+    # package without touching the network. Never advertised in --help.
+    [ -f "$PACKAGE_FILE" ] || { echo "Package file not found: $PACKAGE_FILE" >&2; exit 1; }
+    ARCHIVE_PATH="$PACKAGE_FILE"
+    log "Installing from local package $PACKAGE_FILE"
+elif [ -n "$RELEASE_TAG" ]; then
+    require_checksum_tool
+    PACKAGE_NAME="codebase-learning-flow-$RELEASE_TAG.zip"
+    ASSET_BASE="https://github.com/$REPOSITORY/releases/download/$RELEASE_TAG"
+    ARCHIVE_PATH="$TEMP_ROOT/$PACKAGE_NAME"
+    CHECKSUMS_PATH="$TEMP_ROOT/checksums.txt"
+
+    log "Downloading packaged release $RELEASE_TAG of $REPOSITORY"
+    download_file "$ASSET_BASE/checksums.txt?nocache=$NONCE" "$CHECKSUMS_PATH"
+    download_file "$ASSET_BASE/$PACKAGE_NAME?nocache=$NONCE" "$ARCHIVE_PATH"
+    verify_checksum "$ARCHIVE_PATH" "$CHECKSUMS_PATH" "$PACKAGE_NAME"
+    log "Checksum verified for $PACKAGE_NAME"
+else
+    RESOLVED_COMMIT="$(resolve_remote_commit "$REPOSITORY" "$REF")"
+    ARCHIVE_PATH="$TEMP_ROOT/source.zip"
+    ARCHIVE_URL="https://github.com/$REPOSITORY/archive/$RESOLVED_COMMIT.zip?nocache=$NONCE"
+    log "Downloading $REPOSITORY at commit $RESOLVED_COMMIT"
+    download_file "$ARCHIVE_URL" "$ARCHIVE_PATH"
+fi
+
 log "Extracting template"
 unzip -q "$ARCHIVE_PATH" -d "$EXTRACT_PATH"
 
 ARCHIVE_ROOT="$(find "$EXTRACT_PATH" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+
+if [ -n "$RELEASE_TAG" ] && [ -f "$ARCHIVE_ROOT/VERSION" ]; then
+    PACKAGE_VERSION="$(tr -d '[:space:]' < "$ARCHIVE_ROOT/VERSION")"
+    if [ "$PACKAGE_VERSION" != "$RELEASE_TAG" ]; then
+        echo "Package VERSION ($PACKAGE_VERSION) does not match requested release ($RELEASE_TAG)." >&2
+        exit 1
+    fi
+elif [ -n "$PACKAGE_FILE" ] && [ -z "$RELEASE_TAG" ] && [ -f "$ARCHIVE_ROOT/VERSION" ]; then
+    RELEASE_TAG="$(tr -d '[:space:]' < "$ARCHIVE_ROOT/VERSION")"
+fi
 SOURCE_COMMON="$ARCHIVE_ROOT/sample/common"
 SOURCE_AGENTIC="$SOURCE_COMMON/agentic-flow"
 SOURCE_COMMON_SKILLS="$SOURCE_COMMON/.agents/skills"
@@ -798,6 +925,19 @@ case "$RESOLVED_ROOT_AGENTS_MODE" in
 esac
 
 set_root_integration_state "$TARGET_AGENTIC/SETTINGS.md" "$RESOLVED_ROOT_AGENTS_MODE"
+
+printf '\n%s\n' "Codebase Learning Flow"
+if [ -n "$RELEASE_TAG" ]; then
+    printf 'Version: %s\n' "$RELEASE_TAG"
+    if [ -n "$PACKAGE_FILE" ]; then
+        printf 'Source: packaged release (local package file, unverified)\n'
+    else
+        printf 'Source: packaged release (checksum verified)\n'
+    fi
+else
+    printf 'Version: %s (ref: %s)\n' "$RESOLVED_COMMIT" "$REF"
+    printf 'Source: development checkout (mutable unless ref is a commit or tag)\n'
+fi
 
 log "Installation complete: profile=$SELECTED_PROFILE extension=$SELECTED_EXTENSION mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
 printf '\n%s\n' "Suggested first instruction:"

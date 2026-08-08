@@ -65,11 +65,24 @@ The framework is intentionally tested against representative low-risk, learning,
 ### Preferred: packaged release
 
 For team and enterprise use, install a reviewed, versioned release rather than
-executing a mutable checkout from `main`. Release installation will be the
-preferred distribution path once packaged releases are published.
+executing a mutable checkout from `main`. `--release`/`-Release` downloads the
+packaged artifact published against an exact tag, verifies its checksum
+before extracting anything, and refuses `latest`: pin the version the team
+actually reviewed.
 
-Pin the exact release version used by the team and retain the version in the
-installation record.
+```sh
+curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.sh -o install.sh
+sh install.sh --release v0.9.0 --profile minimal
+```
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v0.9.0 -Profile Minimal
+```
+
+The installer's closing summary states the resolved `Version:` and `Source:`
+so the pinned version is easy to record alongside the installation. See
+[`scripts/README.md`](scripts/README.md#installing-a-packaged-release) for
+the full flag reference and what checksum verification actually checks.
 
 ### Development checkout
 
@@ -112,7 +125,11 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://raw.githubus
 ./scripts/install.sh --mode update
 ```
 
-Remote piping executes the referenced revision. Pin a release tag or commit for a team installation.
+Remote piping executes whatever `main` currently resolves to. For a team or
+enterprise installation, use `--release`/`-Release` with an exact tag (see
+"Preferred: packaged release" above) rather than pinning a checkout commit:
+the release path adds checksum verification and is what CI actually
+validates before publishing.
 
 </details>
 

@@ -6,13 +6,16 @@ These scripts perform **complete installation**. They are intentionally separate
 from the guided adoption process under `adoption/`, which is for repositories
 that already have their own agentic delivery layer.
 
-For team and enterprise use, the preferred future distribution path is a pinned
-packaged release. Checkout-based installers remain useful for framework
-development and experimentation.
+For team and enterprise use, the preferred distribution path is a pinned,
+checksum-verified packaged release (`--release`/`-Release`). Checkout-based
+installers (`--ref`/`-Ref`, defaulting to `main`) remain available and are the
+right choice for framework development and experimentation, but they resolve
+a mutable source snapshot with no checksum, so treat them as a development
+path rather than a production one.
 
 ```mermaid
 flowchart LR
-    D[Download pinned source] --> P[Select profile]
+    D[Resolve source: checkout ref or pinned release] --> P[Select profile]
     P --> C[Install common agentic flow]
     C --> L[Install learning profile]
     L --> Ext[Install or remove regulatory extension]
@@ -20,6 +23,49 @@ flowchart LR
     S --> X[Initialize ignored .local]
     X --> R[Integrate or preserve root AGENTS]
 ```
+
+## Installing a packaged release
+
+```text
+--release TAG
+-Release TAG
+```
+
+```text
+sh install.sh --release v0.9.0 --profile minimal
+```
+
+```powershell
+.\install.ps1 -Release v0.9.0 -Profile Minimal
+```
+
+`--release`/`-Release` downloads the packaged artifact and `checksums.txt`
+published against that exact tag on the repository's Releases page, verifies
+the SHA-256 checksum before extracting anything, and cross-checks the
+package's own `VERSION` file against the requested tag. `--ref`/`-Ref` and
+`--release`/`-Release` are mutually exclusive. `latest` is not accepted as a
+release value: look up the tag you want on the Releases page and pass it
+explicitly. This is deliberate, not an oversight -- see "Release-based
+distribution" in `docs/DESIGN_NOTES.md`.
+
+Every install prints which trust boundary it used:
+
+```text
+Codebase Learning Flow
+Version: v0.9.0
+Source: packaged release (checksum verified)
+```
+
+```text
+Codebase Learning Flow
+Version: 4f2ab61 (ref: main)
+Source: development checkout (mutable unless ref is a commit or tag)
+```
+
+Release packages are built by `scripts/build-release.sh` from `MANIFEST.txt`
+and validated end to end (`scripts/ci-release-test.sh`, on both installers)
+by `.github/workflows/release.yml` before anything is published. A release
+never ships something CI has not already installed and exercised.
 
 ## Installed components
 
@@ -102,6 +148,6 @@ The installer never replaces an existing root file wholesale.
 - Old contributor placeholders retired by a managed manifest can be removed during update.
 - Contributor-authored legacy learning state is never deleted automatically. Copy it into `.local/`, verify it, then remove the tracked source explicitly.
 - Repeated local workspace initialization is idempotent.
-- Team installations should pin a tag or commit rather than relying on a moving branch.
+- Team installations should use `--release`/`-Release` with an exact tag rather than relying on a moving branch. A `--ref`/`-Ref` commit SHA is pinned too, but skips checksum verification and the packaged-release documentation-inclusion guarantees.
 
 </details>
