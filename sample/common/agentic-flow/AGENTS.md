@@ -1,16 +1,46 @@
 # Agentic collaboration instructions
 
+## Layer 1: Agentic Delivery
+
+This file is the common Agentic Delivery layer. It owns collaboration behavior,
+task routing, verification, handoff, and boundaries around consequential
+actions.
+
+Learning & Ownership and Optional Risk Lenses are separate layers. They may be
+selected when useful, but this layer must remain usable without either one.
+
 ## Route
 
 1. Follow root, nested, and tool-specific repository instructions first.
 2. Use this layer for collaboration behavior.
-3. Load `learning-flow/AGENTS.md` only for deliberate repository learning, orientation, explanation, or initial mapping.
-4. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
-5. Learning routes apply `EDUCATION.md` selectively.
-6. Load at most one task skill unless the task clearly requires more.
-7. For one consequential, ambiguous, or regulated change, `structured-change` may run alongside the chosen route to sequence Explore, Design, and Approve before Act. It elaborates `Decide`; it is not a second route, and most tasks never need it.
+3. Select one primary task route. Do not load multiple task procedures unless the active route explicitly requires a narrow supporting skill.
+4. Load `learning-flow/AGENTS.md` only for deliberate repository learning, orientation, explanation, or initial mapping.
+5. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
+6. Apply `EDUCATION.md` only when a selected learning route needs it. Read only the relevant sections.
+7. For one consequential, ambiguous, or regulated change, `structured-change` may run alongside the chosen route to elaborate `Decide`. It is not a second engineering workflow, and most tasks never need it.
 
-Read `SETTINGS.md`; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override.
+Read `SETTINGS.md` when the task depends on collaboration configuration; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override. Do not load configuration documents merely because they exist.
+
+## Context budget
+
+The framework is intentionally progressive-disclosure. Context is a limited engineering resource, not a reason to load every framework document.
+
+- Start with repository-native instructions and this file.
+- Select one primary task route before loading task-specific instructions.
+- Load only the files that route names as necessary for the current question.
+- Treat indexes, manifests, and routing files as pointers, not requests to preload their entire contents.
+- Read one relevant knowledge/reference file at a time when possible.
+- Reuse current evidence instead of rescanning the same territory for another skill.
+- Stop when the evidence threshold for the decision or implementation is met.
+- Small or mechanical work should collapse the route to the smallest useful sequence.
+
+The intended default is:
+
+```text
+repository instructions → Agentic Delivery → one task route → narrow evidence
+```
+
+Learning and risk material are conditional branches. They are not part of the universal context. See `docs/AGENTIC_WORKFLOW_SANITY.md` in the framework repository for the behavioral acceptance scenarios and context-budget rationale.
 
 ## Discover the effective setup
 
@@ -89,3 +119,18 @@ Checks:
 ```
 
 Trivial commits need only a title. For a consequential or regulated change, add the optional `Traceability` section described in `WORKFLOW.md` instead of expanding this default shape. Do not commit, push, publish, merge, or create release tags unless explicitly requested.
+
+
+## Learning closure and freshness
+
+Meaningful engineering work may end with a `learning-closure` decision. Use it
+only when the work produced a reusable insight. The agent should recommend the
+smallest appropriate destination and let the user decide whether to persist it.
+
+At pull-request or substantial change completion, make this decision part of
+the normal handoff rather than creating a separate documentation ceremony.
+
+Use `learning-freshness` during deliberate maintenance or when durable
+repository knowledge may have drifted from implementation. It can check
+repository evidence, but external-source claims require their retained source
+metadata and external revalidation.

@@ -5,7 +5,7 @@ description: Guide a concise, adaptive conversation for learning, exploring, or 
 
 # Learn Anything
 
-Do not inspect repository code. Read `agentic-flow/EDUCATION.md` and apply only the lenses that improve the learner's direct question. When a meaningful session has relevant prior history, read only the needed local history instead of reteaching from scratch.
+Do not inspect repository code. Read only the relevant parts of `agentic-flow/EDUCATION.md`; do not load repository-learning instructions, maps, or other framework material. When a meaningful session has relevant prior history, read only the needed local history instead of reteaching from scratch.
 
 ## Conversation loop
 
@@ -37,6 +37,8 @@ Collapse obvious stages. A short factual question may need only a direct answer 
 When the topic involves teaching, classrooms, teams, or assessment, selectively apply the human educational section of `agentic-flow/EDUCATION.md`. Do not diagnose or persist sensitive learner state.
 
 ## System lens
+
+Use this only when the topic benefits from a system view. Do not activate every lens by default.
 
 For a complex subject, choose only the useful subset:
 

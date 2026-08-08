@@ -40,6 +40,7 @@ Start with `AGENTS.md`. Use balanced defaults from `SETTINGS.md` unless configur
 | `LOCAL.md` | private learning continuity and deliberate promotion |
 | `ROOT_INTEGRATION.md` | connecting existing or missing root instructions |
 | `REFERENCE_INTEGRATION.md` | extracting value from another source |
+| `LEARN.md` + learning skills | understanding the effective harness and building knowledge |
 
 <details>
 <summary>Boundary in one sentence</summary>
@@ -47,3 +48,11 @@ Start with `AGENTS.md`. Use balanced defaults from `SETTINGS.md` unless configur
 `agentic-flow/` controls how work is performed. `learning-flow/` and learning skills control how understanding is built through that work.
 
 </details>
+
+
+## Learning lifecycle
+
+`learning-closure` decides whether a meaningful change produced reusable
+knowledge and recommends the smallest appropriate persistence surface.
+`learning-freshness` can later cross-check durable repository knowledge against
+current implementation evidence. Neither is a second delivery workflow.

@@ -65,7 +65,9 @@ Open
 
 Use descriptive bullets grouped by outcome instead of a chronological tool log or file inventory. Put long command output, secondary rationale, alternatives, or exhaustive evidence in collapsible sections. Keep failures and required next actions visible.
 
-When `learning-flow/` or a meaningful generic learning session was active, close private continuity under `.local/` according to `LOCAL.md`, then fold only useful learning reinforcement into this handoff. Do not add a second recap section, repeat the same outcome and evidence, or expose private session detail through shared records.
+When `learning-flow/` or a meaningful generic learning session was active, close private continuity under `.local/` according to `LOCAL.md`. If the work produced a genuinely reusable insight, invoke `learning-closure` as part of the handoff: recommend the smallest useful destination, ask the user whether to persist it, and write only the approved concise record. Do not add a second recap section, repeat the same outcome and evidence, or expose private session detail through shared records.
+
+For pull-request or substantial change completion, learning closure is a normal handoff decision when useful knowledge exists. It is not required when no reusable insight was produced.
 
 ## Traceability
 

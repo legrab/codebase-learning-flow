@@ -4,6 +4,20 @@
 
 The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
+## Current three-layer architecture
+
+The current architecture consolidates the earlier ownership distinctions into three user-facing framework layers:
+
+| Layer | Owns | Adoption role |
+|---|---|---|
+| **Agentic Delivery** | common collaboration policy, task routing, verification, handoff, and consequential-action boundaries | the common agentic baseline; most invasive layer |
+| **Learning & Ownership** | repository/general learning, private continuity, durable knowledge, and learning-oriented skills | independently adoptable into an existing agentic workflow |
+| **Optional Risk Lenses** | regulatory, safety, security, and similar domain-specific reasoning | selective additive guidance used by the active workflow |
+
+The previous five ownership layers remain useful as implementation provenance, but they are not a second architecture. Repository-specific instructions, task skills, and temporary state are implementation ownership boundaries inside the three layers rather than additional framework layers.
+
+This distinction is important for adoption. A repository with its own agentic delivery workflow can adopt Learning & Ownership or an Optional Risk Lens without installing or replacing the common Agentic Delivery layer.
+
 ## v0.5 separation of concerns
 
 Repository agentic content is divided into five ownership layers:
@@ -31,7 +45,6 @@ The v0.5 review retained several strong patterns from the current `legrab/pocok`
 
 The reusable workflow intentionally does not copy Pocok's universal one-step approval loop, mandatory session file, one-commit-per-step rule, fixed plan schema, or automatic phase gates. Those controls remain available through configuration when risk or teaching purpose justifies them.
 
-
 ## v0.5.1 existing-harness integration
 
 The repository's agentic setup can be a learning territory when custom instructions or conflicts affect work. Managed template state is recognized cheaply; a full instruction-order explanation belongs to an explicit setup review, not every initial baseline.
@@ -45,7 +58,6 @@ Root integration is explicit and reversible:
 - collaboration settings remain independently configurable and can be changed later.
 
 The lean root retains Pocok's useful evidence discipline but excludes its repository-specific .NET package policy, mandatory session rules, commit format, release sequence, and handoff state.
-
 
 ## v0.5.2 reference integration and communication
 

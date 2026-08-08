@@ -1,5 +1,14 @@
 # Minimal repository learning instructions
 
+## Layer 2: Learning & Ownership
+
+This file belongs to the Learning & Ownership layer. It adds repository
+understanding, learning reinforcement, private continuity, and deliberate
+knowledge promotion on top of the active Agentic Delivery layer.
+
+It does not replace the delivery workflow or create a universal execution
+gate. Load it only when repository learning materially improves the task.
+
 ## Priority and scope
 
 Follow repository-native instructions and `agentic-flow/AGENTS.md` first. This layer adds learning support only.

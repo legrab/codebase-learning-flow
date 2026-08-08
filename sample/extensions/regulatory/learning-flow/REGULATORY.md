@@ -1,5 +1,8 @@
 # Regulatory extension
 
+> [!WARNING]
+> The regulatory extension is a reasoning and workflow aid, not a compliance determination or substitute for qualified regulatory/quality expertise.
+
 Installed by `--extension regulatory`. This file is additive: it never turns ordinary work into a compliance procedure, and it never overrides `AGENTS.md`, `agentic-flow/WORKFLOW.md`, or repository-native instructions.
 
 ## What this extension adds

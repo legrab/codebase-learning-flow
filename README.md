@@ -19,9 +19,62 @@ flowchart LR
     K --> L
 ```
 
-## Start in two minutes
+> [!WARNING]
+> The regulatory extension is a reasoning and workflow aid, not a compliance determination or substitute for qualified regulatory/quality expertise.
+
+## What this repository is
+
+Codebase Learning Flow is both a working, literate example of repository-native agentic engineering and a reusable framework that can be installed into another repository.
+
+The repository is intentionally literate: its documentation, workflow instructions, skills, examples, and validation describe how the system is supposed to work while also serving as the system being developed. The installable part packages the reusable behavior so another repository can adopt the useful pieces without having to adopt this repository's complete workflow.
+
+The framework does not provide an agent runtime, sandbox, retry engine, or background worker. It configures a host coding agent through repository-local instructions, skills, learning surfaces, and optional risk lenses.
+
+## Three layers
+
+The framework has three explicit layers with different ownership and adoption boundaries:
+
+| Layer | Purpose | Adoption boundary |
+|---|---|---|
+| **Agentic Delivery** | Common collaboration policy, task routing, verification, and handoff | Most invasive. A repository may use it as the common agentic baseline. |
+| **Learning & Ownership** | Repository learning, general learning, private continuity, and durable knowledge | Independently adoptable into an existing agentic workflow. |
+| **Optional Risk Lenses** | Regulatory, safety, security, or other domain-specific reasoning | Selective and additive. Never a replacement for the active workflow. |
+
+The normal complete installation composes these layers, but they are not inseparable. In particular, a repository with an existing agentic workflow can adopt the learning or risk layers without replacing its own delivery model.
+
+```text
+Agentic Delivery
+      │
+      ├── may use ──► Learning & Ownership
+      │
+      └── may use ──► Optional Risk Lenses
+                         │
+                         └── elaborates the active workflow when relevant
+```
+
+This separation is deliberate. Adding a new learning or risk concern should not automatically create another global workflow layer or increase the amount of instruction every task must load.
+
+## Instruction budget and workflow sanity
+
+The framework treats agent context as a limited engineering resource. The common delivery layer is the baseline; learning and risk material are conditional branches. Ordinary work should select one primary task route, load only the narrow evidence it needs, reuse current findings, and stop when the evidence threshold is met. A skill must not become a second workflow merely because it is related to the task.
+
+The framework is intentionally tested against representative low-risk, learning, consequential, and regulated scenarios to guard against the main failure mode: **making a competent developer perform framework rituals instead of making them faster and more aware**. See [`docs/AGENTIC_WORKFLOW_SANITY.md`](docs/AGENTIC_WORKFLOW_SANITY.md) for the context-budget rules and sanity scenarios.
+
+## Installation
+
+### Preferred: packaged release
+
+For team and enterprise use, install a reviewed, versioned release rather than
+executing a mutable checkout from `main`. Release installation will be the
+preferred distribution path once packaged releases are published.
+
+Pin the exact release version used by the team and retain the version in the
+installation record.
+
+### Development checkout
 
 Run one installer from the repository that should receive the framework:
+
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1)))
@@ -62,6 +115,33 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://raw.githubus
 Remote piping executes the referenced revision. Pin a release tag or commit for a team installation.
 
 </details>
+
+## Adoption situations
+
+| Situation | Recommended approach | Installation / adoption procedure |
+|---|---|---|
+| **A. No agentic flow** | Complete installation with `minimal` by default; add `full` or `regulatory` deliberately. | Prefer a pinned packaged release. Use checkout installers for development or experimentation. |
+| **B. Custom agentic flow per developer** | Preserve the existing delivery layer and selectively adopt learning/risk capabilities. | Check out this repository and run the guided adoption prompt from [`adoption/ADOPT.md`](adoption/ADOPT.md). |
+| **C. Lightweight agentic flow, no learning/regulatory concepts** | Keep the existing delivery workflow and add the Learning & Ownership layer plus relevant risk lenses. | Prefer guided adoption; use complete installation only when the repository explicitly wants to standardize its delivery layer. |
+
+Complete installation and guided adoption are intentionally different operations.
+Complete installation consumes the framework payload under `sample/`; guided
+adoption consumes the instructions under `adoption/` and integrates only the
+selected concepts into an existing setup.
+
+## Guided adoption for existing agentic setups
+
+Check out this repository and ask the host coding agent to read
+[`adoption/ADOPT.md`](adoption/ADOPT.md). The agent should inspect the existing
+repository workflow, ask about profile and extension choices, propose a
+minimal compatible integration, and wait for approval before consequential
+changes.
+
+The guided process considers `structured-change`, `learn-anything`,
+`learning-closure`, `learning-freshness`, the Learning & Ownership model,
+private `.local/` continuity, and relevant risk extensions. It does **not**
+automatically install the common `agentic-flow` or rewrite the root
+`AGENTS.md`.
 
 ## Choose the route
 

@@ -19,3 +19,11 @@ Review these fixtures when changing skill descriptions, routing, profiles, exten
 
 > [!NOTE]
 > Expected phrases describe behavioral evidence, not exact generated wording.
+
+
+## Additional lifecycle and adoption cases
+
+`learning-lifecycle-cases.yaml` covers learning placement and freshness checks.
+`adoption-cases.yaml` covers guided integration into repositories with an
+existing agentic setup. Both are intended to protect against unnecessary
+context expansion and framework ceremony.
