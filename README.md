@@ -70,6 +70,7 @@ Remote piping executes the referenced revision. Pin a release tag or commit for 
 | understand or change the current repository | repository learning | the real engineering task |
 | learn a general topic | `learn-anything` | the learner's question |
 | configure or review the harness | `agentic-workflow` | repository collaboration policy |
+| sequence one consequential, ambiguous, or regulated change | `structured-change` | the active route above, not a replacement for it |
 
 For a general topic:
 
@@ -121,7 +122,7 @@ The framework is repository-agnostic, but it asks deeper questions when work tou
 
 - laboratory software;
 - industrial control and physical equipment;
-- regulated or safety-relevant software;
+- regulated or safety-relevant software (see the `regulatory` extension for the operational lens);
 - security and access control;
 - architecture and integration;
 - verification and validation;
@@ -166,6 +167,30 @@ flowchart LR
     G --> P3[General conversational learning]
 ```
 
+## Extensions
+
+Extensions are additive and orthogonal to profile: they add capability without changing what `minimal` or `full` mean. The only extension today is `regulatory`.
+
+| Extension | Adds | Never does |
+|---|---|---|
+| `regulatory` | `regulatory-knowledge` skill: traceability, validation, risk management, audit trails, change control, and short orientation to ISO 9001, ISO 13485, ISO 14971, ISO 17025, IEC 62304, and 21 CFR Part 11 | turn ordinary low-risk work into a compliance procedure |
+
+```sh
+./scripts/install.sh --profile full --extension regulatory
+```
+
+```powershell
+./scripts/install.ps1 -Profile Full -Extension Regulatory
+```
+
+`--extension auto` (the default) keeps whatever is currently installed and defaults a fresh install to none. Removing an installed extension needs `update` or `replace` mode, the same restriction that applies to a destructive profile switch:
+
+```sh
+./scripts/install.sh --mode update --extension none
+```
+
+The Explore → Design → Approve → Implement → Review → Capture Knowledge sequence this extension plugs into is not extension-specific. It lives in `structured-change`, a common skill available with every profile, and elaborates one part of `agentic-flow/WORKFLOW.md`'s `Decide` step for the rare change that is architecturally significant, genuinely ambiguous, or regulated. The `regulatory` extension adds a lens to that same skill; it does not add a second workflow.
+
 ## Private continuity
 
 > [!NOTE]
@@ -191,8 +216,10 @@ Framework modes:
 
 - `fail`: stop when managed content already exists;
 - `merge`: add missing files and preserve existing content;
-- `update`: refresh framework-owned files and skills while preserving settings, maps, takeaways, `.local/`, repository-authored content, and unrelated skills;
+- `update`: refresh framework-owned files and skills while preserving settings, decisions, maps, takeaways, `.local/`, repository-authored content, and unrelated skills;
 - `replace`: replace framework directories and this framework's managed skills.
+
+Extensions follow the same modes: `--extension regulatory` adds it, `--extension none` in `update` or `replace` removes it, and `merge` never removes an installed extension.
 
 A minimal installation can upgrade safely:
 
@@ -226,14 +253,18 @@ agentic-flow/
 ├── WORKFLOW.md
 ├── EDUCATION.md
 ├── LEARN.md
-└── LOCAL.md
+├── LOCAL.md
+└── DECISIONS.md
 learning-flow/
 ├── AGENTS.md
 ├── MAP.md
-└── TAKEAWAYS.md
+├── TAKEAWAYS.md
+└── REGULATORY.md         (only with --extension regulatory)
 .agents/skills/
 ├── agentic-workflow/
 ├── learn-anything/
+├── structured-change/
+├── regulatory-knowledge/ (only with --extension regulatory)
 └── profile-specific learning skills
 ```
 

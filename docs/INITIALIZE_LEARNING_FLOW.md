@@ -36,6 +36,10 @@ Require the agent to:
 
 Do not require a plan file, session record, one-step approval loop, one commit per step, phase gate, or automatic commit offer by default.
 
+## Structured change (optional)
+
+Provide one common skill that elaborates `Decide` into `Explore → Design → Approve` for a single change that is architecturally significant, genuinely ambiguous between credible options, or regulated. It must run alongside the active task or learning procedure, not replace it, and must not be required for ordinary work. Its design step should name a requested decision and wait for approval before `Act`. Pair it with one durable, append-only decision-record file (not a per-decision file scaffold), written to only when a choice will matter to a later reader.
+
 ## Opinionated setup
 
 Provide four simple presets: `fast`, `balanced`, `guided`, and `gated`. Use `balanced` by default and ask for one preset only during explicit or guided configuration.
@@ -103,6 +107,7 @@ Use clear ownership:
 
 - `.local/`: private sessions, progress, explanations, attempts, quiz history, summaries, uncertainty, and generated follow-ups;
 - `agentic-flow/SETTINGS.md`: durable collaboration preferences only;
+- `agentic-flow/DECISIONS.md`: durable, append-only engineering decision records, written to only through the structured-change step above;
 - `MAP.md`: compact boundaries and representative flows;
 - `TAKEAWAYS.md`: short durable lessons;
 - full-profile `REPOSITORIES.md`: repository identities, baselines, and access boundaries;
@@ -115,6 +120,8 @@ Support one common agentic layer plus `minimal` and `full` learning profiles wit
 New installs default to minimal. Existing installations retain their profile automatically. Support safe minimal-to-full upgrade while preserving settings, maps, and takeaways. Reject non-destructive full-to-minimal conversion.
 
 Update only manifest-owned framework files and managed skills. Preserve repository-authored settings and knowledge plus unrelated skills.
+
+Support an orthogonal, additive extension dimension (currently one: a regulatory extension adding traceability, validation, risk-management, and audit-trail knowledge). An extension must install identically under either profile, never change what a profile means, track its own managed-file and managed-skill manifests under names distinct from the profile's own, and be fully removable in `update` or `replace` mode without touching profile or repository content. New installs default to no extension; existing installations retain their selection automatically.
 
 Fresh setup must create `.local/{sessions,follow-ups}`, seed `.local/learning-history.md` only when missing, and ensure `/.local/` is ignored. Repeated setup must preserve all existing local content. Retire only framework-owned legacy contributor placeholders automatically; move contributor-authored tracked state only through an explicit verified migration.
 
@@ -139,7 +146,9 @@ Fresh setup must create `.local/{sessions,follow-ups}`, seed `.local/learning-hi
 - duplicate knowledge surfaces;
 - skill stacking;
 - exhaustive repository inventories;
-- an LMS or custom platform.
+- an LMS or custom platform;
+- a per-item exploration, design, or decision directory scaffold in place of one durable file;
+- mandatory evaluation-matrix or traceability ceremony applied regardless of risk.
 
 ## Existing agentic setup as learning material
 

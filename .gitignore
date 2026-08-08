@@ -21,3 +21,6 @@ Desktop.ini
 # Locally generated distribution archives
 /INITIALIZE_LEARNING_FLOW_*.zip
 /codebase-learning-flow*.zip
+
+# Python script cache
+/scripts/__pycache__

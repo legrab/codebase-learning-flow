@@ -105,6 +105,27 @@ Private learning continuity follows the same ownership rule in the source reposi
 
 At session closure, the local record is completed before promotion is considered. `MAP.md`, `TAKEAWAYS.md`, and existing shared owners receive only stable, reusable, non-sensitive knowledge after deduplication. An explicit request for global preservation triggers that review but does not override privacy or evidence requirements. Uncertain material stays local.
 
+## v0.8.0 regulatory-aware structured change
+
+A user-supplied proposal ("Repository Enhancement Proposal: Regulatory-Aware, Human-Guided, Agent-Assisted Engineering Flow") asked for comprehensive incorporation rather than the conservative small-delta review this document otherwise recommends (see v0.6.1). That is a deliberate, explicit exception to the default review posture, not a change to the posture itself; `docs/references/REFERENCE_REVIEW_LEARNING_FLOW_ADJUSTMENT.md` records the full mapping from source concept to landing point, including what was fitted into existing ownership rather than added as a new layer.
+
+The source's `Learn → Explore → Design → Approve → Implement → Review → Capture Knowledge` sequence did not become a competing workflow. It became `structured-change`, a common skill that elaborates the existing `Decide` step in `agentic-flow/WORKFLOW.md` for one architecturally significant, genuinely ambiguous, or regulated change, used alongside the active route rather than instead of it. Most tasks never load it.
+
+The source's `profiles: default, regulatory` concept collided with this repository's existing use of "profile" for `minimal`/`full`. It became **extensions**, a new orthogonal installer dimension (`--extension none|regulatory`), matching the source's own "Installation Extensions" heading and staying additive: `regulatory` installs identically under either profile and never changes what `minimal` or `full` mean.
+
+The source's proposed `explorations/`, `designs/`, `reviews/`, `decisions/`, `improvements/`, `integrations/`, `evaluation/` directory scaffold was not created literally; it would have reintroduced the default-folder and activity-proliferation ceremony this document has repeatedly rejected (v0.6.2, Deliberately rejected). Instead:
+
+- decision records landed in one durable file, `agentic-flow/DECISIONS.md`, treated like `SETTINGS.md` (present, never force-refreshed);
+- the commit traceability block and its regulatory addendum became an optional section of the existing commit-body guidance in `agentic-flow/WORKFLOW.md`, used only for a consequential or regulated change;
+- improvement and modernization candidates fold into the existing handoff `Open` bullet or into `DECISIONS.md`, not a separate tracking surface;
+- the evaluation matrix and confidence-reporting concepts became optional structure inside a design note, not a standing scoring system;
+- the MCP integration model became one sentence in `ROOT_INTEGRATION.md`'s existing discovery list, since connected-systems awareness was already the job of that step;
+- the human-first documentation standard and collapsible-content guidance were already covered by the existing layered-disclosure contract (v0.5.2) and required no change.
+
+Regulatory-specific knowledge (traceability, validation, risk management, audit trails, change control, and short orientation to ISO 9001, ISO 13485, ISO 14971, ISO 17025, IEC 62304, and 21 CFR Part 11) lives inside the `regulatory-knowledge` skill installed only by the extension, read a file at a time rather than loaded in bulk. IEC 62304 and 21 CFR Part 11 were added beyond the source proposal as the direct software-lifecycle and electronic-records companions to ISO 13485 and ISO 14971. Content is written as practical orientation, not standard summary or reproduction, consistent with both the source's own knowledge philosophy and this project's copyright discipline.
+
+Engineering judgment content the source proposed (anti-overengineering guidance, AI-collaboration indicators, modernization, maintainability, testing, architecture, dependency management, documentation) is general-purpose, not regulatory-specific, and lives inside `structured-change`'s own knowledge folder instead.
+
 ## General agentic loop
 
 ```text
@@ -172,7 +193,7 @@ Conversation is the live interaction layer. `.local/` is the private continuity 
 
 ## Skill routing
 
-The common `agentic-workflow` skill initializes, configures, explains, or reviews the workflow. It is not loaded as a second engineering procedure during an ordinary task. The separate common `learn-anything` skill owns general learning conversations and does not inspect the repository by default.
+The common `agentic-workflow` skill initializes, configures, explains, or reviews the workflow. It is not loaded as a second engineering procedure during an ordinary task. The separate common `learn-anything` skill owns general learning conversations and does not inspect the repository by default. The common `structured-change` skill elaborates `Decide` for one consequential, ambiguous, or regulated change; it runs alongside the active route, not instead of it, and most tasks never touch it. The `regulatory` extension's `regulatory-knowledge` skill is reference material `structured-change` and task skills consult, not a workflow of its own.
 
 The full learning profile keeps seven narrow repository skills for progressive disclosure, but one skill owns the current task. The minimal profile uses one `repository-learning` skill with compact branches for bug, feature, refactor, and orientation work. Both add the common generic conversation skill without changing their repository-learning profile.
 
@@ -188,6 +209,8 @@ The common layer and each learning profile include managed-file and managed-skil
 
 Minimal-to-full update is supported. Full-to-minimal update is rejected because safe automatic deletion cannot be inferred.
 
+Extensions (currently only `regulatory`) use the same three modes along a dimension orthogonal to profile: they track their own managed-file and managed-skill manifests under distinct marker names so they never collide with the profile's own markers, and adding or removing one never touches the other's files.
+
 ## Deliberately rejected
 
 - mandatory configuration before routine work;
@@ -200,7 +223,9 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 - generic skills for token efficiency or determinism;
 - generic learning that silently inspects or writes into the host repository;
 - committed personal transcripts and hypothesis diaries;
-- a dashboard, database, vector store, orchestration service, or LMS.
+- a dashboard, database, vector store, orchestration service, or LMS;
+- a proliferating `explorations/`/`designs/`/`decisions/`-per-item directory scaffold in place of the existing durable-file surfaces;
+- mandatory evaluation-matrix scoring or commit traceability blocks for ordinary, low-risk work.
 
 ## Final review checklist
 
@@ -216,3 +241,4 @@ Minimal-to-full update is supported. Full-to-minimal update is rejected because 
 10. Update preserves repository-authored settings and knowledge.
 11. The Markdown fallback works without skill support.
 12. No workflow requires contributor identity unless the user explicitly wants personal tracking.
+13. An installed extension never changes what a profile means, and adding or removing one never touches unrelated framework or repository content.

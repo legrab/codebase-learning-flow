@@ -8,6 +8,7 @@
 4. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
 5. Learning routes apply `EDUCATION.md` selectively.
 6. Load at most one task skill unless the task clearly requires more.
+7. For one consequential, ambiguous, or regulated change, `structured-change` may run alongside the chosen route to sequence Explore, Design, and Approve before Act. It elaborates `Decide`; it is not a second route, and most tasks never need it.
 
 Read `SETTINGS.md`; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override.
 
@@ -50,6 +51,7 @@ An explicit implementation request permits ordinary reversible work within scope
 
 - Small tasks need no formal plan; multi-step tasks use a short in-chat plan.
 - Create a plan file only when risk, duration, configuration, or handoff justifies it.
+- Record a durable decision in `DECISIONS.md` only when it will matter to a later reader; most decisions stay in conversation or `.local/`.
 - Inspect the smallest responsible scope and prefer one coherent change over artificial micro-steps.
 - Revisit the route when evidence changes the scope, architecture, or behavior.
 - Validate in proportion to risk, focused first. Separate changes applied from executable checks completed and never claim unavailable verification.
@@ -86,4 +88,4 @@ Checks:
 - meaningful verification
 ```
 
-Trivial commits need only a title. Do not commit, push, publish, merge, or create release tags unless explicitly requested.
+Trivial commits need only a title. For a consequential or regulated change, add the optional `Traceability` section described in `WORKFLOW.md` instead of expanding this default shape. Do not commit, push, publish, merge, or create release tags unless explicitly requested.

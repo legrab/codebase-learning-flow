@@ -28,7 +28,7 @@ Locate → Reason → Try or Work → Verify → Explain → Transfer
 - Refactor: behavior or domain invariant → evidence → smallest seam → transformation → proof → simpler ownership.
 - Orientation: intended use → system boundary → representative path → control and failure boundary → next useful territory.
 
-Select one branch. `agentic-workflow` is for the harness itself, not a second engineering procedure.
+Select one branch. `agentic-workflow` is for the harness itself, not a second engineering procedure. For one architecturally significant, ambiguous, or regulated change within a branch, `structured-change` may run alongside it; it does not replace the branch.
 
 ## Context and interaction economy
 
