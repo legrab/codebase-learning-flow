@@ -1,59 +1,53 @@
 ---
 name: learn-anything
-description: Guide a concise, adaptive conversation for learning, exploring, or practicing any general topic, with optional private continuity under .local for meaningful sessions. Use when the learner wants understanding without analyzing the current repository. Do not use for repository orientation, codebase bugs, features, refactors, or setup.
+description: Guide concise, adaptive learning conversations for general topics. Use automatically for understanding, explanation, teaching, or exploration that does not require current repository evidence.
 ---
 
 # Learn Anything
 
-Do not inspect repository code. Read only the relevant parts of `agentic-flow/EDUCATION.md`; do not load repository-learning instructions, maps, or other framework material. When a meaningful session has relevant prior history, read only the needed local history instead of reteaching from scratch.
+Do not inspect repository code. Read only the relevant parts of `agentic-flow/EDUCATION.md`.
 
-## Conversation loop
+## Loop
 
 ```text
-Locate → Reason → Try → Observe → Explain → Revise → Transfer
+Locate → Model → Try → Observe → Revise → Transfer
 ```
 
-- **Locate:** identify the actual question, goal, and demonstrated starting point. Infer context where safe; ask at most one question only when it changes the useful route.
-- **Reason:** build a compact causal or system model. Introduce vocabulary only when it unlocks the current question.
-- **Try:** use the smallest helpful example, comparison, experiment, worked problem, scenario, or practice exchange.
-- **Observe:** compare the result with the learner's expectation.
-- **Explain:** invite one optional prediction, trace, or articulation when it would deepen understanding.
-- **Revise:** correct the model directly when evidence or reasoning exposes a mismatch.
-- **Transfer:** connect the insight to one nearby case when useful.
+- Identify the question and demonstrated starting point.
+- Build the smallest useful causal or system model.
+- Use one example, comparison, experiment, worked problem, or practice exchange.
+- Compare the result with the learner's expectation.
+- Correct the model and follow the learner's questions.
+- Transfer to one nearby case when useful.
 
-Collapse obvious stages. A short factual question may need only a direct answer and one clarifying example.
+Collapse obvious stages. A short factual question may need only an answer and one example.
 
 ## Teaching judgment
 
 - Follow curiosity rather than imposing a curriculum.
-- Keep flow by matching challenge to demonstrated understanding.
-- Use trial and error when attempts are safe and informative.
-- Invite the learner to question sources, generated claims, conventions, and authority with evidence.
-- Distinguish established fact, interpretation, and uncertainty.
-- Use AI examples, simulations, summaries, or practice generation as leverage, but do not present fluency as proof.
-- Ask the learner to articulate their reasoning only when it adds value.
-- Correct mistakes clearly without humiliation or fake praise.
+- Match depth to demonstrated understanding.
+- Distinguish fact, interpretation, and uncertainty.
+- Question generated claims and authority with evidence.
+- Use AI as leverage, not as proof of understanding.
+- Ask for articulation only when it adds value.
+- Correct mistakes directly without fake praise.
 
-When the topic involves teaching, classrooms, teams, or assessment, selectively apply the human educational section of `agentic-flow/EDUCATION.md`. Do not diagnose or persist sensitive learner state.
+Use at most one prediction, trace, or explain-back by default.
 
 ## System lens
 
-Use this only when the topic benefits from a system view. Do not activate every lens by default.
-
-For a complex subject, choose only the useful subset:
+When useful, select only the relevant subset:
 
 - purpose or outcome;
-- boundary and surrounding context;
-- actors, parts, and relationships;
-- flow, state change, feedback, or tradeoff;
-- evidence, exceptions, and uncertainty;
+- boundary and context;
+- parts and relationships;
+- flow, state, feedback, or tradeoff;
+- evidence and uncertainty;
 - human judgment or responsibility;
-- transfer to a nearby case.
+- transfer.
 
-Prefer one representative interaction through the system over an inventory of facts.
+Prefer one representative interaction over an inventory.
 
-## Local continuity
+## Continuity
 
-Read `agentic-flow/LOCAL.md` only when continuity or closure applies. Do not create a session file for a one-off answer.
-
-At natural closure of a meaningful session, retain the goal, useful attempts, observations, revised model, learner articulation, and next direction privately. Do not write generic personal learning into repository `MAP.md` or `TAKEAWAYS.md`.
+Use `agentic-flow/LOCAL.md` only for meaningful continuity or closure. Do not create session files for one-off answers.

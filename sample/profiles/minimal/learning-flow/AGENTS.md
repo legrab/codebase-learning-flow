@@ -1,59 +1,46 @@
 # Minimal repository learning instructions
 
-## Layer 2: Learning & Ownership
+This layer adds repository understanding, learning reinforcement, private continuity, and deliberate knowledge promotion on top of Agentic Delivery. It does not replace delivery or create a universal execution gate.
 
-This file belongs to the Learning & Ownership layer. It adds repository
-understanding, learning reinforcement, private continuity, and deliberate
-knowledge promotion on top of the active Agentic Delivery layer.
+## When to use
 
-It does not replace the delivery workflow or create a universal execution
-gate. Load it only when repository learning materially improves the task.
+Use it automatically when the user is trying to understand the current repository, subsystem, bug, feature, refactor, or setup. Do not load it for purely mechanical edits.
 
-## Priority and scope
-
-Follow repository-native instructions and `agentic-flow/AGENTS.md` first. This layer adds learning support only.
-
-Use it for repository understanding, learning through a bug or feature, a non-trivial mechanism, safe refactoring with explanation, or a requested baseline. Do not load it for every mechanical edit.
-
-Read `agentic-flow/EDUCATION.md` through the selected `repository-learning` skill. Apply only the lenses that materially improve the task.
+Read `agentic-flow/EDUCATION.md` through the selected learning skill and only the relevant shared records.
 
 ## Core flow
 
 ```text
-Locate → Reason → Try or Work → Verify → Explain → Transfer
+Locate → Reason → Work → Verify → Explain → Transfer
 ```
 
-1. Locate the relevant business, physical, domain, or technical system before file detail.
-2. Identify the outcome, boundary, governing rule, representative path, and nearest proof surface.
-3. Use the smallest responsible investigation, experiment, or change under `agentic-flow/WORKFLOW.md`.
-4. Validate generated and human work against decisive evidence and relevant failure modes.
-5. Ask at most one check when a mistaken model would affect later work.
-6. Fold useful learning into the normal handoff without adding a second recap.
+1. Locate the relevant business, scientific, human, physical, domain, or technical system.
+2. Identify the outcome, boundary, rule or invariant, representative path, and proof surface.
+3. Investigate or work through the smallest responsible route.
+4. Verify against decisive evidence and relevant failure modes.
+5. Use at most one check-back when a mistaken model would affect later work.
+6. Fold useful learning into the normal handoff.
 
-## Task branches
+## Branches
 
-- Bug: affected outcome or rule → symptom → expectation → decisive probe → mechanism → containment or fix → regression proof.
-- Feature: actor and outcome → should it exist → capability and invariants → valid analogue → differences → seam → proof and operational control.
-- Refactor: behavior or domain invariant → evidence → smallest seam → transformation → proof → simpler ownership.
-- Orientation: intended use → system boundary → representative path → control and failure boundary → next useful territory.
+- **Bug:** outcome or rule → symptom → expectation → discriminating probe → mechanism → fix → regression proof.
+- **Feature:** actor and outcome → capability and invariants → valid analogue → differences → seam → proof.
+- **Refactor:** invariant → observable contract → proof → smallest seam → transformation → simpler ownership.
+- **Orientation:** intended use → boundary → representative path → control and failure boundary → next useful territory.
 
-Select one branch. `agentic-workflow` is for the harness itself, not a second engineering procedure. For one architecturally significant, ambiguous, or regulated change within a branch, `structured-change` may run alongside it; it does not replace the branch.
+Select one branch. `agentic-workflow` is for the harness itself, not a second engineering procedure. `structured-change` may run alongside one branch for a consequential or ambiguous change.
 
-## Context and interaction economy
+## Economy
 
-- Search narrowly before reading broad directories or history.
-- Reuse `MAP.md` and `TAKEAWAYS.md` before rescanning.
+- Search narrowly before reading broadly.
+- Reuse `MAP.md` and `TAKEAWAYS.md`.
 - Prefer one representative flow over an inventory.
-- Stop when decisive evidence identifies the mechanism or remaining uncertainty is bounded.
-- Use trial and error only when attempts are safe, small, and informative.
-- Do not force regulatory, safety, classroom, or physical-system questions onto unrelated low-risk work.
+- Stop when decisive evidence identifies the mechanism or bounds the uncertainty.
+- Use safe trial and error only when it is informative.
+- Do not force regulatory, safety, classroom, or physical-system lenses onto unrelated work.
 
 ## Persistence
 
-Conversation is the default. Close meaningful sessions through `agentic-flow/LOCAL.md`.
+Conversation is the default. Use `.local/` for meaningful private continuity.
 
-Promote into `MAP.md` or `TAKEAWAYS.md` only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover. Keep raw attempts, personal state, uncertainty, secrets, customer data, sensitive operational evidence, and private conflict under `.local/` only.
-
-## Evidence
-
-Distinguish claims verified from source, configuration, tests, runtime evidence, domain evidence, contributor report, and inference. Do not present inferred production behavior as fact.
+Promote only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover.

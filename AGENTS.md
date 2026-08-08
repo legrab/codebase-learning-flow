@@ -2,46 +2,49 @@
 
 ## Purpose
 
-Maintain a small harness for safe agentic collaboration, deliberate codebase learning, and conversational learning about general topics. Preserve the separation between:
+Maintain a small harness for safe agentic collaboration, repository learning, and conversational learning about general topics.
+
+Preserve the separation between:
 
 - repository-specific engineering rules;
-- general collaboration behavior in `agentic-flow/`;
-- optional repository learning in `learning-flow/`;
-- generic conversation behavior in the common `learn-anything` skill;
-- private learning and temporary task state under `.local/`.
+- `agentic-flow/` collaboration behavior;
+- `learning-flow/` repository learning;
+- `learn-anything` general learning;
+- private `.local/` continuity.
 
 ## Educational authority
 
-Use `sample/common/agentic-flow/EDUCATION.md` as the shared educational constitution for both learning routes. Keep it selective, repository-agnostic, and focused on durable human ownership.
+Use `sample/common/agentic-flow/EDUCATION.md` as the shared educational constitution.
 
-Low-frequency task procedures belong in skills. Always-loaded instructions should contain routing, boundaries, and short invariants rather than duplicate teaching scripts.
+Learning behavior should be automatic, not opt-in prose. Low-frequency procedures belong in skills. Always-loaded instructions should contain routing, boundaries, and short invariants rather than teaching scripts.
 
-## Generic conversational learning
+## Default learning behavior
 
-When the user explicitly wants to learn a non-repository topic, treat this checkout as the host rather than the subject. Use `learn-anything`, do not inspect repository code, and let the direct question govern the session.
+For every user request, apply the educational model at the smallest useful depth.
 
-For meaningful continuity, follow `sample/common/agentic-flow/LOCAL.md`. Keep complete private session state under `.local/`, and promote only clearly reusable framework knowledge deliberately.
+- `help me understand`, `explain`, `teach me`, and similar general questions → `learn-anything`;
+- questions about this repository → repository learning;
+- implementation work → normal delivery, with learning reinforcement when it materially improves ownership;
+- one consequential or ambiguous change → `structured-change` alongside the active route.
 
-If this source checkout has no `.local/` workspace yet, create `.local/{sessions,follow-ups}` and seed `.local/learning-history.md` from `sample/common/local/learning-history.md`. Never overwrite existing local state.
+Keep the exchange conversational. Build a compact model, use one useful example or experiment when helpful, and use at most one check-back when it can reveal a mistaken model. Do not turn mechanical work into a lesson.
 
 ## Working rules
 
 - Read `README.md`, `docs/DESIGN_NOTES.md`, and `CHANGELOG.md` before structural changes.
-- Keep minimal, full, and general learning behavior aligned through the common educational constitution.
-- Prefer a small common rule over duplicated profile-specific prose.
-- Keep direct session goals primary. Human values, resilience, and domain lenses are selective.
+- Prefer one common rule over duplicated profile-specific prose.
+- Keep direct task goals primary.
 - Do not add workflow ceremony without a demonstrated problem.
-- Treat installer update and preservation behavior as part of the public contract.
-- Update manifests, version markers, examples, and regression fixtures with framework changes.
+- Treat installer update and preservation behavior as public contract.
 - Keep the framework usable across languages, build systems, repository sizes, and industries.
 - Never persist inferred distress, health, identity, secrets, customer data, or sensitive operational evidence.
 
-## External reference integration
+## External references
 
-When asked to incorporate value from another repository, article source, or ZIP, follow `docs/references/REFERENCE_INTEGRATION.md`.
+When incorporating another repository, article, or ZIP, follow `docs/references/REFERENCE_INTEGRATION.md`.
 
-Extract the smallest generally useful patterns, preserve source-specific rules only in the reference review, and add `docs/references/REFERENCE_REVIEW_<SOURCE>.md` for provenance and historical context.
+Extract only the smallest generally useful patterns and record provenance in `docs/references/REFERENCE_REVIEW_<SOURCE>.md`.
 
 ## Communication
 
-Use direct, summary-first language. Say what changed and why it matters, grouping substantial updates into a few descriptive sections rather than a tool log or file inventory. Put secondary rationale, long examples, command matrices, and historical notes in `<details>` blocks when supported. Never hide required warnings, decisions, or next actions inside a collapsed section.
+Use direct, summary-first language. Group substantial updates by outcome. Put secondary rationale, long examples, command matrices, and historical notes in `<details>` blocks. Keep warnings, decisions, validation failures, and required next actions visible.
