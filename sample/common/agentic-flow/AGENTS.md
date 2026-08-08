@@ -1,96 +1,83 @@
 # Agentic collaboration instructions
 
-## Layer 1: Agentic Delivery
+This is the common Agentic Delivery layer. It owns collaboration behavior, routing, verification, handoff, and consequential-action boundaries.
 
-This file is the common Agentic Delivery layer. It owns collaboration behavior,
-task routing, verification, handoff, and boundaries around consequential
-actions.
-
-Learning & Ownership and Optional Risk Lenses are separate layers. They may be
-selected when useful, but this layer must remain usable without either one.
+Learning & Ownership and Optional Risk Lenses add guidance without becoming a second workflow.
 
 ## Route
 
 1. Follow root, nested, and tool-specific repository instructions first.
 2. Use this layer for collaboration behavior.
-3. Select one primary task route. Do not load multiple task procedures unless the active route explicitly requires a narrow supporting skill.
-4. Load `learning-flow/AGENTS.md` only for deliberate repository learning, orientation, explanation, or initial mapping.
-5. Use `learn-anything` for non-repository learning without loading repository-learning instructions.
-6. Apply `EDUCATION.md` only when a selected learning route needs it. Read only the relevant sections.
-7. For one consequential, ambiguous, or regulated change, `structured-change` may run alongside the chosen route to elaborate `Decide`. It is not a second engineering workflow, and most tasks never need it.
+3. Select one primary task route.
+4. **Treat learning as default behavior:** general understanding requests use `learn-anything`; current-repository understanding uses repository learning.
+5. During implementation, reinforce understanding when useful without turning the task into a lesson.
+6. Use `structured-change` alongside the active route only for one consequential, ambiguous, or regulated change.
+7. Read configuration documents only when configuration matters.
 
-Read `SETTINGS.md` when the task depends on collaboration configuration; use `balanced` immediately when settings remain at defaults. Read `CONFIGURE.md` only for explicit configuration, a non-default preset, or an advanced override. Do not load configuration documents merely because they exist.
+## Learning behavior
+
+For `help me understand`, `explain`, `teach me`, and similar requests:
+
+- keep the exchange conversational;
+- build a compact causal or system model;
+- use one useful example, experiment, comparison, or worked problem;
+- ask at most one prediction, trace, or explain-back when it improves understanding;
+- let the user's questions steer depth;
+- correct mistaken models directly;
+- collapse the loop for short factual questions.
+
+For code work, teach the relevant system, rule, boundary, or evidence when that helps ownership. Do not add a quiz or learning artifact merely because the framework can.
 
 ## Context budget
 
-The framework is intentionally progressive-disclosure. Context is a limited engineering resource, not a reason to load every framework document.
+Context is a limited engineering resource.
 
 - Start with repository-native instructions and this file.
-- Select one primary task route before loading task-specific instructions.
-- Load only the files that route names as necessary for the current question.
-- Treat indexes, manifests, and routing files as pointers, not requests to preload their entire contents.
-- Read one relevant knowledge/reference file at a time when possible.
-- Reuse current evidence instead of rescanning the same territory for another skill.
-- Stop when the evidence threshold for the decision or implementation is met.
-- Small or mechanical work should collapse the route to the smallest useful sequence.
+- Select one primary route before loading task-specific instructions.
+- Load only files that route names as necessary.
+- Treat indexes and manifests as pointers, not preload requests.
+- Reuse current evidence instead of rescanning it.
+- Stop when the evidence threshold is met.
+- Small or mechanical work should use the smallest useful sequence.
 
-The intended default is:
+Default:
 
 ```text
 repository instructions → Agentic Delivery → one task route → narrow evidence
 ```
 
-Learning and risk material are conditional branches. They are not part of the universal context. See `docs/AGENTIC_WORKFLOW_SANITY.md` in the framework repository for the behavioral acceptance scenarios and context-budget rationale.
-
 ## Discover the effective setup
 
-Do not assume this template is the repository's only harness. Respect existing instructions, skills, prompts, plans, records, and agent-specific files. Treat managed template files as known; inspect custom additions, overrides, effective precedence, and conflicts only when they affect the work. Use `LEARN.md`, `LOCAL.md`, and `ROOT_INTEGRATION.md` when those boundaries need explanation.
+Respect existing instructions, skills, prompts, plans, records, and agent-specific files. Inspect custom additions, overrides, conflicts, and precedence only when they affect the work.
 
-Treat third-party skills as executable instructions. Before adding or first using one, inspect its pinned source, referenced scripts or resources, required tools, network or secret access, side effects, maintenance, and overlap with repository rules. Popularity or catalogue inclusion is discovery evidence, not a security review. Prefer one narrow skill for a demonstrated need over a broad bundle.
+Treat third-party skills as executable instructions. Before first use, inspect their source, referenced resources, required tools, access, side effects, maintenance, and overlap with repository rules. Prefer one narrow skill for a demonstrated need.
 
-## Default behavior
-
-Use current repository evidence as truth; plans and summaries may have drifted.
+## Default workflow
 
 ```text
 Frame → Inspect → Decide → Act → Verify → Handoff
 ```
 
-Collapse obvious steps for small work. Do not create a plan, session, status artifact, or lesson merely because the framework supports one. Follow `WORKFLOW.md` when the detailed execution or handoff shape matters.
-
-For a non-repository learning request, use `learn-anything`. Keep the exchange conversational, inspect no repository code, and use `.local/` only for meaningful private continuity as defined in `LOCAL.md`. Questions that require current codebase evidence return to repository learning.
-
-## Communication
-
-- Lead with the useful result, next action, or compact map.
-- Say what changed and why it matters; group substantial updates into a few outcome-based sections rather than a tool log or file inventory.
-- Start substantial work with the intended outcome and a short route when sequencing matters. Update only when the phase or route changes, a blocker appears, or silence would become confusing.
-- Prefer plain language and a compact overview before detail. Use `<details>` for optional rationale, long evidence, command matrices, alternatives, or examples.
-- Keep warnings, unresolved decisions, validation failures, and required next actions visible.
-- Match depth to the task and the user's demonstrated context.
+Collapse obvious steps for small work. Use `WORKFLOW.md` when detailed execution or handoff guidance matters.
 
 ## Questions and authority
 
-Ask only when a consequential product, architecture, dependency, compatibility, safety, or irreversible choice remains unresolved; evidence cannot distinguish responsible options; configured mode requests a gate; or root integration is the task.
-
-When collaboration behavior needs configuration, ask for one preset from `CONFIGURE.md`. Ask for an individual override only when no preset fits, and ask the root-integration choice only when that integration is unresolved. Do not run questionnaires during ordinary work.
+Ask only when a consequential choice is unresolved, evidence cannot distinguish responsible options, configured mode requests a gate, or root integration is unresolved.
 
 An explicit implementation request permits ordinary reversible work within scope. It does not permit destructive Git operations, publishing, release actions, secret access, or unrelated changes.
 
-## Planning, execution, and records
+## Planning and records
 
-- Small tasks need no formal plan; multi-step tasks use a short in-chat plan.
+- Small tasks need no formal plan.
 - Create a plan file only when risk, duration, configuration, or handoff justifies it.
-- Record a durable decision in `DECISIONS.md` only when it will matter to a later reader; most decisions stay in conversation or `.local/`.
-- Inspect the smallest responsible scope and prefer one coherent change over artificial micro-steps.
-- Revisit the route when evidence changes the scope, architecture, or behavior.
-- Validate in proportion to risk, focused first. Separate changes applied from executable checks completed and never claim unavailable verification.
-- Keep ordinary session records, ledgers, and status files optional. Keep temporary handoff out of stable instructions.
-- At natural closure of a meaningful learning session, save private state and compact continuity under `.local/` according to `LOCAL.md`; do not store it elsewhere.
+- Record durable decisions only when they matter to later readers.
+- Validate in proportion to risk and distinguish applied changes from executable proof.
+- Keep temporary state out of stable instructions.
+- Use `.local/` for meaningful private learning continuity.
 
 ## Handoff
 
-End substantial work with the plain-language result and only the useful sections below:
+End substantial work with only useful sections:
 
 ```text
 Changed
@@ -103,34 +90,10 @@ Open
 - Remaining risk, decision, or next action.
 ```
 
-Omit empty sections, repeated narration, and exhaustive file lists. When learning was central, fold useful reinforcement into this handoff instead of adding a second recap.
+Omit empty sections, repeated narration, and exhaustive file lists.
 
-For a substantive commit, use a short imperative title and only body sections that add context:
+## Learning closure
 
-```text
-Why:
-- problem or intent
+Use `learning-closure` only when work produced a reusable insight. Recommend the smallest destination and let the user decide whether to persist it.
 
-What:
-- behavior changed and its effect
-
-Checks:
-- meaningful verification
-```
-
-Trivial commits need only a title. For a consequential or regulated change, add the optional `Traceability` section described in `WORKFLOW.md` instead of expanding this default shape. Do not commit, push, publish, merge, or create release tags unless explicitly requested.
-
-
-## Learning closure and freshness
-
-Meaningful engineering work may end with a `learning-closure` decision. Use it
-only when the work produced a reusable insight. The agent should recommend the
-smallest appropriate destination and let the user decide whether to persist it.
-
-At pull-request or substantial change completion, make this decision part of
-the normal handoff rather than creating a separate documentation ceremony.
-
-Use `learning-freshness` during deliberate maintenance or when durable
-repository knowledge may have drifted from implementation. It can check
-repository evidence, but external-source claims require their retained source
-metadata and external revalidation.
+Use `learning-freshness` during deliberate maintenance or when durable repository knowledge may have drifted.
