@@ -60,9 +60,21 @@ The framework treats agent context as a limited engineering resource. The common
 
 The framework is intentionally tested against representative low-risk, learning, consequential, and regulated scenarios to guard against the main failure mode: **making a competent developer perform framework rituals instead of making them faster and more aware**. See [`docs/AGENTIC_WORKFLOW_SANITY.md`](docs/AGENTIC_WORKFLOW_SANITY.md) for the context-budget rules and sanity scenarios.
 
-## Start in two minutes
+## Installation
+
+### Preferred: packaged release
+
+For team and enterprise use, install a reviewed, versioned release rather than
+executing a mutable checkout from `main`. Release installation will be the
+preferred distribution path once packaged releases are published.
+
+Pin the exact release version used by the team and retain the version in the
+installation record.
+
+### Development checkout
 
 Run one installer from the repository that should receive the framework:
+
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1)))
@@ -103,6 +115,33 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "iwr https://raw.githubus
 Remote piping executes the referenced revision. Pin a release tag or commit for a team installation.
 
 </details>
+
+## Adoption situations
+
+| Situation | Recommended approach | Installation / adoption procedure |
+|---|---|---|
+| **A. No agentic flow** | Complete installation with `minimal` by default; add `full` or `regulatory` deliberately. | Prefer a pinned packaged release. Use checkout installers for development or experimentation. |
+| **B. Custom agentic flow per developer** | Preserve the existing delivery layer and selectively adopt learning/risk capabilities. | Check out this repository and run the guided adoption prompt from [`adoption/ADOPT.md`](adoption/ADOPT.md). |
+| **C. Lightweight agentic flow, no learning/regulatory concepts** | Keep the existing delivery workflow and add the Learning & Ownership layer plus relevant risk lenses. | Prefer guided adoption; use complete installation only when the repository explicitly wants to standardize its delivery layer. |
+
+Complete installation and guided adoption are intentionally different operations.
+Complete installation consumes the framework payload under `sample/`; guided
+adoption consumes the instructions under `adoption/` and integrates only the
+selected concepts into an existing setup.
+
+## Guided adoption for existing agentic setups
+
+Check out this repository and ask the host coding agent to read
+[`adoption/ADOPT.md`](adoption/ADOPT.md). The agent should inspect the existing
+repository workflow, ask about profile and extension choices, propose a
+minimal compatible integration, and wait for approval before consequential
+changes.
+
+The guided process considers `structured-change`, `learn-anything`,
+`learning-closure`, `learning-freshness`, the Learning & Ownership model,
+private `.local/` continuity, and relevant risk extensions. It does **not**
+automatically install the common `agentic-flow` or rewrite the root
+`AGENTS.md`.
 
 ## Choose the route
 

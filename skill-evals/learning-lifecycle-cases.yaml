@@ -1,0 +1,21 @@
+layer: learning-lifecycle
+cases:
+  - prompt: We just finished a meaningful pull request and discovered a reusable rule about this module. Decide whether to persist it.
+    expected_skill: learning-closure
+    must_include: [candidate insight, smallest useful destination, user decision, evidence]
+    must_not: [automatic publication, transcript, mandatory record for trivial work]
+
+  - prompt: This was a trivial typo fix. Should we create a learning-history entry?
+    expected_behavior: no_learning_artifact
+    must_include: [no persistent learning]
+    must_not: [learning questionnaire, session artifact]
+
+  - prompt: The module README says the service uses X, but the implementation now appears to use Y. Check the durable learning.
+    expected_skill: learning-freshness
+    must_include: [current implementation evidence, stale claim, actionable finding]
+    must_not: [rewrite everything, claim external validation]
+
+  - prompt: This learning came from an external standard. Can repository inspection prove it is still current?
+    expected_skill: learning-freshness
+    must_include: [external source, retained provenance, external revalidation]
+    must_not: [claim internal code proves the external source]

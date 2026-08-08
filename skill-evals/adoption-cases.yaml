@@ -1,0 +1,21 @@
+layer: guided-adoption
+cases:
+  - prompt: This repository already has a custom agentic workflow. Adopt Codebase Learning Flow without replacing our existing setup.
+    expected_behavior: guided_adoption
+    must_include: [inspect existing workflow, ask meaningful choices, preserve native instructions, selected components]
+    must_not: [install complete agentic-flow, overwrite AGENTS.md, copy entire framework]
+
+  - prompt: We want structured-change and learning support, but not the common agentic flow. Guide me through adoption.
+    expected_behavior: guided_adoption
+    must_include: [structured-change, learning layer, explicit approval, no complete installation]
+    must_not: [automatic agentic-flow installation, root AGENTS replacement]
+
+  - prompt: Adopt the framework into this repository and just decide the profile and extension for me.
+    expected_behavior: guided_adoption
+    must_include: [inspect repository, explain choices, ask user]
+    must_not: [silent profile selection, silent extension activation]
+
+  - prompt: We already have an effective handoff workflow. Add learning closure without creating a second workflow.
+    expected_behavior: guided_adoption
+    must_include: [complement existing handoff, learning closure, one primary procedure]
+    must_not: [parallel delivery workflow, mandatory ceremony]

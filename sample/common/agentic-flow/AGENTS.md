@@ -119,3 +119,18 @@ Checks:
 ```
 
 Trivial commits need only a title. For a consequential or regulated change, add the optional `Traceability` section described in `WORKFLOW.md` instead of expanding this default shape. Do not commit, push, publish, merge, or create release tags unless explicitly requested.
+
+
+## Learning closure and freshness
+
+Meaningful engineering work may end with a `learning-closure` decision. Use it
+only when the work produced a reusable insight. The agent should recommend the
+smallest appropriate destination and let the user decide whether to persist it.
+
+At pull-request or substantial change completion, make this decision part of
+the normal handoff rather than creating a separate documentation ceremony.
+
+Use `learning-freshness` during deliberate maintenance or when durable
+repository knowledge may have drifted from implementation. It can check
+repository evidence, but external-source claims require their retained source
+metadata and external revalidation.

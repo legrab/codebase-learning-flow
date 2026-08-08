@@ -2,6 +2,14 @@
 
 The PowerShell, POSIX shell, and batch entry points install a repository-native collaboration and learning framework without replacing repository-specific instructions.
 
+These scripts perform **complete installation**. They are intentionally separate
+from the guided adoption process under `adoption/`, which is for repositories
+that already have their own agentic delivery layer.
+
+For team and enterprise use, the preferred future distribution path is a pinned
+packaged release. Checkout-based installers remain useful for framework
+development and experimentation.
+
 ```mermaid
 flowchart LR
     D[Download pinned source] --> P[Select profile]

@@ -32,3 +32,16 @@ This file is private repository-local learning state. Keep it concise enough to 
 |---|---|---|---|
 
 ## Useful next directions
+
+
+## Placement guidance
+
+Learning captured here is private continuity, not the canonical repository
+knowledge base. At meaningful change or pull-request closure, the agent may
+recommend promoting a verified insight to `learning-flow/MAP.md`,
+`learning-flow/TAKEAWAYS.md`, or module documentation. Promotion is always a
+deliberate user decision.
+
+For external-source learning, retain source URL or identifier, revision/version
+when applicable, publication/access dates when known, and the relevant
+section so the claim can be rechecked later.

@@ -130,3 +130,36 @@ guided adoption.
 The repository itself is the reference implementation of these boundaries.
 Changes should preserve the distinction rather than introduce a fourth
 cross-cutting framework layer for every new concern.
+
+
+## Adoption versus installation
+
+The repository deliberately separates complete installation from guided adoption.
+
+- **Complete installation** consumes the framework payload under `sample/` and
+  establishes the selected Agentic Delivery, Learning & Ownership, and optional
+  Risk Lens layers.
+- **Guided adoption** consumes `adoption/` and adapts selected concepts into an
+  existing agentic setup. It is not an installer profile and must not silently
+  replace the host delivery workflow or root `AGENTS.md`.
+
+This separation is a trust and context boundary as well as an installation
+boundary. The adoption process can inspect the framework without loading its
+entire instruction set into the active agent context.
+
+## Learning lifecycle
+
+Learning is treated as a lifecycle rather than a second engineering process:
+
+```text
+work → observe useful insight → recommend destination → user decides
+     → private continuity or durable shared knowledge → later freshness check
+```
+
+`learning-closure` owns the placement decision at meaningful workflow closure.
+`learning-freshness` periodically checks internal documentation and learning
+claims against implementation evidence. External-source claims remain externally
+sourced and carry provenance for later revalidation.
+
+The default is not to persist anything. Durable knowledge must earn its
+maintenance cost.

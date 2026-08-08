@@ -78,3 +78,23 @@ Use [`AGENTIC_WORKFLOW_SANITY.md`](AGENTIC_WORKFLOW_SANITY.md) when changing com
    managed files.
 8. Review the human entry points after structural changes. The root README
    should remain useful before any agent-facing detail is read.
+
+
+## Current architecture boundaries
+
+The framework is organized into three layers:
+
+1. Agentic Delivery;
+2. Learning & Ownership;
+3. Optional Risk Lenses.
+
+Complete installation uses the payload under `sample/`. Guided adoption uses the
+separate `adoption/` surface and integrates only selected concepts into an
+existing agentic workflow.
+
+Meaningful workflow closure can invoke `learning-closure` to decide whether a
+useful insight belongs in private continuity, a learning-flow surface, or
+module
+documentation. `learning-freshness` provides a periodic internal consistency
+check; external-source claims require retained provenance and external
+revalidation.
