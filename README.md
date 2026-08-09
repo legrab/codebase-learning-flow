@@ -1,5 +1,7 @@
 # Codebase Learning Flow
 
+[![Latest release](https://img.shields.io/github/v/release/legrab/codebase-learning-flow?label=latest%20release)](https://github.com/legrab/codebase-learning-flow/releases/latest)
+
 > A small repository harness for learning real systems with AI while keeping human judgment in charge.
 
 Codebase Learning Flow configures a host coding agent. It provides repository-local instructions, focused skills, learning surfaces, and private local continuity. It does **not** provide an agent runtime, sandbox, retry engine, or background worker.
@@ -55,15 +57,19 @@ The agent should not turn every task into a lesson. Short questions can receive 
 
 ### Preferred: packaged release
 
-For team or enterprise use, install a reviewed, versioned release.
+For team or enterprise use, install a reviewed, versioned release. Substitute
+the current tag from the badge above or the
+[Releases page](https://github.com/legrab/codebase-learning-flow/releases) —
+`--release`/`-Release` intentionally has no "latest" shortcut, so the exact
+tag must be given.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.sh -o install.sh
-sh install.sh --release v0.9.0 --profile minimal
+sh install.sh --release v1.0.0 --profile minimal
 ```
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v0.9.0 -Profile Minimal
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v1.0.0 -Profile Minimal
 ```
 
 The installer verifies the release checksum before extraction and reports the resolved `Version:` and `Source:`.

@@ -32,27 +32,29 @@ flowchart LR
 ```
 
 ```text
-sh install.sh --release v0.9.0 --profile minimal
+sh install.sh --release v1.0.0 --profile minimal
 ```
 
 ```powershell
-.\install.ps1 -Release v0.9.0 -Profile Minimal
+.\install.ps1 -Release v1.0.0 -Profile Minimal
 ```
 
 `--release`/`-Release` downloads the packaged artifact and `checksums.txt`
-published against that exact tag on the repository's Releases page, verifies
-the SHA-256 checksum before extracting anything, and cross-checks the
-package's own `VERSION` file against the requested tag. `--ref`/`-Ref` and
-`--release`/`-Release` are mutually exclusive. `latest` is not accepted as a
-release value: look up the tag you want on the Releases page and pass it
-explicitly. This is deliberate, not an oversight -- see "Release-based
-distribution" in `docs/DESIGN_NOTES.md`.
+published against that exact tag on the repository's
+[Releases page](https://github.com/legrab/codebase-learning-flow/releases),
+verifies the SHA-256 checksum before extracting anything, and cross-checks
+the package's own `VERSION` file against the requested tag. `--ref`/`-Ref`
+and `--release`/`-Release` are mutually exclusive. `latest` is not accepted
+as a release value: look up the current tag on the Releases page (the
+version above will go stale as new releases ship) and pass it explicitly.
+This is deliberate, not an oversight -- see "Release-based distribution" in
+`docs/DESIGN_NOTES.md`.
 
 Every install prints which trust boundary it used:
 
 ```text
 Codebase Learning Flow
-Version: v0.9.0
+Version: v1.0.0
 Source: packaged release (checksum verified)
 ```
 
