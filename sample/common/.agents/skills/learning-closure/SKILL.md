@@ -36,6 +36,12 @@ Choose among:
 
 Prefer the module's own documentation when the knowledge is necessary to use or extend that module correctly. Prefer learning-flow surfaces for cross-cutting repository understanding.
 
+## Prefer changed understanding over new facts
+
+Before stating the candidate insight, check whether the most valuable thing learned is not a new fact but a correction to how investigation should happen next time — for example "trace the queue consumer before reasoning about downstream behavior" is more durable than "ERP submission is asynchronous." Prefer capturing the corrected reasoning pattern when one exists.
+
+If this session corrected an existing `learning-flow/MAP.md` or `TAKEAWAYS.md` entry, flag that entry as needing an update in the same closure pass — do not leave a known-stale record for `learning-freshness` to catch later.
+
 ## Ask at meaningful closure
 
 At pull-request or substantial change completion, if a useful candidate exists, present a compact recommendation:

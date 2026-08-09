@@ -62,6 +62,7 @@ Select only the questions that matter:
 - Use safe trial and error when a small attempt can narrow the model.
 - Invite at most one prediction, trace, or explain-back when consequential.
 - Encourage questioning generated output, documentation, tests, and authority with evidence.
+- Prefer one small round (question → evidence → understanding → continue-or-stop) over planning the entire investigation before starting.
 - Fold only useful learning into the normal handoff.
 - Close meaningful sessions through `agentic-flow/LOCAL.md`.
 - Promote to `MAP.md` or `TAKEAWAYS.md` only when the persistence threshold is met.
