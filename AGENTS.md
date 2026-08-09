@@ -38,6 +38,7 @@ Keep the exchange conversational. Build a compact model, use one useful example 
 - Treat installer update and preservation behavior as public contract.
 - Keep the framework usable across languages, build systems, repository sizes, and industries.
 - Never persist inferred distress, health, identity, secrets, customer data, or sensitive operational evidence.
+- Record change rationale only in `docs/DESIGN_NOTES.md` (why, chronological, one section per version) and `CHANGELOG.md` (what, per release). Do not create a separate status, hardening, or implementation-tracking document for a change — fold the rationale into a `DESIGN_NOTES.md` section and the entries into `CHANGELOG.md`. A standalone tracking document goes stale the moment the next change lands; these two files are already the maintained, chronological record.
 
 ## External references
 

@@ -164,6 +164,39 @@ Expected behavior:
 
 Failure signal: automatic dumping of the entire session into `learning-history.md`, or silently creating durable knowledge without a reuse justification.
 
+### 10. Proposed design or approach
+
+**Prompt:** Here's a task, and I'm planning to implement it by doing X. Anything to add?
+
+Expected behavior:
+
+- recognize the proposal as a hypothesis, not a specification;
+- inspect relevant repository evidence before responding;
+- name the assumptions the proposal depends on and which are unverified;
+- surface a missing boundary, risk, or credible alternative when one exists;
+- recommend or implement only after that check, and only within the requested scope.
+
+Failure signal: polishing or implementing the proposal as stated, or turning the check into a generic architecture lecture unconnected to repository evidence.
+
+### 11. Open-ended consequential ambiguity
+
+**Prompt:** What's the best way to redesign this subsystem?
+
+Expected behavior:
+
+- identify that the answer depends on the user's intent, scope, or tradeoffs;
+- ask the smallest question that separates the materially different answers;
+- do not invent the missing preference.
+
+**Contrast prompt:** Should this validation live in the controller or the service?
+
+Expected behavior when repository convention already answers it:
+
+- inspect existing ownership and validation conventions;
+- answer from that evidence instead of asking.
+
+Failure signal: asking a broad clarifying question the repository could already answer, or silently choosing an architecture when the user's intent was actually required.
+
 ## Review checklist
 
 For each scenario, review the agent interaction for:

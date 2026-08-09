@@ -7,7 +7,7 @@
 Codebase Learning Flow configures a host coding agent. It provides repository-local instructions, focused skills, learning surfaces, and private local continuity. It does **not** provide an agent runtime, sandbox, retry engine, or background worker.
 
 > [!IMPORTANT]
-> **Learning is the default behavior after installation.** Users do not need to explain the learning method. A request such as `help me understand <topic>` automatically selects the appropriate learning route, keeps the exchange conversational, builds a compact model, uses a useful example or experiment, and checks back for understanding when that adds value.
+> **Learning-aware behavior is enabled by default after installation** — that does not mean every task becomes a lesson. Routine work stays routine. A request such as `help me understand <topic>` automatically selects the appropriate learning route, keeps the exchange conversational, builds a compact model, uses a useful example or experiment, and checks back for understanding when that adds value. A proposed design or approach is treated as a hypothesis worth checking against repository evidence, not a specification to endorse.
 
 > [!WARNING]
 > The regulatory extension is a reasoning and workflow aid, not a compliance determination or substitute for qualified regulatory or quality expertise.
@@ -46,6 +46,8 @@ The installed `AGENTS.md` connects the host repository to `agentic-flow`. The co
 - `help me understand ...`, `explain ...`, `teach me ...` → `learn-anything` for general topics
 - questions about the current codebase → repository learning
 - implementation work → normal delivery, with learning reinforcement when useful
+- a proposed design or approach → treated as a hypothesis, checked against repository evidence before being endorsed or implemented
+- an open-ended consequential question → repository evidence is inspected first; the user is asked only the smallest question evidence can't answer
 - one consequential or ambiguous change → `structured-change` alongside the active route
 - regulatory reasoning → the optional regulatory lens when installed
 

@@ -138,6 +138,21 @@ Regulatory-specific knowledge (traceability, validation, risk management, audit 
 
 Engineering judgment content the source proposed (anti-overengineering guidance, AI-collaboration indicators, modernization, maintainability, testing, architecture, dependency management, documentation) is general-purpose, not regulatory-specific, and lives inside `structured-change`'s own knowledge folder instead.
 
+## v1.0 hardening: proposal and ambiguity routing
+
+A pre-1.0 sanity review found the remaining gap to be behavioral routing, not architecture. The framework already had strong repository discovery, progressive learning, evidence-based reasoning, structured change, and local/shared learning continuity; what it lacked was an explicit rule distinguishing a request to implement from a request to challenge a proposed approach, and an explicit rule distinguishing an ambiguity the repository can resolve from one only the user can resolve. Without those, a proposal offered together with a task could be interpreted as a request to execute rather than a request to challenge, and an open-ended consequential question ("what's the best way to redesign X?") had no rule stopping the agent from silently picking an interpretation.
+
+Two rules closed that gap, added once to `agentic-flow/AGENTS.md` (the routing contract every task reads first) rather than duplicated into each skill:
+
+- **Proposals are hypotheses, not specifications.** When the user offers a proposed implementation, architecture, or approach and asks for feedback, identify its material assumptions, check them against repository evidence, and surface a missing boundary, risk, or alternative before recommending or implementing it. An explicit, narrowly scoped instruction ("do exactly X") does not require this challenge.
+- **Repository ambiguity vs. user-intent ambiguity.** If evidence can resolve a consequential ambiguity, inspect first. If the missing piece is the user's intent, scope, tradeoff, or authority, ask the smallest useful question instead of deciding for them.
+
+Both are phrased as behavioral rules applied when a condition is encountered, not a sequence of steps to complete: new evidence can change the route mid-task, including abandoning the initial proposal. This is the same distinction the rest of this document already makes for delivery work — deterministic behavior, not a deterministic trajectory.
+
+The rest of the pass fit the same "one canonical owner" discipline as everything else in this section: a compact visual decision model landed once in `agentic-flow/README.md` rather than being restated in prose; two new regression scenarios landed in `docs/AGENTIC_WORKFLOW_SANITY.md` (proposed design, open-ended ambiguity) with matching cases in `skill-evals/agentic-cases.yaml`; one compact worked example landed in `docs/EXAMPLE_WALKTHROUGH.md`; and the root `README.md`'s framing changed from "learning is the default behavior" to "learning-aware behavior is enabled by default," making explicit that routine work stays routine.
+
+A larger set of proposed improvements (lightweight learning artifacts, incremental learning rounds, an explicit inspectable system model, a structure step between design and planning, branching alternative designs) was reviewed and deliberately deferred rather than folded in. Each would require real design and evaluation work to avoid becoming ceremony, which is exactly what this document's "smallest coherent hardening pass" standard rules out for a single pass; the reasoning and file-level implementation detail for each lives in the post-1.0 backlog document delivered alongside this release, not inside this repository, so an optional future improvement doesn't read as a committed roadmap.
+
 ## General agentic loop
 
 ```text
@@ -254,7 +269,9 @@ Design decisions specific to this boundary:
 - committed personal transcripts and hypothesis diaries;
 - a dashboard, database, vector store, orchestration service, or LMS;
 - a proliferating `explorations/`/`designs/`/`decisions/`-per-item directory scaffold in place of the existing durable-file surfaces;
-- mandatory evaluation-matrix scoring or commit traceability blocks for ordinary, low-risk work.
+- mandatory evaluation-matrix scoring or commit traceability blocks for ordinary, low-risk work;
+- a design challenge for a one-line or obviously reversible change;
+- a clarifying question about something repository evidence already answers.
 
 ## Final review checklist
 

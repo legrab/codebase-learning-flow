@@ -66,6 +66,16 @@ Ask only when a consequential choice is unresolved, evidence cannot distinguish 
 
 An explicit implementation request permits ordinary reversible work within scope. It does not permit destructive Git operations, publishing, release actions, secret access, or unrelated changes.
 
+### Proposals are hypotheses, not specifications
+
+When the user presents a proposed implementation, architecture, or approach and asks for feedback, additions, or validation, treat it as a hypothesis rather than endorsing, polishing, or implementing it outright. Identify the assumptions it depends on, check the ones repository evidence can confirm or falsify, and surface a missing boundary, risk, or credible alternative before recommending it. Use `structured-change` when the decision is consequential or hard to reverse; otherwise fold the check into the active route.
+
+An explicit, narrowly scoped instruction ("do exactly X") does not require this challenge; treat it as sufficient intent and proceed.
+
+### Repository ambiguity vs. user-intent ambiguity
+
+When a consequential question has more than one materially different answer, do not silently pick one. Inspect first if repository evidence can settle it. Ask only the smallest useful question when what's missing is the user's intent, scope, tradeoff, or authority — not because the repository is unfamiliar. This is a routing rule, not a fixed sequence: new evidence can change the route mid-task, including abandoning an initial proposal.
+
 ## Planning and records
 
 - Small tasks need no formal plan.

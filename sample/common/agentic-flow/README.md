@@ -29,6 +29,27 @@ flowchart TB
 
 Start with `AGENTS.md`. Use balanced defaults from `SETTINGS.md` unless configuration matters.
 
+## Proposal and ambiguity routing
+
+A proposed design and an open-ended consequential question are handled the same way: check what evidence can settle, ask only what it can't.
+
+```mermaid
+flowchart TD
+    Q[Proposal or consequential question] --> E{Evidence can resolve it?}
+    E -->|Yes| I[Inspect, then proceed]
+    E -->|No| U{Depends on user intent, scope, or authority?}
+    U -->|Yes| A[Ask the smallest useful question]
+    U -->|No| I
+    I --> D{Is it a proposed design or approach?}
+    D -->|Yes| H[Treat as hypothesis: test assumptions, surface alternatives]
+    D -->|No| Act[Continue the active route]
+    H --> R{Consequential or hard to reverse?}
+    R -->|Yes| SC[structured-change]
+    R -->|No| Act
+```
+
+New evidence can change the route mid-task; this is a set of behavioral rules, not a plan to complete. See `AGENTS.md` for the full rule text.
+
 ## Supporting guides
 
 | Guide | Purpose |
