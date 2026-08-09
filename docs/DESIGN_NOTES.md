@@ -18,6 +18,9 @@ The previous five ownership layers remain useful as implementation provenance, b
 
 This distinction is important for adoption. A repository with its own agentic delivery workflow can adopt Learning & Ownership or an Optional Risk Lens without installing or replacing the common Agentic Delivery layer.
 
+<details>
+<summary>Earlier version history (v0.5 – v0.8.0)</summary>
+
 ## v0.5 separation of concerns
 
 Repository agentic content is divided into five ownership layers:
@@ -137,6 +140,8 @@ The source's proposed `explorations/`, `designs/`, `reviews/`, `decisions/`, `im
 Regulatory-specific knowledge (traceability, validation, risk management, audit trails, change control, and short orientation to ISO 9001, ISO 13485, ISO 14971, ISO 17025, IEC 62304, and 21 CFR Part 11) lives inside the `regulatory-knowledge` skill installed only by the extension, read a file at a time rather than loaded in bulk. IEC 62304 and 21 CFR Part 11 were added beyond the source proposal as the direct software-lifecycle and electronic-records companions to ISO 13485 and ISO 14971. Content is written as practical orientation, not standard summary or reproduction, consistent with both the source's own knowledge philosophy and this project's copyright discipline.
 
 Engineering judgment content the source proposed (anti-overengineering guidance, AI-collaboration indicators, modernization, maintainability, testing, architecture, dependency management, documentation) is general-purpose, not regulatory-specific, and lives inside `structured-change`'s own knowledge folder instead.
+
+</details>
 
 ## v1.0 hardening: proposal and ambiguity routing
 

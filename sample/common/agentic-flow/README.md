@@ -62,8 +62,7 @@ New evidence can change the route mid-task. This is a set of behavioral rules, n
 | `ROOT_INTEGRATION.md` | connecting existing or missing root instructions |
 | `REFERENCE_INTEGRATION.md` | extracting value from another source |
 | `ARTIFACTS.md` | optional vocabulary for explicit reasoning outputs |
-| `LEARN.md` + learning skills | understanding the effective harness and building knowledge |
-| `learn-anything` + learning skills | general learning and repository understanding |
+| `learn-anything` | general-topic learning without repository inspection |
 
 <details>
 <summary>Boundary in one sentence</summary>

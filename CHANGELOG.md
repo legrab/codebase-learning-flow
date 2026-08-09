@@ -25,6 +25,8 @@ Finalized the post-1.0 learning and reasoning improvements for the 1.1.0 release
 - Two regression scenarios (proposed design, open-ended ambiguity) in `docs/AGENTIC_WORKFLOW_SANITY.md`, and matching cases in `skill-evals/agentic-cases.yaml`.
 - `docs/EXAMPLE_WALKTHROUGH.md`, a single compact worked example showing the new routing in practice.
 - A "v1.0 hardening: proposal and ambiguity routing" entry in `docs/DESIGN_NOTES.md` recording the tightened, applied 1.0 behavioral contract in place — change rationale and current-state tracking live only in `DESIGN_NOTES.md` and this changelog, not in a separate status document.
+- A canonical `agentic-flow/AGENTS.md` "Output shape" rule: prefer a compact Mermaid flowchart over prose for flows and relationships, and keep verbose agent-only elaboration inside `<details>` sections rather than the surrounding prose.
+- A compact adoption-flow diagram in `adoption/ADOPT.md`.
 
 ### Changed
 
@@ -34,11 +36,16 @@ Finalized the post-1.0 learning and reasoning improvements for the 1.1.0 release
 - Added compact flowcharts to make artifact selection, structured change, routing, layer relationships, and learning closure easier to scan.
 - Reduced repeated framework language and softened rules where context-sensitive wording is more accurate than universal mandates.
 - README wording from "learning is the default behavior" to "learning-aware behavior is enabled by default," with routine work stated explicitly as staying routine.
+- Added missing `<details>` collapsibles to the `structure`, `challenge-debugging`, `change-explainer`, and `ticket-learning-path` templates for consistency with `exploration.md`/`design.md`.
+- Collapsed `docs/DESIGN_NOTES.md`'s v0.5–v0.8.0 history into one section so the current architecture and most recent rationale read first.
 
 ### Fixed
 
 - Corrected the remaining `AGENTS.md` wording that still described learning as unqualified default behavior.
 - Removed a duplicated `LEARN.md` entry from the agentic-flow guide.
+- Removed a redundant "Current architecture boundaries" section in `docs/README.md` that restated the layer table already given earlier in the same file.
+- Removed the skill-routing table duplicated between `sample/profiles/full/learning-flow/AGENTS.md` and `README.md`; the profile README now points to the canonical table.
+- Matched the packaged-release install examples in `scripts/README.md` to the current `v1.1.0` tag referenced in the root README.
 
 ## 1.0.0
 

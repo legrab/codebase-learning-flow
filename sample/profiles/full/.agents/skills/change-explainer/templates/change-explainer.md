@@ -19,3 +19,8 @@
 - **Model:**
 - **Evidence:**
 - **Boundary:**
+
+<details>
+<summary>Detailed walkthrough</summary>
+
+</details>

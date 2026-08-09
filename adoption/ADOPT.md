@@ -3,6 +3,17 @@
 Use this document only for **guided adoption into an existing custom agentic
 setup**. It is deliberately separate from the complete installation payload.
 
+```mermaid
+flowchart LR
+    I[Inspect] --> L[Explain the layers]
+    L --> Q[Ask concrete choices]
+    Q --> P[Build adoption plan]
+    P --> A[Approve]
+    A --> G[Integrate selectively]
+    G --> V[Verify]
+    V --> S[Summarize]
+```
+
 ## 1. Inspect before proposing
 
 Inspect only enough of the target repository to understand:

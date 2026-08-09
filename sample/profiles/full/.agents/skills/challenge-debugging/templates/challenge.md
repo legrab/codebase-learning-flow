@@ -21,3 +21,8 @@ _Use at most one when consequential._
 ## Promotion decision
 
 _Keep conversational, update map/takeaways, or create a durable repository artifact. State why._
+
+<details>
+<summary>Detailed evidence and reproduction steps</summary>
+
+</details>
