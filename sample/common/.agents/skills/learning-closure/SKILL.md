@@ -5,7 +5,7 @@ description: Decide whether useful learning from a meaningful engineering or lea
 
 # Learning closure
 
-Use this skill only when the current work produced a reusable insight worth considering for future work. It is a closure aid, not a mandatory documentation phase.
+Use this skill when the current work produced a reusable insight worth considering for future work. It is a closure aid, not a mandatory documentation phase.
 
 ## Decide whether anything should persist
 
@@ -21,26 +21,24 @@ Do not persist it if it is:
 
 If nothing qualifies, say so and continue the normal handoff.
 
-## Recommend the smallest useful destination
+## Prefer changed understanding
 
-Choose among:
+Before stating the candidate insight, check whether the most valuable learning is a correction to how investigation or reasoning should happen next time. Prefer that changed reasoning pattern over a merely new fact when it is more reusable.
+
+If this session corrected an existing `learning-flow/MAP.md` or `TAKEAWAYS.md` entry, flag that entry for update in the same closure pass. Do not knowingly leave stale knowledge behind.
+
+## Recommend the smallest useful destination
 
 | Destination | Use when |
 |---|---|
-| No persistent record | The insight is local, temporary, or cheap to rediscover |
-| `.local/learning-history.md` | The insight is useful to the current developer/session but is not shared repository knowledge |
-| `learning-flow/MAP.md` | It describes stable repository structure, boundaries, controls, or representative flows |
-| `learning-flow/TAKEAWAYS.md` | It is a concise, verified reusable engineering or domain lesson |
-| Module README/documentation | The knowledge belongs specifically with a module and should be discovered there |
-| Skill/workflow documentation | The knowledge changes how this framework or a reusable repository workflow should operate |
+| No persistent record | local, temporary, or cheap to rediscover |
+| `.local/learning-history.md` | useful to the current developer/session but not shared repository knowledge |
+| `learning-flow/MAP.md` | stable repository structure, boundaries, controls, or representative flows |
+| `learning-flow/TAKEAWAYS.md` | concise, verified reusable engineering or domain lesson |
+| Module README/documentation | knowledge belongs specifically with a module |
+| Skill/workflow documentation | knowledge changes a reusable framework or repository workflow |
 
-Prefer the module's own documentation when the knowledge is necessary to use or extend that module correctly. Prefer learning-flow surfaces for cross-cutting repository understanding.
-
-## Prefer changed understanding over new facts
-
-Before stating the candidate insight, check whether the most valuable thing learned is not a new fact but a correction to how investigation should happen next time — for example "trace the queue consumer before reasoning about downstream behavior" is more durable than "ERP submission is asynchronous." Prefer capturing the corrected reasoning pattern when one exists.
-
-If this session corrected an existing `learning-flow/MAP.md` or `TAKEAWAYS.md` entry, flag that entry as needing an update in the same closure pass — do not leave a known-stale record for `learning-freshness` to catch later.
+Prefer the module's own documentation when it is necessary to use or extend that module correctly. Prefer learning-flow surfaces for cross-cutting repository understanding.
 
 ## Ask at meaningful closure
 
@@ -57,7 +55,7 @@ Recommended destination: <destination>, because <brief reason>.
 Persist it there, keep it private, or discard it?
 ```
 
-Offer at most the few destinations that are genuinely plausible. Do not present a generic questionnaire.
+Offer only destinations that are genuinely plausible. Do not present a generic questionnaire.
 
 If the user chooses a destination, write the smallest useful record and include its evidence/source.
 
@@ -73,7 +71,8 @@ A persistent entry should normally contain:
 
 Do not store conversation transcripts, long debugging diaries, confidence scores, or generated filler.
 
-## External sources
+<details>
+<summary>External-source provenance</summary>
 
 For learning based on external material, preserve enough provenance to re-check the claim:
 
@@ -85,8 +84,10 @@ Accessed: <date>
 Relevant section: <section/page if useful>
 ```
 
-External-source metadata does not make the claim current or verified. It only makes future verification possible.
+External-source metadata makes future verification possible. It does not make the claim current or internally verified.
+
+</details>
 
 ## Scope
 
-This skill complements the active engineering or learning workflow. It never replaces the primary task procedure, and it should not turn a trivial task into a documentation exercise.
+This skill complements the active engineering or learning workflow. It never replaces the primary task procedure or turns a trivial task into a documentation exercise.

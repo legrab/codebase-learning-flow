@@ -4,6 +4,22 @@
 
 ### Added
 
+### Changed
+
+## 1.1.0
+
+Finalized the post-1.0 learning and reasoning improvements for the 1.1.0 release.
+
+### Added
+
+- `agentic-flow/ARTIFACTS.md`, defining optional reasoning artifacts such as questions, research, models, designs, structures, plans, verification, and learning without making them workflow stages.
+- Focused learning rounds and repository-learning guidance that build understanding incrementally and stop when the evidence threshold is met.
+- Human-correction propagation guidance in `agentic-flow/LOCAL.md`, so corrected models and designs are updated rather than silently discarded.
+- Optional `Structure` guidance inside `structured-change` for designs with real architectural impact.
+- `learning-closure` guidance that prefers changed understanding and recommends the smallest persistence surface.
+- `learning-freshness` guidance for checking durable knowledge against current implementation evidence.
+- Shared research guidance for competing designs so common evidence is established once before branching into tradeoffs.
+- Worked two-round discovery material and corresponding evaluation coverage.
 - Two behavioral routing rules in `agentic-flow/AGENTS.md`: treat a user's proposed implementation or architecture as a hypothesis to check against repository evidence rather than a specification to endorse, and distinguish repository-resolvable ambiguity (inspect first) from user-intent ambiguity (ask the smallest useful question).
 - A compact visual decision model for that routing in `agentic-flow/README.md`.
 - Two regression scenarios (proposed design, open-ended ambiguity) in `docs/AGENTIC_WORKFLOW_SANITY.md`, and matching cases in `skill-evals/agentic-cases.yaml`.
@@ -12,7 +28,17 @@
 
 ### Changed
 
+- Tightened the distinction between learning-aware behavior and turning every task into a lesson.
+- Clarified proposal and ambiguity routing so repository evidence is inspected before asking user-intent questions where possible.
+- Added progressive disclosure around lower-frequency rules, provenance details, and architectural boundaries.
+- Added compact flowcharts to make artifact selection, structured change, routing, layer relationships, and learning closure easier to scan.
+- Reduced repeated framework language and softened rules where context-sensitive wording is more accurate than universal mandates.
 - README wording from "learning is the default behavior" to "learning-aware behavior is enabled by default," with routine work stated explicitly as staying routine.
+
+### Fixed
+
+- Corrected the remaining `AGENTS.md` wording that still described learning as unqualified default behavior.
+- Removed a duplicated `LEARN.md` entry from the agentic-flow guide.
 
 ## 1.0.0
 

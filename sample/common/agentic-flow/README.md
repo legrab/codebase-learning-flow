@@ -31,24 +31,24 @@ Start with `AGENTS.md`. Use balanced defaults from `SETTINGS.md` unless configur
 
 ## Proposal and ambiguity routing
 
-A proposed design and an open-ended consequential question are handled the same way: check what evidence can settle, ask only what it can't.
+A proposed design and an open-ended consequential question share the same first move: inspect what repository evidence can settle. They diverge when the remaining uncertainty is about user intent or about the proposed approach itself.
 
 ```mermaid
 flowchart TD
-    Q[Proposal or consequential question] --> E{Evidence can resolve it?}
-    E -->|Yes| I[Inspect, then proceed]
-    E -->|No| U{Depends on user intent, scope, or authority?}
-    U -->|Yes| A[Ask the smallest useful question]
+    Q[Proposal or consequential question] --> E{Can repository evidence settle it?}
+    E -->|Yes| I[Inspect]
+    E -->|No| U{Is user intent missing?}
+    U -->|Yes| A[Ask smallest useful question]
     U -->|No| I
-    I --> D{Is it a proposed design or approach?}
-    D -->|Yes| H[Treat as hypothesis: test assumptions, surface alternatives]
-    D -->|No| Act[Continue the active route]
+    I --> D{Proposed design?}
+    D -->|Yes| H[Test assumptions and alternatives]
+    D -->|No| Act[Continue active route]
     H --> R{Consequential or hard to reverse?}
     R -->|Yes| SC[structured-change]
     R -->|No| Act
 ```
 
-New evidence can change the route mid-task; this is a set of behavioral rules, not a plan to complete. See `AGENTS.md` for the full rule text.
+New evidence can change the route mid-task. This is a set of behavioral rules, not a fixed sequence. See `AGENTS.md` for the full rule text.
 
 ## Supporting guides
 
@@ -63,18 +63,15 @@ New evidence can change the route mid-task; this is a set of behavioral rules, n
 | `REFERENCE_INTEGRATION.md` | extracting value from another source |
 | `ARTIFACTS.md` | optional vocabulary for explicit reasoning outputs |
 | `LEARN.md` + learning skills | understanding the effective harness and building knowledge |
+| `learn-anything` + learning skills | general learning and repository understanding |
 
 <details>
 <summary>Boundary in one sentence</summary>
 
-`agentic-flow/` controls how work is performed. `learning-flow/` and learning skills control how understanding is built through that work.
+`agentic-flow/` guides how work is performed. `learning-flow/` and learning skills guide how understanding is built through that work.
 
 </details>
 
-
 ## Learning lifecycle
 
-`learning-closure` decides whether a meaningful change produced reusable
-knowledge and recommends the smallest appropriate persistence surface.
-`learning-freshness` can later cross-check durable repository knowledge against
-current implementation evidence. Neither is a second delivery workflow.
+`learning-closure` decides whether a meaningful change produced reusable knowledge and recommends the smallest appropriate persistence surface. `learning-freshness` can later cross-check durable repository knowledge against current implementation evidence. Neither is a second delivery workflow.

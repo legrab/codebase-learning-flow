@@ -31,13 +31,16 @@ Look for concrete divergence first:
 
 Reuse existing repository evidence before broad rescanning.
 
-## External evidence
+<details>
+<summary>External evidence</summary>
 
 If a claim depends on material outside the repository, do not mark it verified from repository inspection alone.
 
 Use retained provenance such as URL, revision/version, publication date, access date, and relevant section to identify what must be rechecked externally.
 
 If external access is unavailable, report the claim as externally sourced and not revalidated.
+
+</details>
 
 ## Output
 

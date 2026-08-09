@@ -7,7 +7,7 @@
 Codebase Learning Flow configures a host coding agent. It provides repository-local instructions, focused skills, learning surfaces, and private local continuity. It does **not** provide an agent runtime, sandbox, retry engine, or background worker.
 
 > [!IMPORTANT]
-> **Learning-aware behavior is enabled by default after installation** — that does not mean every task becomes a lesson. Routine work stays routine. A request such as `help me understand <topic>` automatically selects the appropriate learning route, keeps the exchange conversational, builds a compact model, uses a useful example or experiment, and checks back for understanding when that adds value. A proposed design or approach is treated as a hypothesis worth checking against repository evidence, not a specification to endorse.
+> **Learning-aware behavior is enabled by default after installation**. That does not mean every task becomes a lesson. Routine work stays routine. Requests such as `help me understand <topic>` select the appropriate learning route; implementation work remains normal delivery with learning reinforcement only when useful. Proposed designs are hypotheses to check against repository evidence, not specifications to endorse.
 
 > [!WARNING]
 > The regulatory extension is a reasoning and workflow aid, not a compliance determination or substitute for qualified regulatory or quality expertise.
@@ -46,8 +46,8 @@ The installed `AGENTS.md` connects the host repository to `agentic-flow`. The co
 - `help me understand ...`, `explain ...`, `teach me ...` → `learn-anything` for general topics
 - questions about the current codebase → repository learning
 - implementation work → normal delivery, with learning reinforcement when useful
-- a proposed design or approach → treated as a hypothesis, checked against repository evidence before being endorsed or implemented
-- an open-ended consequential question → repository evidence is inspected first; the user is asked only the smallest question evidence can't answer
+- a proposed design or approach → treated as a hypothesis, checked against repository evidence before endorsement or implementation
+- an open-ended consequential question → repository evidence is inspected first; the user is asked only the smallest question evidence cannot answer
 - one consequential or ambiguous change → `structured-change` alongside the active route
 - regulatory reasoning → the optional regulatory lens when installed
 
@@ -59,19 +59,17 @@ The agent should not turn every task into a lesson. Short questions can receive 
 
 ### Preferred: packaged release
 
-For team or enterprise use, install a reviewed, versioned release. Substitute
-the current tag from the badge above or the
-[Releases page](https://github.com/legrab/codebase-learning-flow/releases) —
-`--release`/`-Release` intentionally has no "latest" shortcut, so the exact
-tag must be given.
+For team or enterprise use, install a reviewed, versioned release. Substitute the current tag from the badge above or the [Releases page](https://github.com/legrab/codebase-learning-flow/releases).
+
+`--release`/`-Release` intentionally has no `latest` shortcut, so the exact tag must be given.
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.sh -o install.sh
-sh install.sh --release v1.0.0 --profile minimal
+sh install.sh --release v1.1.0 --profile minimal
 ```
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v1.0.0 -Profile Minimal
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v1.1.0 -Profile Minimal
 ```
 
 The installer verifies the release checksum before extraction and reports the resolved `Version:` and `Source:`.
@@ -147,7 +145,7 @@ The model is selective:
 <details>
 <summary>Ownership lens</summary>
 
-When relevant, consider:
+When relevant:
 
 | Question | Why |
 |---|---|

@@ -16,11 +16,23 @@ Read `agentic-flow/AGENTS.md` and the relevant `WORKFLOW.md` sections. Read `SET
 
 Skip it for routine, small, reversible, or unambiguous work.
 
+```mermaid
+flowchart LR
+    E[Explore] --> D[Design]
+    D --> S{Structure needed?}
+    S -->|Yes| ST[Structure]
+    S -->|No| A[Approve]
+    ST --> A
+    A --> I[Implement]
+    I --> V[Review / verify]
+    V --> C[Capture useful result]
+```
+
 ## Explore
 
 State current behavior, purpose, constraints, unknowns, and affected risks. Separate facts from assumptions. Stop here.
 
-When genuinely competing approaches exist, keep exploration findings shared across all of them — do not re-run the same investigation once per option. Branch only in Design, where tradeoffs actually differ.
+When genuinely competing approaches exist, keep exploration findings shared across all of them. Branch only in Design, where tradeoffs actually differ.
 
 ## Design
 
@@ -30,18 +42,18 @@ If regulatory guidance applies, read only the specific knowledge needed and note
 
 ## Structure (optional)
 
-For a design with real architectural impact — several files or components that must change together — answer before detailed planning:
+For a design with real architectural impact, answer before detailed planning:
 
 - What are the major implementation units?
 - How do they depend on each other?
 - What changes together, and what must stay separate?
 - What order makes verification possible at each step?
 
-Skip this for a design that's already one clear unit of work; go straight to Implement.
+Skip this for a design that's already one clear unit of work; go straight to Approve.
 
 ## Approve
 
-State the decision plainly and wait before implementing. An explicit prior instruction that resolves it is approval.
+State the decision plainly and wait before implementing when approval is actually unresolved. An explicit prior instruction that resolves the decision is approval.
 
 ## Implement and review
 
@@ -57,4 +69,4 @@ Keep low-risk work conversational. Use written templates only when the change's 
 
 ## Restraint
 
-One structured decision per change. Never stack a second formal process on top. Prefer the simplest acceptable solution.
+One structured decision per change. Do not stack a second formal process on top. Prefer the simplest acceptable solution.
