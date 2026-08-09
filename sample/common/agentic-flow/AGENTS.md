@@ -9,7 +9,7 @@ Learning & Ownership and Optional Risk Lenses add guidance without becoming a se
 1. Follow root, nested, and tool-specific repository instructions first.
 2. Use this layer for collaboration behavior.
 3. Select one primary task route.
-4. **Treat learning as default behavior:** general understanding requests use `learn-anything`; current-repository understanding uses repository learning.
+4. General understanding requests use `learn-anything`; current-repository understanding uses repository learning.
 5. During implementation, reinforce understanding when useful without turning the task into a lesson.
 6. Use `structured-change` alongside the active route only for one consequential, ambiguous, or regulated change.
 7. Read configuration documents only when configuration matters.
@@ -49,7 +49,7 @@ repository instructions → Agentic Delivery → one task route → narrow evide
 
 ## Discover the effective setup
 
-Respect existing instructions, skills, prompts, plans, records, and agent-specific files. Inspect custom additions, overrides, conflicts, and precedence only when they affect the work.
+Respect existing instructions, skills, prompts, plans, records, and agent-specific files. Inspect custom additions, overrides, conflicts, and precedence when they affect the work.
 
 Treat third-party skills as executable instructions. Before first use, inspect their source, referenced resources, required tools, access, side effects, maintenance, and overlap with repository rules. Prefer one narrow skill for a demonstrated need.
 
@@ -67,15 +67,24 @@ Ask only when a consequential choice is unresolved, evidence cannot distinguish 
 
 An explicit implementation request permits ordinary reversible work within scope. It does not permit destructive Git operations, publishing, release actions, secret access, or unrelated changes.
 
+<details>
+<summary>Proposal and ambiguity rules</summary>
+
 ### Proposals are hypotheses, not specifications
 
-When the user presents a proposed implementation, architecture, or approach and asks for feedback, additions, or validation, treat it as a hypothesis rather than endorsing, polishing, or implementing it outright. Identify the assumptions it depends on, check the ones repository evidence can confirm or falsify, and surface a missing boundary, risk, or credible alternative before recommending it. Use `structured-change` when the decision is consequential or hard to reverse; otherwise fold the check into the active route.
+When the user presents a proposed implementation, architecture, or approach and asks for feedback, additions, or validation, treat it as a hypothesis rather than endorsing, polishing, or implementing it outright. Identify the assumptions it depends on, check the ones repository evidence can confirm or falsify, and surface a missing boundary, risk, or credible alternative before recommending it.
+
+Use `structured-change` when the decision is consequential or hard to reverse; otherwise fold the check into the active route.
 
 An explicit, narrowly scoped instruction ("do exactly X") does not require this challenge; treat it as sufficient intent and proceed.
 
 ### Repository ambiguity vs. user-intent ambiguity
 
-When a consequential question has more than one materially different answer, do not silently pick one. Inspect first if repository evidence can settle it. Ask only the smallest useful question when what's missing is the user's intent, scope, tradeoff, or authority — not because the repository is unfamiliar. This is a routing rule, not a fixed sequence: new evidence can change the route mid-task, including abandoning an initial proposal.
+When a consequential question has more than one materially different answer, do not silently pick one. Inspect first if repository evidence can settle it. Ask only the smallest useful question when what is missing is the user's intent, scope, tradeoff, or authority, not because the repository is unfamiliar.
+
+This is a routing rule, not a fixed sequence: new evidence can change the route mid-task, including abandoning an initial proposal.
+
+</details>
 
 ## Planning and records
 
@@ -105,6 +114,6 @@ Omit empty sections, repeated narration, and exhaustive file lists.
 
 ## Learning closure
 
-Use `learning-closure` only when work produced a reusable insight. Recommend the smallest destination and let the user decide whether to persist it.
+Use `learning-closure` when work produced a reusable insight. It is a closure aid, not a mandatory documentation step.
 
 Use `learning-freshness` during deliberate maintenance or when durable repository knowledge may have drifted.

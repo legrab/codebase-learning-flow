@@ -1,15 +1,10 @@
 # Worked example: discovery and design challenge
 
-This is a single compact, fictional example showing what the behavior in
-`AGENTIC_WORKFLOW_SANITY.md` scenario 10 looks like end to end. It is not
-installed into a target repository; it exists here to make the abstract
-routing rules concrete.
+This is a single compact, fictional example showing what the behavior in `AGENTIC_WORKFLOW_SANITY.md` scenario 10 looks like end to end. It is not installed into a target repository; it exists here to make the abstract routing rules concrete.
 
 ## Setting
 
-A legacy .NET order-approval subsystem. A developer asks the agent to add
-retry handling around an external ERP call and says: *"I'll just wrap the
-existing client call with retries and move on. Anything to add?"*
+A legacy .NET order-approval subsystem. A developer asks the agent to add retry handling around an external ERP call and says: *"I'll just wrap the existing client call with retries and move on. Anything to add?"*
 
 ## What repository learning establishes
 
@@ -28,19 +23,26 @@ flowchart LR
 - **Unknown:** whether the ERP client is idempotent, i.e. whether a retried submission can duplicate an order.
 - **Control boundary:** production deployment and approval stay human-controlled.
 
-## How the model was built (two rounds, not one investigation)
+<details>
+<summary>How the understanding was built</summary>
 
-Round 1 — question: where does an approval request enter the system?
-Evidence: the approval endpoint and `OrderService`. Understanding after round 1: operator → endpoint → OrderService → (unknown past this point).
+Round 1: where does an approval request enter the system?
 
-Round 2 — question: what happens after `OrderService`? Evidence:
-`ApprovalRules`, the approval stored procedure, the ERP client.
-Understanding after round 2 is the full flow shown above — sufficient to evaluate the retry proposal, so investigation stops here.
+Evidence: the approval endpoint and `OrderService`.
+
+Understanding: operator → endpoint → `OrderService` → unknown past this point.
+
+Round 2: what happens after `OrderService`?
+
+Evidence: `ApprovalRules`, the approval stored procedure, the ERP client.
+
+Understanding: the full flow shown above. Investigation stops because it is sufficient to evaluate the retry proposal.
+
+</details>
 
 ## Why this is not just implemented as proposed
 
-The proposal ("wrap the call with retries") is treated as a hypothesis, not
-a specification:
+The proposal ("wrap the call with retries") is treated as a hypothesis, not a specification:
 
 ```text
 Proposal:
@@ -81,10 +83,7 @@ I can inspect the ERP contract now, or if you already know it's idempotent,
 say so and I'll proceed with the narrow retry.
 ```
 
-Note what did *not* happen: no learning session was created, no mandatory
-design document, no interrogation of unrelated parts of the system. One
-material assumption was identified, checked against evidence where possible,
-and only the remaining consequential gap was raised.
+Note what did *not* happen: no learning session was created, no mandatory design document, no interrogation of unrelated parts of the system. One material assumption was identified, checked against evidence where possible, and only the remaining consequential gap was raised.
 
 ## Related
 
