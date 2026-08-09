@@ -19,3 +19,8 @@
 _Stop at preparation unless implementation was requested. Name one execution skill if needed._
 
 ## Ticket-local detail not to promote
+
+<details>
+<summary>Detailed notes</summary>
+
+</details>

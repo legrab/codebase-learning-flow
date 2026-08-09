@@ -10,3 +10,8 @@
 1.
 
 ## Seams that must stay separate
+
+<details>
+<summary>Detailed dependency notes</summary>
+
+</details>

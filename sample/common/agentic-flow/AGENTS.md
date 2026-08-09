@@ -95,6 +95,10 @@ This is a routing rule, not a fixed sequence: new evidence can change the route 
 - Keep temporary state out of stable instructions.
 - Use `.local/` for meaningful private learning continuity.
 
+## Output shape
+
+This applies to learning content, design artifacts, and handoffs alike: prefer a compact Mermaid flowchart over prose when explaining a flow, sequence, boundary, or set of relationships. Put verbose, agent-only elaboration — exact code excerpts, exhaustive rationale, long inventories — inside collapsible `<details>` sections. A short line above the block may say what it contains, but that line must stay factual; it is not a second abstraction that can drift from or contradict what's inside.
+
 ## Handoff
 
 End substantial work with only useful sections:

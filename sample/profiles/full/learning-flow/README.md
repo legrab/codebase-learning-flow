@@ -35,22 +35,7 @@ All skills apply `agentic-flow/EDUCATION.md` selectively. The goal is durable hu
 
 Use `learning-bootstrap` only for a requested baseline or deliberate onboarding pass. An ordinary task in a new repository can start with its matching task skill.
 
-Select one primary learning skill. `agentic-workflow` is only for configuring or understanding the harness itself.
-
-<details>
-<summary>Skill routes</summary>
-
-| Need | Skill |
-|---|---|
-| compact baseline | `learning-bootstrap` |
-| architecture or domain orientation | `repository-orientation` |
-| bug or failing behavior | `challenge-debugging` |
-| feature based on existing behavior | `analogous-feature` |
-| behavior-preserving structural change | `safe-refactor` |
-| non-trivial diff or generated change | `change-explainer` |
-| context before implementation | `ticket-learning-path` |
-
-</details>
+Select one primary learning skill. `agentic-workflow` is only for configuring or understanding the harness itself. See the "Select one primary skill" table in `learning-flow/AGENTS.md` for the full need-to-skill routing.
 
 ## Understanding and assessment
 
