@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.0.0
+
+First tagged production release. `v0.1.0`/`v0.1.1` on GitHub were release-automation smoke tests and are not part of this line; this release picks up the version sequence documented below, starting at `0.8.0`.
+
 ### Added
 
 - `docs/ARCHITECTURE.md`, establishing the three user-facing framework layers (Agentic Delivery, Learning & Ownership, Optional Risk Lenses) as the primary conceptual model across the README, installed documentation, skills, and installer, with the earlier five-layer description retained only as implementation provenance rather than a second architecture.
