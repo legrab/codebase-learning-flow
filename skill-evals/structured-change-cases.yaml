@@ -54,3 +54,18 @@ cases:
     expected_behavior: extension_is_additive
     must_include: [same minimal or full profile behavior, lens applies only when the change is validated safety-relevant or audited, agents assist humans decide]
     must_not: [every commit now requires regulatory sign-off, extension changes what the profile means]
+
+  - prompt: Make ERP submission idempotent across the service, the queue worker, and the retry client.
+    expected_skill: structured-change
+    must_include: [shared exploration, Structure section before file-level detail, implementation units, dependencies, verification order]
+    must_not: [repeat the same repository investigation for each option, jump directly from Design to file list]
+
+  - prompt: Add a single validation helper in one file using structured-change.
+    expected_behavior: skip_structure
+    must_include: [single clear unit, skip Structure, proceed to Implement]
+    must_not: [Structure section, implementation-unit table]
+
+  - prompt: We have two credible approaches for ERP retries. Compare them after inspecting the shared retry and idempotency behavior.
+    expected_skill: structured-change
+    must_include: [shared repository facts inspected once, options branch in Design, tradeoffs]
+    must_not: [duplicate investigation for each option]

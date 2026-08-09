@@ -19,3 +19,8 @@ cases:
     expected_skill: learning-freshness
     must_include: [external source, retained provenance, external revalidation]
     must_not: [claim internal code proves the external source]
+
+  - prompt: This session learned a new fact and also corrected a stale takeaway in learning-flow/TAKEAWAYS.md. Decide what to capture.
+    expected_skill: learning-closure
+    must_include: [changed understanding, stale existing entry, flag update in same closure pass, evidence]
+    must_not: [only propose a new fact, leave the known-stale entry for later freshness checking]

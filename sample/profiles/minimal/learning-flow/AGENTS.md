@@ -14,6 +14,8 @@ Read `agentic-flow/EDUCATION.md` through the selected learning skill and only th
 Locate → Reason → Work → Verify → Explain → Transfer
 ```
 
+Each pass through Locate–Reason can be one small round: one question, the evidence for it, the resulting understanding, then continue or stop. Stop as soon as the current understanding is sufficient for the task — do not plan the full investigation up front.
+
 1. Locate the relevant business, scientific, human, physical, domain, or technical system.
 2. Identify the outcome, boundary, rule or invariant, representative path, and proof surface.
 3. Investigate or work through the smallest responsible route.

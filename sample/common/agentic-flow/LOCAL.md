@@ -34,6 +34,17 @@ When a session reaches a natural stopping point:
 
 At the start of a continuing session, read only relevant history and recent session state. Do not load the entire archive by default.
 
+## Correction propagation
+
+When the user corrects a current model, a design assumption, or a proposal's premise, update that understanding in place rather than only adjusting the immediate response:
+
+1. state the previous understanding in one line;
+2. state the correction;
+3. state what it changes about the design, plan, or recommendation already given;
+4. if a `.local/` session or `learning-flow/` record already reflects the old understanding, update it — do not leave a stale record next to a corrected conversation.
+
+Do not silently keep reasoning about the corrected point as if nothing changed. Do not re-litigate a correction the user has already made.
+
 ## Safety and dignity
 
 Do not infer or persist diagnoses, sensitive emotional state, health information, identity attributes, secrets, customer data, raw production evidence, or private organizational conflict.

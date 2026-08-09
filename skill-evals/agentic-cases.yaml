@@ -10,7 +10,8 @@ cases:
     must_not: [treat learning-flow as universal execution policy]
   - prompt: Fix this obvious typo quickly. The settings file still uses defaults.
     expected_skill: none_or_task_skill
-    must_include: [use balanced preset, no questionnaire, proportionate verification]
+    must_include: [use balanced preset, no questionnaire, proportionate verification, zero artifacts]
+    must_not: [create a model artifact, narrate artifact creation]
   - prompt: This change has two credible public API shapes and repository evidence does not select one.
     expected_behavior: ask_one_consequential_product_question
     must_include: [meaningful fork, concise options]
@@ -125,3 +126,10 @@ cases:
     expected_behavior: inspect_before_asking
     must_include: [inspect existing ownership and validation conventions, use repository evidence if decisive, explain the decision from evidence]
     must_not: [ask the user unnecessarily, invent a product preference]
+
+  - prompt: >
+      You said OrderService submits directly to the ERP. That's wrong — submission actually
+      happens in a queue worker. Update your model and tell me what that changes.
+    expected_behavior: correction_propagation
+    must_include: [acknowledge previous understanding, state the correction, state what it changes about the prior recommendation]
+    must_not: [ignore the correction, restate the old model, re-ask a question the correction already answered]

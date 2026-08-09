@@ -46,5 +46,9 @@ cases:
     must_not: [tracked contributor state, private shared detail, uncertain promotion]
   - prompt: Fix this obvious typo and move on quickly.
     expected_primary_skill: none_or_normal_engineering
-    must_include: [no learning artifact, no understanding check]
-    must_not: [resilience ceremony, domain ownership questionnaire]
+    must_include: [no learning artifact, no understanding check, zero artifacts]
+    must_not: [resilience ceremony, domain ownership questionnaire, create a model]
+  - prompt: Work through an unfamiliar subsystem in focused rounds until the current task is resolved.
+    expected_primary_skill: selected_task_learning_skill
+    must_include: [one question, evidence, resulting understanding, continue-or-stop, stop when sufficient]
+    must_not: [plan the entire investigation up front, keep investigating after resolution]

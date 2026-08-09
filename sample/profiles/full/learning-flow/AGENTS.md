@@ -2,7 +2,7 @@
 
 ## Priority and scope
 
-Follow repository-native instructions and `agentic-flow/AGENTS.md` first. General collaboration, approvals, validation depth, records, and handoff belong to `agentic-flow/`.
+Follow repository-native instructions and `agentic-flow/AGENTS.md` first. General collaboration, approvals, validation, records, and handoff belong to `agentic-flow/`.
 
 This file governs learning-oriented repository work. Every selected learning skill reads and applies `agentic-flow/EDUCATION.md` selectively.
 
@@ -25,6 +25,8 @@ Do not load all skills. Do not use `agentic-workflow` as a second engineering pr
 ```text
 Locate → Reason → Try or Work → Verify → Explain → Transfer
 ```
+
+Each pass through Locate–Reason can be one small round: one question, the evidence for it, the resulting understanding, then continue or stop. Stop as soon as the current understanding is sufficient for the task — do not plan the full investigation up front.
 
 - Locate the real system, outcome, boundary, governing rule, representative path, and proof surface.
 - Reason from an explicit invariant, contract, hypothesis, valid analogue, or safe seam.

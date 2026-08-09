@@ -28,6 +28,15 @@ flowchart LR
 - **Unknown:** whether the ERP client is idempotent, i.e. whether a retried submission can duplicate an order.
 - **Control boundary:** production deployment and approval stay human-controlled.
 
+## How the model was built (two rounds, not one investigation)
+
+Round 1 — question: where does an approval request enter the system?
+Evidence: the approval endpoint and `OrderService`. Understanding after round 1: operator → endpoint → OrderService → (unknown past this point).
+
+Round 2 — question: what happens after `OrderService`? Evidence:
+`ApprovalRules`, the approval stored procedure, the ERP client.
+Understanding after round 2 is the full flow shown above — sufficient to evaluate the retry proposal, so investigation stops here.
+
 ## Why this is not just implemented as proposed
 
 The proposal ("wrap the call with retries") is treated as a hypothesis, not

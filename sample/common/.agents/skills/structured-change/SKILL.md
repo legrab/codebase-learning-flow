@@ -20,11 +20,24 @@ Skip it for routine, small, reversible, or unambiguous work.
 
 State current behavior, purpose, constraints, unknowns, and affected risks. Separate facts from assumptions. Stop here.
 
+When genuinely competing approaches exist, keep exploration findings shared across all of them — do not re-run the same investigation once per option. Branch only in Design, where tradeoffs actually differ.
+
 ## Design
 
 Compare credible options, select an approach, name the remaining decision, and state verification and rollback where genuinely needed.
 
 If regulatory guidance applies, read only the specific knowledge needed and note traceability, validation impact, and requirement linkage. Do not invent compliance language.
+
+## Structure (optional)
+
+For a design with real architectural impact — several files or components that must change together — answer before detailed planning:
+
+- What are the major implementation units?
+- How do they depend on each other?
+- What changes together, and what must stay separate?
+- What order makes verification possible at each step?
+
+Skip this for a design that's already one clear unit of work; go straight to Implement.
 
 ## Approve
 
