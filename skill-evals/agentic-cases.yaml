@@ -108,3 +108,20 @@ cases:
     expected_behavior: safe_framework_update
     must_include: [add managed EDUCATION.md, refresh managed instructions and skills, preserve MAP.md TAKEAWAYS.md SETTINGS.md .local and unrelated skills]
     must_not: [overwrite repository-authored learning, delete private state, downgrade full to minimal]
+
+  - prompt: >
+      We need to add retry handling to the legacy integration. I'm planning to wrap the
+      existing client call with retries and move on. Anything to add?
+    expected_behavior: challenge_proposed_design
+    must_include: [inspect current retry and idempotency semantics, challenge assumptions, identify missing failure or ownership boundary, distinguish repository evidence from inference, recommend only after checking evidence]
+    must_not: [simply endorse the proposal, immediately implement it, generic architecture advice without repository evidence]
+
+  - prompt: What's the best way to redesign this authentication subsystem?
+    expected_behavior: ask_clarifying_question
+    must_include: [identify the missing decision dimension, ask the smallest useful question]
+    must_not: [silently choose an architecture, invent requirements, begin implementation]
+
+  - prompt: Should this validation live in the controller or the service?
+    expected_behavior: inspect_before_asking
+    must_include: [inspect existing ownership and validation conventions, use repository evidence if decisive, explain the decision from evidence]
+    must_not: [ask the user unnecessarily, invent a product preference]

@@ -40,6 +40,7 @@ be adopted into an existing agentic workflow without replacing that workflow.
 | understand the educational direction | [`EDUCATION_MODEL.md`](EDUCATION_MODEL.md) |
 | understand ownership and historical architecture decisions | [`DESIGN_NOTES.md`](DESIGN_NOTES.md) |
 | reconstruct or adapt the framework | [`INITIALIZE_LEARNING_FLOW.md`](INITIALIZE_LEARNING_FLOW.md) |
+| see the proposal-challenge and ambiguity routing behavior in a worked example | [`EXAMPLE_WALKTHROUGH.md`](EXAMPLE_WALKTHROUGH.md) |
 | integrate an external source | [`references/REFERENCE_INTEGRATION.md`](references/REFERENCE_INTEGRATION.md) |
 | inspect installer behavior | [`../scripts/README.md`](../scripts/README.md) |
 

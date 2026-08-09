@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Added
+
+- Two behavioral routing rules in `agentic-flow/AGENTS.md`: treat a user's proposed implementation or architecture as a hypothesis to check against repository evidence rather than a specification to endorse, and distinguish repository-resolvable ambiguity (inspect first) from user-intent ambiguity (ask the smallest useful question).
+- A compact visual decision model for that routing in `agentic-flow/README.md`.
+- Two regression scenarios (proposed design, open-ended ambiguity) in `docs/AGENTIC_WORKFLOW_SANITY.md`, and matching cases in `skill-evals/agentic-cases.yaml`.
+- `docs/EXAMPLE_WALKTHROUGH.md`, a single compact worked example showing the new routing in practice.
+- A "v1.0 hardening: proposal and ambiguity routing" entry in `docs/DESIGN_NOTES.md` recording the tightened, applied 1.0 behavioral contract in place — change rationale and current-state tracking live only in `DESIGN_NOTES.md` and this changelog, not in a separate status document.
+
+### Changed
+
+- README wording from "learning is the default behavior" to "learning-aware behavior is enabled by default," with routine work stated explicitly as staying routine.
+
 ## 1.0.0
 
 First tagged production release. `v0.1.0`/`v0.1.1` on GitHub were release-automation smoke tests and are not part of this line; this release picks up the version sequence documented below, starting at `0.8.0`.
