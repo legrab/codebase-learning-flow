@@ -164,7 +164,7 @@ When relevant:
 | Profile | Learning surface |
 |---|---|
 | `minimal` | one compact repository-learning skill |
-| `full` | focused orientation, debugging, feature, refactor, and explanation skills |
+| `full` | deeper `repository-learning` skill (orientation, debugging, feature, refactor), plus baseline, ticket-path, and change-explanation skills |
 
 Both use the same common educational constitution and agentic layer.
 

@@ -11,14 +11,11 @@ This file governs learning-oriented repository work. Every selected learning ski
 | Need | Primary skill |
 |---|---|
 | compact baseline | `learning-bootstrap` |
-| architecture or domain orientation | `repository-orientation` |
-| bug or failing behavior | `challenge-debugging` |
-| feature similar to existing behavior | `analogous-feature` |
-| behavior-preserving structural change | `safe-refactor` |
+| orientation, a bug, a similar feature, or a safe refactor | `repository-learning` |
 | non-trivial change explanation | `change-explainer` |
 | task context before implementation | `ticket-learning-path` |
 
-Do not load all skills. Do not use `agentic-workflow` as a second engineering procedure. Agents without task-skill support use `PLAYBOOKS.md`. For one architecturally significant, ambiguous, or regulated change within the selected skill's work, `structured-change` may run alongside it; it does not replace the selected skill.
+`repository-learning` selects one branch — Orientation, Bug, Feature, or Refactor — matching the task; see its `SKILL.md` for the branch routes. Do not load all skills. Do not use `agentic-workflow` as a second engineering procedure. For one architecturally significant, ambiguous, or regulated change within the selected skill's work, `structured-change` may run alongside it; it does not replace the selected skill.
 
 ## Shared learning flow
 
@@ -36,6 +33,21 @@ Each pass through Locate–Reason can be one small round: one question, the evid
 - Transfer only useful learning into the normal handoff or a qualified shared record.
 
 Treat the selected territory as a system before diving into files. Prefer one representative interaction over an inventory.
+
+## Branches
+
+For an agent without task-skill support, use this table directly instead of loading a `SKILL.md`:
+
+| Task | Learning route |
+|---|---|
+| Orientation | real outcome → system boundary → representative path → control and failure boundary → next territory |
+| Bug | affected outcome/rule → symptom → expectation → decisive probe → mechanism → containment/fix → proof |
+| Feature | actor/outcome → should it exist → invariants → valid analogue → differences → seam → proof and control |
+| Refactor | behavior/invariant → evidence → failure boundary → smallest seam → transformation → proof → simpler ownership |
+| Change explanation | intended outcome → governing rules → generated/human decisions → conceptual walkthrough → risks and proof |
+| Ticket path | actor/outcome → ownership → build judgment → missing context → shortest route → handoff or stop |
+
+Use one understanding check only when consequential. Persist only verified, reusable findings. Keep AI leverage visible where useful, but retain independent evidence and fallback in proportion to risk.
 
 ## Ownership depth
 
@@ -65,7 +77,18 @@ Apply deeper scrutiny to laboratory, industrial, regulated, security, architectu
 
 Use at most one check by default. Skip it for fast delivery, mechanical work, or already-demonstrated understanding. Use more only for an explicit quiz or guided-learning request.
 
-Rereading, agreement, confidence, and fluent output are not proof. See `UNDERSTANDING_CHECKS.md`.
+Rereading, agreement, confidence, and fluent output are not proof.
+
+<details>
+<summary>Check techniques and handling</summary>
+
+Useful checks: explain the mechanism in the user's own words, predict an outcome before running it, trace a path through the system, name what must stay stable under a change, compare a valid analogue against an invalid one, spot the flaw in a plausible-but-wrong explanation, state what evidence would disprove the current model, or identify the failure or fallback behavior.
+
+Skip a check when the task is trivial, mechanical, time-critical, or the user has already demonstrated the relevant understanding earlier in the session.
+
+If the response is confident but wrong, correct it plainly and continue; do not turn it into a teaching detour unless the user asks. If the user declines a check, proceed with the work.
+
+</details>
 
 ## Persistence and safety
 

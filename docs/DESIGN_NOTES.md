@@ -158,6 +158,22 @@ The rest of the pass fit the same "one canonical owner" discipline as everything
 
 A larger set of proposed improvements (lightweight learning artifacts, incremental learning rounds, an explicit inspectable system model, a structure step between design and planning, branching alternative designs) was reviewed and deliberately deferred rather than folded in. Each would require real design and evaluation work to avoid becoming ceremony, which is exactly what this document's "smallest coherent hardening pass" standard rules out for a single pass; the reasoning and file-level implementation detail for each lives in the post-1.0 backlog document delivered alongside this release, not inside this repository, so an optional future improvement doesn't read as a committed roadmap.
 
+## v1.1 remove meta-ceremony
+
+A consumer-perspective review of an installed `full` profile found that correctness had come to depend on keeping many documents synchronized: a competent developer had to discover and cross-reference more instruction surfaces than the underlying engineering task justified. Five duplications accounted for most of the cost, each fixed by giving the behavior exactly one owner instead of shortening the copies:
+
+- `agentic-flow/ARTIFACTS.md` named eight "artifact types," six of which restated concepts `structured-change`, `WORKFLOW.md`, or `learning-closure` already owned, and its correction-propagation guidance only pointed at `LOCAL.md` anyway. The one artifact type with real, undocumented-elsewhere behavior — the compact current-understanding `model` — moved into a "Making reasoning explicit" section in `agentic-flow/WORKFLOW.md`. The file was removed.
+- `full/learning-flow/BOOTSTRAP.md` and the `learning-bootstrap` skill contained the same nine-step procedure almost verbatim. The root-level file was removed; the skill is now the single, self-contained owner.
+- `full/learning-flow/PLAYBOOKS.md` existed only as a fallback for agents without task-skill support, and duplicated the branch logic of four separate skills in table form. That fallback content now lives inline in `full/learning-flow/AGENTS.md` under "Branches" — the file every setup reads regardless of skill support — so the separate file added a synchronization cost without adding reach. It was removed.
+- `full/learning-flow/UNDERSTANDING_CHECKS.md` restated a rule ("ask at most one check; confidence is not proof") already stated in `EDUCATION.md`, `agentic-flow/AGENTS.md`, `full/learning-flow/AGENTS.md`, and `full/learning-flow/README.md`. The elaboration it added beyond the rule (check techniques, when to skip, how to handle a wrong answer) moved into a collapsible section under `full/learning-flow/AGENTS.md`'s existing "Understanding checks" heading; the other three surfaces now state the rule once and point there instead of restating it.
+- `structured-change`'s own `knowledge/engineering/` folder was never referenced by its own `SKILL.md` — a genuinely orphaned surface, not a duplicated one. The Design step now names it explicitly.
+
+Separately, the full profile's seven near-identical task skills (`learning-bootstrap`, `repository-orientation`, `challenge-debugging`, `analogous-feature`, `safe-refactor`, `change-explainer`, `ticket-learning-path`) reversed the v1.0-era "progressive disclosure" framing (see "Skill routing" above, then current): `repository-orientation`, `challenge-debugging`, `analogous-feature`, and `safe-refactor` shared the same header, the same locate-reason-verify-report shape, and the same PLAYBOOKS.md table row each — the disclosure was one of file count, not of actual content boundaries. They merged into one `repository-learning` skill with four branches, matching the shape the minimal profile already used successfully for the same four concerns, with full's extra depth (the ownership-compass questions, deeper proof-by-risk requirements, and the optional `challenge.md` template) preserved inside it. `learning-bootstrap`, `change-explainer`, and `ticket-learning-path` remain separate because each has a genuinely distinct trigger moment and non-duplicated content — merging them would have hidden that distinction rather than removed real duplication.
+
+`learning-closure` and `learning-freshness` were reviewed against the same test and kept separate: each is already lean, each fires at a different point in the workflow (handoff vs. deliberate maintenance), and separate descriptions help an agent's skill matching select the right one. Only their duplicated external-source provenance field list was deduplicated, with `learning-closure` as the single owner. `LOCAL.md` and `structured-change` were reviewed and kept as-is: both are load-bearing, cross-referenced from nearly every skill, and not redundant with anything else in the repository.
+
+Net effect for a `full`-profile consumer: a typical task now touches four fewer files to discover the right procedure, and the rule "ask at most one understanding check" has one canonical statement instead of four. No behavior the framework depends on for repository-specific authority, selective learning, hypothesis-first proposals, consequential-change reasoning, private continuity, or optional regulatory guidance changed.
+
 ## General agentic loop
 
 ```text
@@ -187,7 +203,7 @@ Designed for daily use and token economy. Its shared tracked learning is limited
 
 ### Full
 
-Designed for deliberate onboarding and long-lived learning programs. It keeps only maps, takeaways, repository baselines, and task-specific learning skills tracked by default. Private sessions and contributor-specific template instances use `.local/`; promoted shared artifacts remain exceptional. Optional challenge, ticket-path, and change-explainer templates live inside their owning skills and are materialized only on explicit need.
+Designed for deliberate onboarding and long-lived learning programs. It keeps only maps, takeaways, repository baselines, and task-specific learning skills tracked by default. Private sessions and contributor-specific template instances use `.local/`; promoted shared artifacts remain exceptional. An optional challenge template lives inside `repository-learning`; ticket-path and change-explainer templates live inside their own owning skills. All are materialized only on explicit need.
 
 ## Shared learning loop
 
@@ -227,7 +243,7 @@ Conversation is the live interaction layer. `.local/` is the private continuity 
 
 The common `agentic-workflow` skill initializes, configures, explains, or reviews the workflow. It is not loaded as a second engineering procedure during an ordinary task. The separate common `learn-anything` skill owns general learning conversations and does not inspect the repository by default. The common `structured-change` skill elaborates `Decide` for one consequential, ambiguous, or regulated change; it runs alongside the active route, not instead of it, and most tasks never touch it. The `regulatory` extension's `regulatory-knowledge` skill is reference material `structured-change` and task skills consult, not a workflow of its own.
 
-The full learning profile keeps seven narrow repository skills for progressive disclosure, but one skill owns the current task. The minimal profile uses one `repository-learning` skill with compact branches for bug, feature, refactor, and orientation work. Both add the common generic conversation skill without changing their repository-learning profile.
+The full learning profile uses one deeper `repository-learning` skill covering four branches (orientation, bug, feature, refactor) plus `learning-bootstrap`, `change-explainer`, and `ticket-learning-path` for their distinct trigger moments. The minimal profile uses the same `repository-learning` shape with compact branches and no baseline, explainer, or ticket-path skills. Both add the common generic conversation skill without changing their repository-learning profile.
 
 ## Installer lifecycle
 

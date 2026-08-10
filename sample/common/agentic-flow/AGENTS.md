@@ -13,7 +13,7 @@ Learning & Ownership and Optional Risk Lenses add guidance without becoming a se
 5. During implementation, reinforce understanding when useful without turning the task into a lesson.
 6. Use `structured-change` alongside the active route only for one consequential, ambiguous, or regulated change.
 7. Read configuration documents only when configuration matters.
-8. Use `ARTIFACTS.md` for optional reasoning-artifact vocabulary when making current understanding materially clearer.
+8. Make current understanding explicit (see "Making reasoning explicit" in `WORKFLOW.md`) only when it materially improves correctness or communication.
 
 ## Learning behavior
 

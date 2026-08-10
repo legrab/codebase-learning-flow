@@ -16,7 +16,7 @@ Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-fl
 7. Fill only high-value missing context.
 8. Propose the shortest responsible route, usually one to three steps.
 9. Stop at preparation unless implementation was requested.
-10. Name one implementation handoff when needed: `challenge-debugging`, `analogous-feature`, or `safe-refactor`.
+10. Name the implementation handoff when needed: `repository-learning` (bug, feature, or refactor branch).
 
 Do not execute several skills in the same pass.
 

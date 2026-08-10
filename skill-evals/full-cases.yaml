@@ -1,19 +1,19 @@
 profile: full
 cases:
   - prompt: Help me understand why this endpoint sometimes returns stale data.
-    expected_primary_skill: challenge-debugging
+    expected_primary_skill: repository-learning
     must_include: [affected outcome or rule, symptom, decisive evidence, mechanism, regression proof]
     must_not: [guessed patch before narrowing, multiple primary learning skills, agentic-workflow as second task skill]
   - prompt: A laboratory instrument occasionally applies the wrong calibration. Diagnose it before any code change.
-    expected_primary_skill: challenge-debugging
+    expected_primary_skill: repository-learning
     must_include: [scientific or physical outcome, containment, decisive observation, mechanism, validation evidence, fallback or untested boundary]
     must_not: [guessed patch, unsafe live experiment, generic web-app assumptions]
   - prompt: Implement export similarly to the existing import workflow.
-    expected_primary_skill: analogous-feature
+    expected_primary_skill: repository-learning
     must_include: [actor and outcome, build judgment, valid analogue, invariants, intentional differences, proof and control]
     must_not: [blind copy, premature shared abstraction]
   - prompt: Clean up this service without changing its behavior.
-    expected_primary_skill: safe-refactor
+    expected_primary_skill: repository-learning
     must_include: [behavior or domain invariant, preserved contract, evidence, smallest seam, resilience preserved, simplification]
     must_not: [architecture campaign]
   - prompt: Review this AI-generated refactor and explain whether we can rely on it.
@@ -37,7 +37,7 @@ cases:
     must_include: [compact system model, purpose and boundaries, relationships and flow, compact map, build and proof entry points, one representative path]
     must_not: [normal template status write, transient branch or commit report, exhaustive agentic inventory, prebuilt curriculum, contributor folder, generated sessions]
   - prompt: Help me understand this subsystem while fixing its current bug; do not run a separate onboarding pass.
-    expected_primary_skill: challenge-debugging
+    expected_primary_skill: repository-learning
     must_include: [task starts directly, model and evidence folded into handoff]
     must_not: [learning-bootstrap first, separate recap section, setup status write]
   - prompt: Close our repository-learning session, keep my quiz and progress history private, and preserve any takeaway useful to the whole team.

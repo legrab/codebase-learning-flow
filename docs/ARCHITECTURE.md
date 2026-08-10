@@ -116,6 +116,31 @@ This separation is a trust and context boundary as well as an installation bound
 
 </details>
 
+## Runtime instruction flow
+
+The path an agent actually walks for one task, independent of profile:
+
+```mermaid
+flowchart TD
+    Root[Repository-native instructions] --> AF[agentic-flow/AGENTS.md]
+    AF --> Route{Task needs repository<br/>learning support?}
+    Route -->|no| WF[WORKFLOW.md loop]
+    Route -->|yes| LF[learning-flow/AGENTS.md]
+    Route -->|general topic, no repo| LA[learn-anything]
+    LF --> Skill[One learning skill:<br/>bootstrap / repository-learning branch /<br/>change-explainer / ticket-learning-path]
+    Skill --> WF
+    WF --> Sig{Consequential, ambiguous,<br/>or regulated?}
+    Sig -->|yes| SC["structured-change<br/>(+ regulatory-knowledge if installed)"]
+    Sig -->|no| Act[Act → Verify]
+    SC --> Act
+    Act --> HO[Handoff]
+    HO --> Reuse{Reusable insight?}
+    Reuse -->|yes| LC[learning-closure →<br/>LOCAL.md / MAP.md / TAKEAWAYS.md]
+    Reuse -->|no| Done[Done]
+```
+
+Every box is read only when its condition is met; `EDUCATION.md` is applied selectively inside whichever learning skill runs, not as a separate stop. A maintainer auditing "what does an installed `full` profile actually load for a bug fix" reads this diagram top to bottom: `AGENTS.md` → `learning-flow/AGENTS.md` → `repository-learning` (Bug branch) → `WORKFLOW.md` → optionally `structured-change` → handoff → optionally `learning-closure`. No other file sits on that path unless the task specifically needs it.
+
 ## Learning lifecycle
 
 Learning is treated as a lifecycle rather than a second engineering process:
