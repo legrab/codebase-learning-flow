@@ -38,6 +38,8 @@ When genuinely competing approaches exist, keep exploration findings shared acro
 
 Compare credible options, select an approach, name the remaining decision, and state verification and rollback where genuinely needed.
 
+For ordinary engineering tradeoffs (architecture, dependency management, documentation, maintainability, modernization, testing, AI-collaboration), consult the relevant file under `knowledge/engineering/` instead of reasoning from first principles. Read only the file the decision needs.
+
 If regulatory guidance applies, read only the specific knowledge needed and note traceability, validation impact, and requirement linkage. Do not invent compliance language.
 
 ## Structure (optional)

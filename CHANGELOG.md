@@ -2,9 +2,30 @@
 
 ## Unreleased
 
+Architectural simplification of the `full` profile: reduced meta-ceremony while preserving every behavior the framework depends on (repository authority, selective learning, hypothesis-first proposals, consequential-change reasoning, private continuity, optional regulatory guidance).
+
 ### Added
 
+- `full` profile `repository-learning` skill: one skill covering orientation, bug, feature, and refactor branches, matching the shape the minimal profile already used. Carries all the depth of the four skills it replaces (ownership-compass questions, per-branch report shape, optional `challenge.md` template).
+- "Making reasoning explicit" section in `agentic-flow/WORKFLOW.md`, replacing `ARTIFACTS.md` with just the one artifact type (the compact current-understanding model) that had independent operational value.
+- "Branches" fallback table inline in `full/learning-flow/AGENTS.md`, for agents without task-skill support, replacing `PLAYBOOKS.md`.
+- Collapsible "Check techniques and handling" section under `full/learning-flow/AGENTS.md`'s "Understanding checks" heading, replacing `UNDERSTANDING_CHECKS.md`.
+- Explicit reference to `structured-change`'s own `knowledge/engineering/` folder from its Design step; the folder previously existed but was never read by the skill that owns it.
+- "Runtime instruction flow" diagram in `docs/ARCHITECTURE.md` showing the actual per-task instruction path end to end.
+
+### Removed
+
+- `agentic-flow/ARTIFACTS.md` (six of its eight artifact types restated concepts already owned by `structured-change`, `WORKFLOW.md`, or `learning-closure`).
+- `full/learning-flow/BOOTSTRAP.md` (duplicated the `learning-bootstrap` skill's procedure almost verbatim; the skill is now the sole owner).
+- `full/learning-flow/PLAYBOOKS.md` (duplicated four skills' branch logic; content now lives inline in `AGENTS.md`).
+- `full/learning-flow/UNDERSTANDING_CHECKS.md` (restated a rule already stated in four other files).
+- `full` profile skills `repository-orientation`, `challenge-debugging`, `analogous-feature`, `safe-refactor` (merged into `repository-learning`).
+
 ### Changed
+
+- Deduplicated the external-source provenance field list between `learning-closure` and `learning-freshness`; `learning-closure` is now the single owner.
+- `full/learning-flow/README.md` diagram and "Understanding and assessment" section updated to match the reduced skill count and single canonical rule.
+- `ticket-learning-path`'s implementation-handoff step now names `repository-learning` instead of the three merged skills.
 
 ## 1.1.0
 

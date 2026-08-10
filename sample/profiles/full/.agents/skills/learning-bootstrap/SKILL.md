@@ -5,7 +5,7 @@ description: Create or refresh a compact repository baseline covering the real s
 
 # Learning bootstrap
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for collaboration behavior. Read `agentic-flow/EDUCATION.md`, `learning-flow/AGENTS.md`, and `learning-flow/BOOTSTRAP.md`.
+Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md` for collaboration behavior. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`.
 
 1. Inspect repository instructions, shape, entry points, build and proof commands, and relevant configuration.
 2. Recognize managed template markers quietly.

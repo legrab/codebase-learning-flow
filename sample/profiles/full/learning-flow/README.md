@@ -1,19 +1,14 @@
 # Full learning flow
 
-A focused repository-learning profile for deliberate onboarding and long-lived ownership. It adds narrower skills, not a second collaboration engine.
+A focused repository-learning profile for deliberate onboarding and long-lived ownership. It adds deeper task skills, not a second collaboration engine.
 
 ```mermaid
 flowchart TB
-    B[Compact baseline] --> O[System and domain orientation]
-    O --> T{Real task}
-    T --> D[Debugging]
-    T --> F[Analogous feature]
-    T --> R[Safe refactor]
+    B[Compact baseline] --> T{Real task}
+    T --> L["repository-learning<br/>(orientation, bug, feature, or refactor)"]
     T --> X[Change explanation]
     T --> P[Ticket learning path]
-    D --> K[Durable map or takeaway only when justified]
-    F --> K
-    R --> K
+    L --> K[Durable map or takeaway only when justified]
     X --> K
 ```
 
@@ -39,9 +34,7 @@ Select one primary learning skill. `agentic-workflow` is only for configuring or
 
 ## Understanding and assessment
 
-Use at most one brief open checkpoint by default when a mistaken model would affect future reasoning. Credible evidence includes explanation, prediction, trace, comparison, corrected attempt, boundary identification, or transfer.
-
-A declined check never blocks engineering. Confidence, agreement, and polished wording are not proof.
+See "Understanding checks" in `learning-flow/AGENTS.md` for the governing rule and check techniques. A declined check never blocks engineering.
 
 ## Artifact budget
 

@@ -24,6 +24,25 @@ If collaboration behavior materially affects the result and repository evidence 
 
 For a change that is architecturally significant, genuinely ambiguous between credible options, or regulated, expand Decide into a short Explore → Design → Approve sequence using `structured-change` before moving to Act: state current understanding and unknowns, propose an approach with tradeoffs and a requested decision, then get explicit approval. Keep this proportional; do not expand Decide this way for ordinary work.
 
+### Making reasoning explicit
+
+Write down current understanding only when doing so materially improves correctness, communication, or future reuse — not because the framework has a place to put it. A trivial fix produces nothing written; an unfamiliar, consequential change might produce one compact model.
+
+```text
+Current model:
+    <components and relationships, as a short flow or list>
+
+Evidence:
+    <files, tests, or configuration establishing this>
+
+Unknown:
+    <the highest-value open question>
+```
+
+Keep it inline in the conversation unless the work is meaningful enough for `LOCAL.md` continuity. Do not let it accumulate unbounded state — once it stops fitting in a few lines, it has stopped being "current understanding" and started being documentation; move stable parts to `learning-flow/MAP.md` through the normal promotion threshold in `LOCAL.md`, and keep only what is still live.
+
+If the user challenges this model, update it in place instead of restarting the task — see "Correction propagation" in `LOCAL.md`.
+
 ## Act
 
 Make the smallest responsible change or investigation that reaches the outcome. Keep unrelated cleanup out of scope. Do not force one-file or one-commit steps when a coherent slice is safer.
