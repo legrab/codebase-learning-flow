@@ -4,6 +4,15 @@
 
 The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
+## v1.3 consolidation and ownership boundaries
+
+The 1.3 cleanup makes three small maintenance boundaries explicit:
+
+1. `repository-learning` has one common skill owner. Minimal and full profiles differ in routing and persistence surfaces, not by carrying duplicate implementations.
+2. Profile `learning-flow/AGENTS.md` files are routing contracts. Common collaboration, context economy, evidence, understanding-check, and handoff policy remains owned by the common agentic/education layer.
+
+The goal is lower effective context, less opportunity for agentic drift, and faster human navigation without introducing another framework layer.
+
 ## Current three-layer architecture
 
 The current architecture consolidates the earlier ownership distinctions into three user-facing framework layers:

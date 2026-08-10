@@ -11,4 +11,9 @@ mkdir -p "$target/.local"
 printf '%s\n' "CI sentinel" > "$target/.local/ci-sentinel"
 bash "$repo_root/scripts/install.sh" --target "$target" --repository "$repository" --ref "$ref" --profile minimal --mode update --skip-root-agents
 grep -Fxq "CI sentinel" "$target/.local/ci-sentinel"
-echo "Installer smoke test passed."
+
+full_target="$(mktemp -d)"
+trap 'rm -rf "$target" "$full_target"' EXIT
+bash "$repo_root/scripts/install.sh" --target "$full_target" --repository "$repository" --ref "$ref" --profile full --mode fail --skip-root-agents
+test -f "$full_target/.agents/skills/repository-learning/SKILL.md"
+echo "Installer smoke test passed for minimal and full profiles."

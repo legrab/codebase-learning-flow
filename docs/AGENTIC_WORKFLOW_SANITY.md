@@ -213,3 +213,17 @@ For each scenario, review the agent interaction for:
 - unnecessary framework terminology in the user-facing result.
 
 A change to the common workflow or a broadly loaded skill should rerun the affected scenarios. A change to a narrow task skill only needs the scenarios that can route to that skill plus the ordinary-task checks needed to ensure it does not become ambient.
+
+### 12. Shared skill ownership
+
+**Prompt:** Update the repository-learning behavior used by both minimal and full profiles.
+
+Expected behavior:
+
+- identify `repository-learning` as one shared skill owner;
+- do not create or edit profile-specific duplicate implementations;
+- ensure profile managed-skill declarations and `MANIFEST.txt` resolve to the same source;
+- preserve profile-specific routing in `learning-flow/AGENTS.md`.
+
+Failure signal: a profile declares a skill whose implementation is only discoverable by following another profile, or two profile copies can drift independently.
+

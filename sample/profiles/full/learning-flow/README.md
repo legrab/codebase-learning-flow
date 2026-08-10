@@ -12,7 +12,7 @@ flowchart TB
     X --> K
 ```
 
-All skills apply `agentic-flow/EDUCATION.md` selectively. The goal is durable human ownership: system understanding, product judgment, credible validation, resilience, responsible AI leverage, and clear control boundaries.
+All selected skills apply `agentic-flow/EDUCATION.md` selectively. The goal is durable human ownership: system understanding, product judgment, credible validation, resilience, responsible AI leverage, and clear control boundaries.
 
 ## Persistent surfaces
 
@@ -28,7 +28,7 @@ All skills apply `agentic-flow/EDUCATION.md` selectively. The goal is durable hu
 
 ## Start
 
-Use `learning-bootstrap` only for a requested baseline or deliberate onboarding pass. An ordinary task in a new repository can start with its matching task skill.
+Use `learning-bootstrap` only for a requested baseline or deliberate onboarding pass. An ordinary task in a new repository can start with its matching repository-learning branch.
 
 Select one primary learning skill. `agentic-workflow` is only for configuring or understanding the harness itself. See the "Select one primary skill" table in `learning-flow/AGENTS.md` for the full need-to-skill routing.
 

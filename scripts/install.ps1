@@ -691,7 +691,10 @@ try {
     }
     if (-not $SkipSkills) {
         if (-not (Test-Path -LiteralPath $sourceCommonSkills -PathType Container)) { throw "Common skill directory is missing." }
-        if (-not (Test-Path -LiteralPath $sourceProfileSkills -PathType Container)) { throw "Profile skill directory is missing." }
+        $profileManagedSkills = @(Get-Content -LiteralPath $sourceLearningManagedSkills | Where-Object { -not [string]::IsNullOrWhiteSpace($_) -and -not $_.Trim().StartsWith("#") })
+        if ($profileManagedSkills.Count -gt 0 -and -not (Test-Path -LiteralPath $sourceProfileSkills -PathType Container)) {
+            throw "Profile skill directory is missing."
+        }
     }
     if ($selectedExtension -eq "regulatory") {
         if (-not (Test-Path -LiteralPath $sourceExtensionLearning -PathType Container)) {

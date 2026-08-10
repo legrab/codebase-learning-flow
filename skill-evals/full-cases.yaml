@@ -52,3 +52,8 @@ cases:
     expected_primary_skill: selected_task_learning_skill
     must_include: [one question, evidence, resulting understanding, continue-or-stop, stop when sufficient]
     must_not: [plan the entire investigation up front, keep investigating after resolution]
+
+  - prompt: "Use the repository-learning route for a bug, feature, orientation, or refactor."
+    expected_skill: repository-learning
+    must_include: [select exactly one branch, orientation bug feature refactor, common skill owner]
+    must_not: [load repository-orientation, challenge-debugging, analogous-feature, safe-refactor as separate skills]
