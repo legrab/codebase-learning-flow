@@ -26,6 +26,11 @@ Architectural simplification of the `full` profile: reduced meta-ceremony while 
 - Deduplicated the external-source provenance field list between `learning-closure` and `learning-freshness`; `learning-closure` is now the single owner.
 - `full/learning-flow/README.md` diagram and "Understanding and assessment" section updated to match the reduced skill count and single canonical rule.
 - `ticket-learning-path`'s implementation-handoff step now names `repository-learning` instead of the three merged skills.
+- Consolidated `repository-learning` into one common skill owner shared by minimal and full profiles, preserving focused Orientation, Bug, Feature, and Refactor routes.
+- Reduced profile `learning-flow/AGENTS.md` files to routing and profile-specific persistence concerns, removing duplicated common policy.
+- Removed redundant full-profile bootstrap, playbook, and understanding-check documents whose rules are now owned by the common workflow or selected skill.
+- Added regression coverage for shared skill ownership and profile routing.
+
 
 ## 1.1.0
 

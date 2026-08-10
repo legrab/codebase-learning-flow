@@ -54,3 +54,8 @@ cases:
     expected_branch: orientation
     must_include: [one small round, question, evidence, understanding, continue-or-stop, stop when sufficient]
     must_not: [plan the entire investigation up front, continue investigating after the task is resolved]
+
+  - prompt: "Understand and fix a repository bug using the minimal profile."
+    expected_skill: repository-learning
+    must_include: [bug branch, common skill owner, decisive evidence, focused proof]
+    must_not: [profile-local repository-learning copy]

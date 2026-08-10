@@ -810,7 +810,9 @@ for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS"
 done
 if [ "$SKIP_SKILLS" != "true" ]; then
     [ -d "$SOURCE_COMMON_SKILLS" ] || { echo "Common skill directory is missing." >&2; exit 1; }
-    [ -d "$SOURCE_PROFILE_SKILLS" ] || { echo "Profile skill directory is missing." >&2; exit 1; }
+    if has_content "$SOURCE_LEARNING_MANAGED_SKILLS"; then
+        [ -d "$SOURCE_PROFILE_SKILLS" ] || { echo "Profile skill directory is missing." >&2; exit 1; }
+    fi
 fi
 if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
     [ -d "$SOURCE_EXTENSION_LEARNING" ] || { echo "Required extension directory is missing: $SOURCE_EXTENSION_LEARNING" >&2; exit 1; }

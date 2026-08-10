@@ -24,6 +24,7 @@ sample/common/agentic-flow/
 sample/common/.agents/skills/agentic-workflow/
 sample/common/.agents/skills/learn-anything/
 sample/common/.agents/skills/structured-change/
+sample/common/.agents/skills/repository-learning/
 sample/common/local/learning-history.md
 sample/profiles/minimal/
 sample/profiles/full/
@@ -35,7 +36,7 @@ sample/root/
 |---|---|
 | `agentic-flow/` | planning, autonomy, validation, records, and handoff |
 | `agentic-flow/EDUCATION.md` | system ownership, resilience, AI independence, and teaching judgment |
-| `learning-flow/` | repository education and durable shared knowledge |
+| `learning-flow/` | repository education, profile routing, and durable shared knowledge |
 | `learn-anything` | conversational learning without repository inspection |
 | `structured-change` | Explore/Design/Approve sequencing for one consequential change, any profile |
 | `extensions/regulatory` | optional, additive traceability/validation/risk-management knowledge |
