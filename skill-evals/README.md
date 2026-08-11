@@ -14,16 +14,12 @@ flowchart LR
 - `minimal-cases.yaml` checks the compact repository skill, resilience and ownership lenses, and persistence restraint.
 - `full-cases.yaml` checks focused skill routing, responsible machine-generated work review, domain depth, and anti-ceremony behavior.
 - `structured-change-cases.yaml` checks when Explore/Design/Approve is (and is not) warranted, decision-record promotion discipline, traceability proportionality, and the regulatory extension's additive, non-reproducing behavior.
+- `learning-lifecycle-cases.yaml` checks learning placement and periodic freshness review.
+- `adoption-cases.yaml` checks guided integration into a repository with an existing agentic setup.
+
+Lifecycle and adoption cases guard the same thing as the rest of the suite: no unnecessary context expansion, no unnecessary framework ceremony.
 
 Review these fixtures when changing skill descriptions, routing, profiles, extensions, educational principles, baseline research, local continuity, understanding checks, or persistence rules.
 
 > [!NOTE]
 > Expected phrases describe behavioral evidence, not exact generated wording.
-
-
-## Additional lifecycle and adoption cases
-
-`learning-lifecycle-cases.yaml` covers learning placement and freshness checks.
-`adoption-cases.yaml` covers guided integration into repositories with an
-existing agentic setup. Both are intended to protect against unnecessary
-context expansion and framework ceremony.

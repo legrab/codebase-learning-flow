@@ -32,11 +32,11 @@ flowchart LR
 ```
 
 ```text
-sh install.sh --release v1.1.0 --profile minimal
+sh install.sh --release v1.3.0 --profile minimal
 ```
 
 ```powershell
-.\install.ps1 -Release v1.1.0 -Profile Minimal
+.\install.ps1 -Release v1.3.0 -Profile Minimal
 ```
 
 `--release`/`-Release` downloads the packaged artifact and `checksums.txt`
@@ -54,7 +54,7 @@ Every install prints which trust boundary it used:
 
 ```text
 Codebase Learning Flow
-Version: v1.1.0
+Version: v1.3.0
 Source: packaged release (checksum verified)
 ```
 

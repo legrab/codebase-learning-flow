@@ -10,8 +10,15 @@ The 1.3 cleanup makes three small maintenance boundaries explicit:
 
 1. `repository-learning` has one common skill owner. Minimal and full profiles differ in routing and persistence surfaces, not by carrying duplicate implementations.
 2. Profile `learning-flow/AGENTS.md` files are routing contracts. Common collaboration, context economy, evidence, understanding-check, and handoff policy remains owned by the common agentic/education layer.
+3. The understanding-check rule and its elaboration have one canonical location, the "Understanding checks" heading in `full/learning-flow/AGENTS.md`. `full/learning-flow/README.md` points there instead of restating it.
 
 The goal is lower effective context, less opportunity for agentic drift, and faster human navigation without introducing another framework layer.
+
+### Removed: `.template-version` marker files
+
+`agentic-flow/.template-version`, `full/learning-flow/.template-version`, and `minimal/learning-flow/.template-version` were removed. Nothing read them: no installer, no CI check, no documentation. Their per-component values (1.0.0/1.1.0/1.2.0) had drifted from each other and from the package's own release tag with no defined meaning to drift from. An unread, undocumented file that looks like it should mean something is worse than no file.
+
+The plausible future use is a per-component compatibility matrix for `update` mode, so the installer could warn before merging a template that changed shape incompatibly with what a target repository has customized, rather than relying on `merge`/`fail` conflict detection alone. That is a real gap only once template files diverge enough for a naive merge to be actively wrong, which has not happened yet. If it becomes real, it should be reintroduced with the reader documented (`install.sh`/`install.ps1`), the compatibility rule stated here, and a CI check that fails when the value goes stale, not shipped ahead of any of those three.
 
 ## Current three-layer architecture
 
