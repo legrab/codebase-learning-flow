@@ -1,14 +1,14 @@
 .gitattributes	40
 .gitignore	324
 AGENTS.md	2995
-CHANGELOG.md	25668
+CHANGELOG.md	26360
 LICENSE	2213
-README.md	8952
+README.md	9023
 adoption/ADOPT.md	4177
-adoption/README.md	2057
+adoption/README.md	2445
 docs/AGENTIC_WORKFLOW_SANITY.md	9802
 docs/ARCHITECTURE.md	7131
-docs/DESIGN_NOTES.md	36475
+docs/DESIGN_NOTES.md	36695
 docs/EDUCATION_MODEL.md	5452
 docs/INITIALIZE_LEARNING_FLOW.md	10880
 docs/README.md	4016
@@ -80,7 +80,7 @@ sample/profiles/full/learning-flow/.template-profile	5
 sample/profiles/full/learning-flow/.template-version	6
 sample/profiles/full/learning-flow/AGENTS.md	3198
 sample/profiles/full/learning-flow/MAP.md	1464
-sample/profiles/full/learning-flow/README.md	2345
+sample/profiles/full/learning-flow/README.md	2383
 sample/profiles/full/learning-flow/REPOSITORIES.md	439
 sample/profiles/full/learning-flow/TAKEAWAYS.md	970
 sample/profiles/minimal/learning-flow/.managed-files	87
@@ -97,7 +97,7 @@ scripts/README.md	6771
 scripts/install.bat	1477
 scripts/install.ps1	40477
 scripts/install.sh	34980
-skill-evals/README.md	1667
+skill-evals/README.md	1689
 skill-evals/adoption-cases.yaml	1337
 skill-evals/agentic-cases.yaml	8895
 skill-evals/conversation-cases.yaml	3653

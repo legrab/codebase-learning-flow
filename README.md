@@ -84,7 +84,7 @@ curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1)))
 ```
 
-*For local development, use the installer scripts directly.*
+*Contributing to the framework itself? Run `scripts/install.sh` from your local checkout instead of curling the remote copy above.*
 
 <details>
 <summary>Profiles, extensions, and update modes</summary>

@@ -4,14 +4,26 @@ This directory is **not part of complete installation**. It is the repository's
 guided adoption surface for repositories that already have their own agentic
 workflow.
 
-The distinction is structural:
+```mermaid
+flowchart LR
+    Q{Repository already has<br/>its own agentic workflow?}
+    Q -->|Yes| A[Guided adoption<br/>adoption/ADOPT.md]
+    Q -->|No| I[Complete installation<br/>scripts/install.sh · install.ps1]
+    A --> S1[Integrate only the<br/>layers you approve]
+    I --> S2[Install every<br/>selected layer]
+```
+
+> [!IMPORTANT]
+> `adoption/` must never cause the common `agentic-flow` to be installed automatically, or the target repository's root `AGENTS.md` to be rewritten without approval.
+
+<details>
+<summary>Directory boundaries</summary>
 
 - `sample/` contains the framework payload used by complete installation.
-- `adoption/` contains guidance for adapting selected framework concepts into
-  an existing setup.
+- `adoption/` contains guidance for adapting selected framework concepts into an existing setup.
 - `scripts/` contains installers for complete installation.
-- `adoption/` must not cause the common `agentic-flow` to be installed or the
-  target repository's root `AGENTS.md` to be rewritten automatically.
+
+</details>
 
 ## Start adoption
 

@@ -38,6 +38,14 @@ Architectural simplification of the `full` profile: reduced meta-ceremony while 
 - `agentic-flow/WORKFLOW.md`'s reference to "the commit shape in `AGENTS.md`", which pointed at a section that doesn't exist anywhere in the framework; commit format is repository-native, not framework-defined.
 - Packaged-release install examples in `README.md` and `scripts/README.md`, still pinned to the `v1.1.0` tag.
 - `agentic-flow/ROOT_INTEGRATION.md`'s documented "Managed pointer block" example, which no longer matched the actual `sample/root/AGENTS.pointer.md` content it was describing.
+- `docs/DESIGN_NOTES.md`'s "v1.3 consolidation" entry claimed three maintenance boundaries but listed two; added the missing third (the understanding-check rule's single canonical location).
+
+### Polish
+
+- Added a decision flowchart to `adoption/README.md` for guided adoption vs. complete installation, and moved directory-boundary detail into a collapsible section.
+- Added the missing ticket-learning-path to repository-learning handoff edge in `full/learning-flow/README.md`'s routing diagram.
+- Folded `skill-evals/README.md`'s bolted-on "Additional lifecycle and adoption cases" section into the main fixture list.
+- Minor wording tightening in `README.md`'s development-checkout note.
 
 
 ## 1.1.0

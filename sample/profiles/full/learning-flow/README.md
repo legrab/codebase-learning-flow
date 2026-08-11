@@ -8,6 +8,7 @@ flowchart TB
     T --> L["repository-learning<br/>(orientation, bug, feature, or refactor)"]
     T --> X[Change explanation]
     T --> P[Ticket learning path]
+    P -. implementation handoff .-> L
     L --> K[Durable map or takeaway only when justified]
     X --> K
 ```

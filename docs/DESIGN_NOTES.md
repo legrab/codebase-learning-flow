@@ -10,6 +10,7 @@ The 1.3 cleanup makes three small maintenance boundaries explicit:
 
 1. `repository-learning` has one common skill owner. Minimal and full profiles differ in routing and persistence surfaces, not by carrying duplicate implementations.
 2. Profile `learning-flow/AGENTS.md` files are routing contracts. Common collaboration, context economy, evidence, understanding-check, and handoff policy remains owned by the common agentic/education layer.
+3. The understanding-check rule and its elaboration have one canonical location, the "Understanding checks" heading in `full/learning-flow/AGENTS.md`. `full/learning-flow/README.md` points there instead of restating it.
 
 The goal is lower effective context, less opportunity for agentic drift, and faster human navigation without introducing another framework layer.
 
