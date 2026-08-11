@@ -40,6 +40,10 @@ Architectural simplification of the `full` profile: reduced meta-ceremony while 
 - `agentic-flow/ROOT_INTEGRATION.md`'s documented "Managed pointer block" example, which no longer matched the actual `sample/root/AGENTS.pointer.md` content it was describing.
 - `docs/DESIGN_NOTES.md`'s "v1.3 consolidation" entry claimed three maintenance boundaries but listed two; added the missing third (the understanding-check rule's single canonical location).
 
+### Removed
+
+- `.template-version` marker files from `agentic-flow/`, `full/learning-flow/`, and `minimal/learning-flow/`. Nothing read them and their values had drifted with no defined meaning. See `docs/DESIGN_NOTES.md` for the plausible future use and what would need to exist before reintroducing it.
+
 ### Polish
 
 - Added a decision flowchart to `adoption/README.md` for guided adoption vs. complete installation, and moved directory-boundary detail into a collapsible section.

@@ -14,6 +14,12 @@ The 1.3 cleanup makes three small maintenance boundaries explicit:
 
 The goal is lower effective context, less opportunity for agentic drift, and faster human navigation without introducing another framework layer.
 
+### Removed: `.template-version` marker files
+
+`agentic-flow/.template-version`, `full/learning-flow/.template-version`, and `minimal/learning-flow/.template-version` were removed. Nothing read them: no installer, no CI check, no documentation. Their per-component values (1.0.0/1.1.0/1.2.0) had drifted from each other and from the package's own release tag with no defined meaning to drift from. An unread, undocumented file that looks like it should mean something is worse than no file.
+
+The plausible future use is a per-component compatibility matrix for `update` mode, so the installer could warn before merging a template that changed shape incompatibly with what a target repository has customized, rather than relying on `merge`/`fail` conflict detection alone. That is a real gap only once template files diverge enough for a naive merge to be actively wrong, which has not happened yet. If it becomes real, it should be reintroduced with the reader documented (`install.sh`/`install.ps1`), the compatibility rule stated here, and a CI check that fails when the value goes stale, not shipped ahead of any of those three.
+
 ## Current three-layer architecture
 
 The current architecture consolidates the earlier ownership distinctions into three user-facing framework layers:
