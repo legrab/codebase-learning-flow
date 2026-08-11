@@ -65,11 +65,11 @@ For team or enterprise use, install a reviewed, versioned release. Substitute th
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.sh -o install.sh
-sh install.sh --release v1.1.0 --profile minimal
+sh install.sh --release v1.3.0 --profile minimal
 ```
 
 ```powershell
-& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v1.1.0 -Profile Minimal
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Release v1.3.0 -Profile Minimal
 ```
 
 The installer verifies the release checksum before extraction and reports the resolved `Version:` and `Source:`.

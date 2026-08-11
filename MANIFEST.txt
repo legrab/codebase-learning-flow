@@ -1,7 +1,7 @@
 .gitattributes	40
 .gitignore	324
 AGENTS.md	2995
-CHANGELOG.md	24788
+CHANGELOG.md	25668
 LICENSE	2213
 README.md	8952
 adoption/ADOPT.md	4177
@@ -48,9 +48,9 @@ sample/common/agentic-flow/LEARN.md	1822
 sample/common/agentic-flow/LOCAL.md	4179
 sample/common/agentic-flow/README.md	2897
 sample/common/agentic-flow/REFERENCE_INTEGRATION.md	2183
-sample/common/agentic-flow/ROOT_INTEGRATION.md	3086
+sample/common/agentic-flow/ROOT_INTEGRATION.md	3392
 sample/common/agentic-flow/SETTINGS.md	544
-sample/common/agentic-flow/WORKFLOW.md	6059
+sample/common/agentic-flow/WORKFLOW.md	6086
 sample/common/local/learning-history.md	1528
 sample/extensions/regulatory/.agents/skills/regulatory-knowledge/SKILL.md	3530
 sample/extensions/regulatory/.agents/skills/regulatory-knowledge/knowledge/regulatory/audit-trails.md	1444
@@ -78,7 +78,7 @@ sample/profiles/full/learning-flow/.managed-files	87
 sample/profiles/full/learning-flow/.managed-skills	57
 sample/profiles/full/learning-flow/.template-profile	5
 sample/profiles/full/learning-flow/.template-version	6
-sample/profiles/full/learning-flow/AGENTS.md	2580
+sample/profiles/full/learning-flow/AGENTS.md	3198
 sample/profiles/full/learning-flow/MAP.md	1464
 sample/profiles/full/learning-flow/README.md	2345
 sample/profiles/full/learning-flow/REPOSITORIES.md	439

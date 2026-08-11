@@ -90,7 +90,7 @@ For pull-request or substantial change completion, learning closure is a normal 
 
 ## Traceability
 
-For most work, the commit shape in `AGENTS.md` is enough. For a consequential or regulated change, and only then, add a `Traceability` section to the commit body:
+For most work, follow the repository's own commit conventions and add nothing extra. For a consequential or regulated change, and only then, add a `Traceability` section to the commit body:
 
 ```text
 Traceability:

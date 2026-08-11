@@ -17,7 +17,7 @@ Do not load all skills. Do not use `agentic-workflow` as a second engineering pr
 
 ## Fallback routing
 
-For an agent without task-skill support, use the matching branch in `repository-learning`:
+For an agent without task-skill support, use the matching flow below inline. The first four rows are `repository-learning`'s own branches; the last two are compact fallbacks for `change-explainer` and `ticket-learning-path`.
 
 | Task | Learning route |
 |---|---|
@@ -28,7 +28,20 @@ For an agent without task-skill support, use the matching branch in `repository-
 | Change explanation | intended outcome → governing rules → generated/human decisions → conceptual walkthrough → risks and proof |
 | Ticket path | actor/outcome → ownership → build judgment → missing context → shortest route → handoff or stop |
 
-The common Agentic Delivery and Education instructions own the learning loop, context economy, ownership lenses, understanding checks, evidence language, and completion behavior. Do not duplicate those rules here.
+The common Agentic Delivery and Education instructions own the learning loop, context economy, ownership lenses, evidence language, and completion behavior. Do not duplicate those rules here.
+
+## Understanding checks
+
+Use at most one consequential understanding check per task. A declined check never blocks engineering.
+
+<details>
+<summary>Check techniques and handling</summary>
+
+- Prefer a prediction, trace, or explain-back over a recall question.
+- Skip the check entirely when the task is short, mechanical, or evidence already demonstrates understanding.
+- If the answer is wrong or shaky, correct the model directly and continue. Do not repeat the check or turn it into a quiz.
+
+</details>
 
 ## Persistent surfaces
 

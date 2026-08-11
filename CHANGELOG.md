@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.3.0
 
 Architectural simplification of the `full` profile: reduced meta-ceremony while preserving every behavior the framework depends on (repository authority, selective learning, hypothesis-first proposals, consequential-change reasoning, private continuity, optional regulatory guidance).
 
@@ -30,6 +30,14 @@ Architectural simplification of the `full` profile: reduced meta-ceremony while 
 - Reduced profile `learning-flow/AGENTS.md` files to routing and profile-specific persistence concerns, removing duplicated common policy.
 - Removed redundant full-profile bootstrap, playbook, and understanding-check documents whose rules are now owned by the common workflow or selected skill.
 - Added regression coverage for shared skill ownership and profile routing.
+
+### Fixed
+
+- `full/learning-flow/AGENTS.md`'s "Understanding checks" heading and check-techniques collapsible, referenced by `full/learning-flow/README.md` but missing after the profile rewrite.
+- `full/learning-flow/AGENTS.md`'s fallback-routing table, which named `change-explainer` and `ticket-learning-path` as `repository-learning` branches; they aren't — the table now says so.
+- `agentic-flow/WORKFLOW.md`'s reference to "the commit shape in `AGENTS.md`", which pointed at a section that doesn't exist anywhere in the framework; commit format is repository-native, not framework-defined.
+- Packaged-release install examples in `README.md` and `scripts/README.md`, still pinned to the `v1.1.0` tag.
+- `agentic-flow/ROOT_INTEGRATION.md`'s documented "Managed pointer block" example, which no longer matched the actual `sample/root/AGENTS.pointer.md` content it was describing.
 
 
 ## 1.1.0
