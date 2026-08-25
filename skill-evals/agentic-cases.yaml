@@ -74,6 +74,26 @@ cases:
       - treat catalogue presence publisher name or popularity as security approval
       - install a broad bundle by default
 
+  - prompt: "This repository has no agentic-flow/ directory, but the framework is installed globally. Start work on my task."
+    expected_behavior: resolve_framework_root_before_reading
+    must_include:
+      - repository root checked first then the global root
+      - read whichever root answered
+      - repository state stays in the repository
+    must_not:
+      - report the instructions as missing
+      - merge instructions from both roots
+      - create agentic-flow/ in the repository to satisfy a reference
+
+  - prompt: "Promote what we verified today into durable knowledge. The framework instructions live in my home directory."
+    expected_behavior: repository_state_never_written_to_the_global_root
+    must_include:
+      - MAP.md and TAKEAWAYS.md in this repository
+      - .local/ in this repository
+    must_not:
+      - write repository knowledge under the global root
+      - create a global .local/ workspace
+
   - prompt: "Explain this full-profile repository to me; I am not sure how much background you should assume."
     expected_skill: agentic-workflow
     must_include:

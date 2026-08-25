@@ -5,7 +5,7 @@ description: Guide concise, adaptive learning conversations for general topics. 
 
 # Learn Anything
 
-Do not inspect repository code. Read only the relevant parts of `agentic-flow/EDUCATION.md`.
+Do not inspect repository code. Read only the relevant parts of `agentic-flow/EDUCATION.md` (repository root, else `~/.agents/`).
 
 ## Loop
 

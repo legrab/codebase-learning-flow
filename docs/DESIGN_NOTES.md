@@ -4,6 +4,48 @@
 
 The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
+## v1.4 install scopes: one framework, many repositories
+
+Until 1.4 the framework had exactly one install root. A developer who wanted this behavior in fifteen repositories installed and updated fifteen byte-identical copies of `agentic-flow/`, `learning-flow/`, and every managed skill, and had no way at all to get the behavior in a repository they could not or should not modify. The layer architecture was already right; the *deployment* model assumed the repository was the only place content could live.
+
+### The split already existed as data
+
+The important finding of this pass was that the global/local boundary did not need to be invented. `.managed-files` and `.managed-skills` already named exactly the framework-owned, repository-independent content — that is precisely what makes those files safe for `update` to overwrite. Everything the package shipped but did not list (`SETTINGS.md`, `DECISIONS.md`, `MAP.md`, `TAKEAWAYS.md`, `REPOSITORIES.md`) was repository-authored, which is why `update` deliberately left it alone.
+
+So the boundary was real and load-bearing, but only expressed negatively: as *the set of files update happens not to touch*. A new file added to a component belonged to that set by omission, with nothing to catch the mistake.
+
+`.repository-files` names the other side of the line explicitly. It costs one small manifest per component, and it turns an implicit convention into something `scripts/ci-validate.py` can enforce: every packaged file in a component must appear in exactly one of its manifests, never both and never neither. A file with no declared install scope would otherwise ship to whichever root the payload happened to be copied into.
+
+This is also why `--scope` is orthogonal to profile and extension rather than a fourth value of one of them. Profile selects *how much* is installed; extension selects *what additional lens*; scope selects *where each half goes*. They compose without interacting.
+
+### Path resolution is the part that actually needed designing
+
+Roughly thirty-five instruction and skill references were written as bare repository-relative paths (``follow `agentic-flow/AGENTS.md` ``). With one root that is unambiguous. With two it is not, and relative paths cannot fix it: a skill at `<repo>/.agents/skills/x/` reaches `agentic-flow/` through `../../../`, while the same skill at `~/.agents/skills/x/` reaches it through `../../`. There is no single relative form, so the rule has to be stated.
+
+It is stated once, under "Framework root" in `agentic-flow/AGENTS.md`: resolve at the repository root first, then at `~/.agents/`; a repository copy always wins; never merge the two; repository state is never read from the global root.
+
+Each skill additionally carries a five-word parenthetical (`repository root, else ~/.agents/`) on its first reference. This is deliberate duplication, against the one-canonical-owner discipline the rest of this document enforces, and the reason is a genuine chicken-and-egg: a skill is an *entry point* that a host agent may invoke before any other framework file has been read, so it cannot delegate "where is the framework root" to a file whose location is exactly what the rule resolves. The parenthetical is kept to the minimum that makes a skill self-sufficient; the full rule, with its precedence and non-merging semantics, has one owner.
+
+### The version marker, reintroduced under the conditions v1.3 set
+
+v1.3 removed the `.template-version` files because nothing read them, and stated three conditions for bringing a version marker back: a documented reader, a stated compatibility rule, and a CI check that fails when the value goes stale. A global root at one version with repositories linked against another is the first situation where those conditions can all be met.
+
+`learning-flow/.install-scope` records `scope` and `version`, and a linked repository also records the `global-version` it was linked against. The reader is the installer's own skew check; the rule is that the two must agree; the CI check is a paired global-then-linked install in `ci-install-test.sh` and `ci-release-test.sh` asserting they do. The value is installer-generated rather than hand-maintained, so it cannot drift the way the old per-component constants did — the failure mode this marker guards is drift between two *installations*, not between a file and its own repository.
+
+### Boundary decisions
+
+- **Global skills land in `<root>/skills/`, not `<root>/.agents/skills/`.** The global root *is* the `.agents` directory a host agent scans. Nesting another `.agents` inside it would put skills where nothing looks for them.
+- **A global installation writes no repository state.** No `.local/`, no `.gitignore` entry, no `AGENTS.md` in the home directory. A tool that quietly creates dotfiles in `$HOME` beyond the directory it was asked to manage has exceeded its mandate, and `.local/` in particular is meaningless outside a repository: it holds continuity *about a system*.
+- **`linked` requires an existing global installation and refuses without one.** The alternative — falling back to a download — would let a repository be seeded from a different version than the instructions it will actually read, which is the exact skew the marker exists to catch. Failing with a one-line instruction is better than silently producing the inconsistent state.
+- **`linked` inherits profile and extension rather than accepting its own.** A repository seeded for `full` while reading `minimal` routing is incoherent, so a conflicting `--profile` is an error rather than a silent override.
+- **Repository-authored seeds are copy-if-missing in every mode, including `replace`.** In a repository install, `replace` resets framework directories, which is a defensible destructive reset because the content is framework-owned and refreshable. In a linked repository there is no framework content at all — everything present was authored locally — so the same mode would only destroy the user's learning. Modes describe what may happen to framework content; where there is none, they have nothing to do.
+- **Scope conversion is supported in both directions** because existing installations are all repository-scoped and would otherwise need manual deletion to adopt this. `repository` → `linked` requires `update` or `replace` for the same reason a destructive profile switch does: it removes files, and `merge` never removes anything. It removes them through the repository's own recorded manifests, so nothing outside the framework's declared ownership is touched.
+- **Installing `--scope repository` alongside a global installation warns rather than fails.** The host agent then discovers every managed skill twice, which is a real problem, but a repository that deliberately pins its own copy is a legitimate choice.
+
+### Deliberately not built
+
+A global `.local/`, a global `SETTINGS.md` supplying default collaboration preferences, symlinking instead of copying, and any form of automatic global-to-repository synchronization. The first two would move repository-specific state out of the repository; the third breaks on Windows without developer mode and makes `update` semantics unclear; the fourth reintroduces the unpinned-`latest` problem the release-distribution section already rejected.
+
 ## v1.3 consolidation and ownership boundaries
 
 The 1.3 cleanup makes three small maintenance boundaries explicit:
@@ -308,7 +350,8 @@ Design decisions specific to this boundary:
 - a proliferating `explorations/`/`designs/`/`decisions/`-per-item directory scaffold in place of the existing durable-file surfaces;
 - mandatory evaluation-matrix scoring or commit traceability blocks for ordinary, low-risk work;
 - a design challenge for a one-line or obviously reversible change;
-- a clarifying question about something repository evidence already answers.
+- a clarifying question about something repository evidence already answers;
+- repository-specific state at a global install root, or automatic synchronization between roots.
 
 ## Final review checklist
 
@@ -326,3 +369,5 @@ Design decisions specific to this boundary:
 12. No workflow requires contributor identity unless the user explicitly wants personal tracking.
 13. An installed extension never changes what a profile means, and adding or removing one never touches unrelated framework or repository content.
 14. A checkout install and a packaged-release install are never ambiguous about which one ran: the installer states its version and trust boundary, and there is no path that silently resolves an unpinned "latest" release.
+15. Every installable file declares whether the framework or the repository owns it, and no install scope can place one at the other's root.
+16. A repository copy of the instructions always wins over the global one, and the two are never merged.

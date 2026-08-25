@@ -4,6 +4,19 @@ This is the common Agentic Delivery layer. It owns collaboration behavior, routi
 
 Learning & Ownership and Optional Risk Lenses add guidance without becoming a second workflow.
 
+## Framework root
+
+`agentic-flow/` and `learning-flow/` resolve against the first root that contains them:
+
+1. the repository root, for a repository-scoped installation;
+2. `~/.agents/` (`%USERPROFILE%\.agents\` on Windows), for a global installation shared by every repository.
+
+A repository copy always wins over the global one. Never merge the two: read whichever root answered first.
+
+Repository state is never read from the global root. `.local/`, `learning-flow/MAP.md`, `learning-flow/TAKEAWAYS.md`, `learning-flow/REPOSITORIES.md`, `agentic-flow/SETTINGS.md`, and `agentic-flow/DECISIONS.md` describe one repository and always live in that repository, even when every instruction file is global.
+
+When neither root has a file this layer names, the guidance simply does not apply. Do not create it to satisfy a reference.
+
 ## Route
 
 1. Follow root, nested, and tool-specific repository instructions first.

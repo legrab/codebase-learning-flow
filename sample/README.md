@@ -42,6 +42,8 @@ sample/root/
 | `extensions/regulatory` | optional, additive traceability/validation/risk-management knowledge |
 | `.local/` | private sessions, attempts, checks, progress, and follow-ups |
 
+Each component declares which of its files the framework owns and which the installing repository authors, in `.managed-files` and `.repository-files` respectively. That split is what lets `--scope global` install the first set once for every repository while `--scope linked` keeps the second set where it belongs.
+
 > [!IMPORTANT]
 > Learning routes share educational principles but not repository assumptions. General learning remains safe for history, science, languages, arts, teaching, and other non-code topics.
 

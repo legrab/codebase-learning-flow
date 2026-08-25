@@ -70,4 +70,43 @@ if (cd "$WORK_ROOT/minimal" && sh "$INSTALL_SH" --package-file "$PACKAGE_PATH" -
 fi
 echo "OK: fail mode refuses to overwrite an existing installation"
 
+# --- Global and linked scopes ----------------------------------------------
+# The split is only correct if neither root holds the other's content, so
+# these assertions are stated as absences as well as presences.
+CODEBASE_LEARNING_FLOW_HOME="$WORK_ROOT/global"
+export CODEBASE_LEARNING_FLOW_HOME
+
+if (cd "$WORK_ROOT" && sh "$INSTALL_SH" --package-file "$PACKAGE_PATH" --scope linked --target "$WORK_ROOT/too-early") 2>/dev/null; then
+    fail "linked scope unexpectedly succeeded without a global installation"
+fi
+echo "OK: linked scope refuses to run before a global installation exists"
+
+run_install "global" "$WORK_ROOT/global" --scope global --profile full --extension regulatory
+[ -f "$WORK_ROOT/global/agentic-flow/AGENTS.md" ] || fail "global install has no agentic-flow/AGENTS.md"
+[ -f "$WORK_ROOT/global/skills/repository-learning/SKILL.md" ] || fail "global install has no managed skills"
+[ -f "$WORK_ROOT/global/skills/regulatory-knowledge/SKILL.md" ] || fail "global install has no extension skill"
+[ ! -e "$WORK_ROOT/global/agentic-flow/SETTINGS.md" ] || fail "repository-authored SETTINGS.md reached the global root"
+[ ! -e "$WORK_ROOT/global/learning-flow/MAP.md" ] || fail "repository-authored MAP.md reached the global root"
+[ ! -e "$WORK_ROOT/global/.local" ] || fail "global install created a .local/ workspace"
+[ ! -e "$WORK_ROOT/global/.gitignore" ] || fail "global install wrote a .gitignore"
+[ ! -e "$WORK_ROOT/global/AGENTS.md" ] || fail "global install wrote a root AGENTS.md"
+echo "OK: global scope installs framework content only"
+
+run_install "linked" "$WORK_ROOT/linked" --scope linked --skip-root-agents
+[ -f "$WORK_ROOT/linked/learning-flow/MAP.md" ] || fail "linked install has no MAP.md"
+[ -f "$WORK_ROOT/linked/learning-flow/REPOSITORIES.md" ] || fail "linked install did not inherit the full profile"
+[ -f "$WORK_ROOT/linked/agentic-flow/SETTINGS.md" ] || fail "linked install has no SETTINGS.md"
+[ -f "$WORK_ROOT/linked/.local/learning-history.md" ] || fail "linked install has no .local/ workspace"
+[ ! -e "$WORK_ROOT/linked/agentic-flow/AGENTS.md" ] || fail "framework instructions were duplicated into the linked repository"
+[ ! -e "$WORK_ROOT/linked/.agents/skills" ] || fail "managed skills were duplicated into the linked repository"
+echo "OK: linked scope installs repository state only"
+
+# The recorded framework version has exactly one reader, the skew check
+# between these two markers, so CI asserts they agree.
+global_version="$(sed -n 's/^version:[[:space:]]*//p' "$WORK_ROOT/global/learning-flow/.install-scope")"
+linked_global_version="$(sed -n 's/^global-version:[[:space:]]*//p' "$WORK_ROOT/linked/learning-flow/.install-scope")"
+[ -n "$global_version" ] || fail "global installation recorded no framework version"
+[ "$global_version" = "$linked_global_version" ] || fail "linked repository recorded $linked_global_version against a global installation at $global_version"
+echo "OK: global and linked scope markers agree on the framework version"
+
 echo "All packaged-release checks passed for $PACKAGE_PATH"

@@ -22,7 +22,7 @@ Use the repository's current evidence as truth. Keep changes within scope and di
 ## Collaboration layers
 
 <!-- codebase-learning-flow:start -->
-For collaboration behavior, planning, validation, and handoff, follow `agentic-flow/AGENTS.md`.
+For collaboration behavior, planning, validation, and handoff, follow `agentic-flow/AGENTS.md`. Resolve `agentic-flow/` and `learning-flow/` at the repository root first, then at `~/.agents/` (`%USERPROFILE%\.agents\` on Windows) for a global installation.
 
 For repository learning, onboarding, explanation, and durable understanding, follow `learning-flow/AGENTS.md` when relevant.
 

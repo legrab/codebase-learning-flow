@@ -39,6 +39,8 @@ one narrowly relevant knowledge/reference file, if needed
 
 Learning and regulatory material are conditional branches, not part of the universal baseline.
 
+Resolving the framework root — repository first, then `~/.agents/` — happens once, when the first framework file is opened. It is not a step, does not add a read, and must not turn into an inventory of both roots.
+
 ## Sanity scenarios
 
 ### 1. Typo-only change

@@ -102,7 +102,7 @@ Traceability:
 - Documentation: Updated / Not required
 ```
 
-When `.agents/skills/regulatory-knowledge/` is installed and relevant, append:
+When the `regulatory-knowledge` skill is available and relevant, append:
 
 ```text
 Regulatory:

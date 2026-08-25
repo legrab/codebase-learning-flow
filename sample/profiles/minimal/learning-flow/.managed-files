@@ -1,5 +1,6 @@
 .managed-files
 .managed-skills
+.repository-files
 .template-profile
 README.md
 AGENTS.md

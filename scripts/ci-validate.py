@@ -71,38 +71,90 @@ def check_skill_structure():
             )
 
 
+FILE_MANIFESTS = (
+    ".managed-files",
+    ".repository-files",
+    ".extension-managed-files",
+    ".extension-repository-files",
+)
+
+SKILL_MANIFESTS = (
+    ".managed-skills",
+    ".extension-managed-skills",
+)
+
+
+def manifest_entries(path):
+    if not path.is_file():
+        return []
+
+    return [
+        line.strip()
+        for line in path.read_text(encoding="utf-8").splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+
+
 def check_managed():
     for path in repo_files():
-        if path.name == ".managed-files":
-            for line in path.read_text(encoding="utf-8").splitlines():
-                entry = line.strip()
-
-                if (
-                    entry
-                    and not entry.startswith("#")
-                    and not (path.parent / entry).is_file()
-                ):
+        if path.name in FILE_MANIFESTS:
+            for entry in manifest_entries(path):
+                if not (path.parent / entry).is_file():
                     fail(
                         f"{path.relative_to(ROOT)} "
                         f"references missing file {entry!r}"
                     )
 
-        elif path.name == ".managed-skills":
-            for line in path.read_text(encoding="utf-8").splitlines():
-                name = line.strip()
-
-                if (
-                    name
-                    and not name.startswith("#")
-                    and not re.fullmatch(
-                        r"[A-Za-z0-9.\_-]+",
-                        name,
-                    )
-                ):
+        elif path.name in SKILL_MANIFESTS:
+            for name in manifest_entries(path):
+                if not re.fullmatch(r"[A-Za-z0-9.\_-]+", name):
                     fail(
                         f"Unsafe skill name in "
                         f"{path.relative_to(ROOT)}: {name!r}"
                     )
+
+
+def check_install_scope_classification():
+    """Every installable file must declare where it belongs.
+
+    The managed/repository split is what the installer reads to decide which
+    files a global root owns and which ones stay behind in each repository.
+    A file in neither manifest has no defined install scope, so it would
+    silently ship to whichever root the payload happened to be copied into.
+    """
+    for path in repo_files():
+        if path.name not in (".managed-files", ".extension-managed-files"):
+            continue
+
+        component = path.parent
+        repository_manifest = (
+            ".repository-files"
+            if path.name == ".managed-files"
+            else ".extension-repository-files"
+        )
+
+        managed = set(manifest_entries(path))
+        authored = set(manifest_entries(component / repository_manifest))
+
+        overlap = sorted(managed & authored)
+        if overlap:
+            fail(
+                f"{component.relative_to(ROOT)} declares {overlap} as both "
+                f"framework-managed and repository-authored"
+            )
+
+        for member in sorted(component.rglob("*")):
+            if not member.is_file():
+                continue
+
+            relative = member.relative_to(component).as_posix()
+
+            if relative not in managed | authored:
+                fail(
+                    f"{component.relative_to(ROOT)}/{relative} appears in "
+                    f"neither {path.name} nor {repository_manifest}; every "
+                    f"installable file needs a declared install scope"
+                )
 
 
 def check_markdown_links():
@@ -166,6 +218,7 @@ for check in (
     check_yaml,
     check_skill_structure,
     check_managed,
+    check_install_scope_classification,
     check_markdown_links,
     check_zip_paths,
 ):
