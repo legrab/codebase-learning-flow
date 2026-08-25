@@ -2,11 +2,13 @@
 set -eu
 
 TARGET_PATH="$(pwd)"
+USER_SET_TARGET="false"
 REPOSITORY="${CODEBASE_LEARNING_FLOW_REPOSITORY:-legrab/codebase-learning-flow}"
 REF="${CODEBASE_LEARNING_FLOW_REF:-main}"
 RELEASE_TAG=""
 PACKAGE_FILE=""
 MODE="fail"
+SCOPE="repository"
 PROFILE="auto"
 EXTENSION="auto"
 SKIP_ROOT_AGENTS="false"
@@ -18,26 +20,69 @@ usage() {
 Usage: install.sh [options]
 
 Options:
-  --target PATH                    Target repository directory
+  --target PATH                    Target directory; defaults to the current repository, or to the
+                                    global root when --scope global is used
   --repository OWNER/REPO          Public template repository
   --ref REF                        Branch, tag, or commit reference (development checkout path)
   --release TAG                    Exact published release tag (e.g. v0.9.0); preferred for team/enterprise installs.
                                     Downloads the packaged, checksum-verified release artifact instead of a mutable
                                     source snapshot. "latest" is deliberately not supported: pin an exact tag.
+  --scope repository|global|linked Where framework content is installed:
+                                    repository (default) installs everything into one repository;
+                                    global installs framework-owned instructions and skills into
+                                    $HOME/.agents so every repository shares them;
+                                    linked adds only this repository's own learning state and uses
+                                    an existing global installation for everything else
   --profile auto|minimal|full      Learning profile; auto keeps an existing profile and defaults new installs to minimal
   --extension auto|none|regulatory Additive installation dimension; auto keeps an existing extension and defaults new installs to none
   --mode fail|merge|update|replace Existing-framework behavior
   --root-agents MODE               auto|integrate|initialize|preserve|skip
   --skip-root-agents               Alias for --root-agents skip
-  --skip-skills                    Do not install or update .agents/skills
+  --skip-skills                    Do not install or update managed skills
   -h, --help                       Show this help
 
 --ref and --release are mutually exclusive.
+The global root can be overridden with CODEBASE_LEARNING_FLOW_HOME.
 EOF
 }
 
 log() {
     printf '%s\n' "[learning-flow] $*"
+}
+
+resolve_global_root() {
+    if [ -n "${CODEBASE_LEARNING_FLOW_HOME:-}" ]; then
+        printf '%s\n' "$CODEBASE_LEARNING_FLOW_HOME"
+        return
+    fi
+    home_directory="${HOME:-}"
+    [ -n "$home_directory" ] || home_directory="${USERPROFILE:-}"
+    if [ -z "$home_directory" ]; then
+        echo "Cannot resolve the global root: neither HOME nor USERPROFILE is set. Pass --target or set CODEBASE_LEARNING_FLOW_HOME." >&2
+        exit 1
+    fi
+    printf '%s\n' "$home_directory/.agents"
+}
+
+read_marker_field() {
+    marker="$1"
+    field="$2"
+    [ -f "$marker" ] || return 0
+    sed -n "s/^$field:[[:space:]]*//p" "$marker" | sed -n '1{s/[[:space:]]*$//;p;}'
+}
+
+write_install_scope_marker() {
+    marker="$1"
+    scope_value="$2"
+    version_value="$3"
+    global_version_value="$4"
+
+    mkdir -p "$(dirname "$marker")"
+    {
+        printf 'scope: %s\n' "$scope_value"
+        printf 'version: %s\n' "$version_value"
+        [ -z "$global_version_value" ] || printf 'global-version: %s\n' "$global_version_value"
+    } > "$marker"
 }
 
 initialize_local_learning_workspace() {
@@ -417,6 +462,75 @@ copy_managed_files() {
     log "Updated $copied managed files in $(basename "$target_root")"
 }
 
+# Shared manifest walker for the two non-overwriting copies: framework files in
+# merge mode, and repository-authored seeds in every mode.
+copy_manifest_files_if_missing() {
+    source_root="$1"
+    target_root="$2"
+    manifest="$3"
+    kind="$4"
+    copied=0
+    preserved=0
+
+    while IFS= read -r relative || [ -n "$relative" ]; do
+        case "$relative" in
+            ''|'#'*) continue ;;
+            /*|..|../*|*/../*|*/..)
+                echo "Unsafe path in $kind manifest: $relative" >&2
+                exit 1
+                ;;
+        esac
+
+        source_file="$source_root/$relative"
+        target_file="$target_root/$relative"
+        [ -f "$source_file" ] || {
+            echo "Manifest source file is missing: $relative" >&2
+            exit 1
+        }
+        [ ! -d "$target_file" ] || {
+            echo "Manifest target path is a directory, expected a file: $relative" >&2
+            exit 1
+        }
+        mkdir -p "$(dirname "$target_file")"
+        if [ -e "$target_file" ]; then
+            preserved=$((preserved + 1))
+        else
+            cp "$source_file" "$target_file"
+            copied=$((copied + 1))
+        fi
+    done < "$manifest"
+
+    log "Added $copied and preserved $preserved $kind files in $(basename "$target_root")"
+}
+
+# Global scope installs only what the managed manifest declares: the framework
+# owns every file at the global root, so repository-authored seeds must not
+# follow the payload there.
+install_managed_component() {
+    component_name="$1"
+    source_root="$2"
+    target_root="$3"
+    managed_files="$4"
+    previous_manifest="$5"
+
+    if [ "$MODE" = "replace" ] && [ -e "$target_root" ]; then
+        log "Removing existing $component_name directory"
+        rm -rf "$target_root"
+    fi
+    mkdir -p "$target_root"
+
+    if [ "$MODE" = "merge" ]; then
+        log "Merging missing $component_name files"
+        copy_manifest_files_if_missing "$source_root" "$target_root" "$managed_files" "managed"
+    else
+        if [ "$MODE" = "update" ]; then
+            remove_retired_managed_files "$target_root" "$previous_manifest" "$managed_files"
+        fi
+        log "Installing $component_name"
+        copy_managed_files "$source_root" "$target_root" "$managed_files"
+    fi
+}
+
 remove_retired_managed_files() {
     target_root="$1"
     previous_manifest="$2"
@@ -613,6 +727,7 @@ while [ "$#" -gt 0 ]; do
         --target)
             require_value "$1" "$#"
             TARGET_PATH="$2"
+            USER_SET_TARGET="true"
             shift 2
             ;;
         --repository)
@@ -650,6 +765,11 @@ while [ "$#" -gt 0 ]; do
             MODE="$(printf '%s' "$2" | tr 'A-Z' 'a-z')"
             shift 2
             ;;
+        --scope)
+            require_value "$1" "$#"
+            SCOPE="$(printf '%s' "$2" | tr 'A-Z' 'a-z')"
+            shift 2
+            ;;
         --root-agents)
             require_value "$1" "$#"
             ROOT_AGENTS_MODE="$(printf '%s' "$2" | tr 'A-Z' 'a-z')"
@@ -677,21 +797,110 @@ while [ "$#" -gt 0 ]; do
 done
 
 case "$MODE" in fail|merge|update|replace) ;; *) echo "Invalid mode: $MODE" >&2; exit 2 ;; esac
+case "$SCOPE" in repository|global|linked) ;; *) echo "Invalid scope: $SCOPE" >&2; exit 2 ;; esac
 case "$PROFILE" in auto|minimal|full) ;; *) echo "Invalid profile: $PROFILE" >&2; exit 2 ;; esac
 case "$EXTENSION" in auto|none|regulatory) ;; *) echo "Invalid extension: $EXTENSION" >&2; exit 2 ;; esac
 case "$ROOT_AGENTS_MODE" in auto|integrate|initialize|preserve|skip) ;; *) echo "Invalid root agents mode: $ROOT_AGENTS_MODE" >&2; exit 2 ;; esac
 
 command -v unzip >/dev/null 2>&1 || { echo "The installer requires unzip." >&2; exit 1; }
 
+GLOBAL_ROOT="$(resolve_global_root)"
+if [ "$SCOPE" = "global" ] && [ "$USER_SET_TARGET" = "false" ]; then
+    TARGET_PATH="$GLOBAL_ROOT"
+fi
+
 mkdir -p "$TARGET_PATH"
 TARGET_PATH="$(cd "$TARGET_PATH" && pwd)"
 TARGET_AGENTIC="$TARGET_PATH/agentic-flow"
 TARGET_LEARNING="$TARGET_PATH/learning-flow"
-TARGET_SKILLS="$TARGET_PATH/.agents/skills"
+if [ "$SCOPE" = "global" ]; then
+    # The global root is itself the .agents directory host agents already scan,
+    # so managed skills belong directly beneath it rather than one level deeper.
+    GLOBAL_ROOT="$TARGET_PATH"
+    TARGET_SKILLS="$TARGET_PATH/skills"
+else
+    TARGET_SKILLS="$TARGET_PATH/.agents/skills"
+fi
+GLOBAL_LEARNING="$GLOBAL_ROOT/learning-flow"
+GLOBAL_MARKER="$GLOBAL_LEARNING/.install-scope"
+
+INSTALLED_SCOPE="$(read_marker_field "$TARGET_LEARNING/.install-scope" scope)"
+case "$INSTALLED_SCOPE" in ''|repository|global|linked) ;; *) echo "Invalid installed scope marker: $INSTALLED_SCOPE" >&2; exit 1 ;; esac
+if [ -z "$INSTALLED_SCOPE" ] && has_content "$TARGET_LEARNING"; then
+    # Installations from before scopes existed are repository-scoped.
+    INSTALLED_SCOPE="repository"
+fi
+
+if [ -n "$INSTALLED_SCOPE" ] && [ "$INSTALLED_SCOPE" != "$SCOPE" ]; then
+    case "$INSTALLED_SCOPE/$SCOPE" in
+        repository/linked)
+            case "$MODE" in
+                update|replace) log "Converting repository-scoped installation to linked; framework files move to $GLOBAL_ROOT" ;;
+                *) echo "Scope change repository -> linked is not supported in mode '$MODE'. Use update or replace." >&2; exit 1 ;;
+            esac
+            ;;
+        linked/repository)
+            case "$MODE" in
+                merge|update|replace) log "Converting linked installation to a self-contained repository installation" ;;
+                *) echo "Scope change linked -> repository is not supported in mode '$MODE'. Use merge, update, or replace." >&2; exit 1 ;;
+            esac
+            ;;
+        *)
+            echo "$TARGET_PATH holds a '$INSTALLED_SCOPE' installation and cannot be reused as '$SCOPE'." >&2
+            exit 1
+            ;;
+    esac
+fi
+
+GLOBAL_VERSION=""
+GLOBAL_PROFILE=""
+GLOBAL_EXTENSION=""
+if [ "$(read_marker_field "$GLOBAL_MARKER" scope)" = "global" ]; then
+    GLOBAL_VERSION="$(read_marker_field "$GLOBAL_MARKER" version)"
+    GLOBAL_PROFILE="$(read_profile_file "$GLOBAL_LEARNING/.template-profile")"
+    GLOBAL_EXTENSION="$(read_profile_file "$GLOBAL_LEARNING/.extension-name")"
+    [ -n "$GLOBAL_EXTENSION" ] || GLOBAL_EXTENSION="none"
+elif [ "$SCOPE" = "linked" ]; then
+    echo "--scope linked requires a global installation at $GLOBAL_ROOT. Run the installer once with --scope global first." >&2
+    exit 1
+fi
+
+if [ "$SCOPE" = "linked" ]; then
+    if [ -z "$GLOBAL_PROFILE" ]; then
+        echo "The global installation at $GLOBAL_ROOT is missing its profile marker. Reinstall it with --scope global." >&2
+        exit 1
+    fi
+    # The global installation owns the routing contract. A linked repository
+    # only adds its own state, so it cannot select a different profile or
+    # extension than the instructions it will actually read.
+    if [ "$PROFILE" != "auto" ] && [ "$PROFILE" != "$GLOBAL_PROFILE" ]; then
+        echo "The global installation uses the '$GLOBAL_PROFILE' profile. A linked repository cannot select '$PROFILE'; change the global installation instead." >&2
+        exit 1
+    fi
+    PROFILE="$GLOBAL_PROFILE"
+    if [ "$EXTENSION" != "auto" ] && [ "$EXTENSION" != "$GLOBAL_EXTENSION" ]; then
+        echo "The global installation uses extension '$GLOBAL_EXTENSION'. A linked repository cannot select '$EXTENSION'; change the global installation instead." >&2
+        exit 1
+    fi
+    EXTENSION="$GLOBAL_EXTENSION"
+elif [ "$INSTALLED_SCOPE" = "linked" ]; then
+    # A linked repository carries no profile or extension marker of its own, so
+    # converting it back to self-contained inherits what the global
+    # installation was providing rather than the fresh-install defaults.
+    if [ "$PROFILE" = "auto" ] && [ -n "$GLOBAL_PROFILE" ]; then
+        PROFILE="$GLOBAL_PROFILE"
+    fi
+    if [ "$EXTENSION" = "auto" ] && [ -n "$GLOBAL_EXTENSION" ]; then
+        EXTENSION="$GLOBAL_EXTENSION"
+    fi
+fi
 
 INSTALLED_PROFILE="$(read_profile_file "$TARGET_LEARNING/.template-profile")"
 case "$INSTALLED_PROFILE" in ''|minimal|full) ;; *) echo "Invalid installed profile marker: $INSTALLED_PROFILE" >&2; exit 1 ;; esac
-if [ -z "$INSTALLED_PROFILE" ] && has_content "$TARGET_LEARNING"; then
+# A linked repository never carries .template-profile: the global installation
+# owns the profile, so the legacy "content but no marker means full" fallback
+# would misread it.
+if [ -z "$INSTALLED_PROFILE" ] && [ "$INSTALLED_SCOPE" != "linked" ] && has_content "$TARGET_LEARNING"; then
     INSTALLED_PROFILE="full"
 fi
 
@@ -794,6 +1003,8 @@ SOURCE_LEARNING="$SOURCE_PROFILE/learning-flow"
 SOURCE_PROFILE_SKILLS="$SOURCE_PROFILE/.agents/skills"
 SOURCE_LEARNING_MANAGED_FILES="$SOURCE_LEARNING/.managed-files"
 SOURCE_LEARNING_MANAGED_SKILLS="$SOURCE_LEARNING/.managed-skills"
+SOURCE_AGENTIC_REPOSITORY_FILES="$SOURCE_AGENTIC/.repository-files"
+SOURCE_LEARNING_REPOSITORY_FILES="$SOURCE_LEARNING/.repository-files"
 SOURCE_ROOT_AGENTS="$ARCHIVE_ROOT/sample/root/AGENTS.md"
 SOURCE_ROOT_POINTER="$ARCHIVE_ROOT/sample/root/AGENTS.pointer.md"
 SOURCE_EXTENSION="$ARCHIVE_ROOT/sample/extensions/regulatory"
@@ -805,10 +1016,14 @@ SOURCE_EXTENSION_MANAGED_SKILLS="$SOURCE_EXTENSION_LEARNING/.extension-managed-s
 for required in "$SOURCE_AGENTIC" "$SOURCE_LEARNING"; do
     [ -d "$required" ] || { echo "Required framework directory is missing: $required" >&2; exit 1; }
 done
-for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS" "$SOURCE_LOCAL_HISTORY"; do
+for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS" "$SOURCE_AGENTIC_REPOSITORY_FILES" "$SOURCE_LEARNING_REPOSITORY_FILES" "$SOURCE_LOCAL_HISTORY"; do
     [ -f "$required" ] || { echo "Required framework manifest is missing: $required" >&2; exit 1; }
 done
-if [ "$SKIP_SKILLS" != "true" ]; then
+if [ "$SCOPE" = "global" ]; then
+    SKIP_ROOT_AGENTS="true"
+    ROOT_AGENTS_MODE="skip"
+fi
+if [ "$SKIP_SKILLS" != "true" ] && [ "$SCOPE" != "linked" ]; then
     [ -d "$SOURCE_COMMON_SKILLS" ] || { echo "Common skill directory is missing." >&2; exit 1; }
     if has_content "$SOURCE_LEARNING_MANAGED_SKILLS"; then
         [ -d "$SOURCE_PROFILE_SKILLS" ] || { echo "Profile skill directory is missing." >&2; exit 1; }
@@ -830,7 +1045,7 @@ if [ "$MODE" = "fail" ]; then
         exit 1
     fi
 
-    if [ "$SKIP_SKILLS" != "true" ]; then
+    if [ "$SKIP_SKILLS" != "true" ] && [ "$SCOPE" != "linked" ]; then
         conflicts=""
         for manifest in "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_SKILLS"; do
             while IFS= read -r skill_name || [ -n "$skill_name" ]; do
@@ -855,21 +1070,51 @@ if [ "$MODE" = "fail" ]; then
     fi
 fi
 
-install_component "agentic-flow" "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_MANAGED_FILES"
-install_component "learning-flow/$SELECTED_PROFILE" "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_MANAGED_FILES"
-
-if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
-    install_extension_overlay "learning-flow/regulatory (extension)" "$SOURCE_EXTENSION_LEARNING" "$TARGET_LEARNING" "$SOURCE_EXTENSION_MANAGED_FILES"
-elif [ -n "$INSTALLED_EXTENSION" ]; then
-    if [ "$MODE" = "update" ] || [ "$MODE" = "replace" ]; then
+if [ "$SCOPE" = "linked" ]; then
+    # A linked repository owns only the files it authors. Everything the
+    # framework owns is read from the global root, so the seeds are copied
+    # without overwriting in every mode: there is no framework content here
+    # for update or replace to refresh.
+    if [ "$INSTALLED_SCOPE" = "repository" ]; then
         remove_retired_managed_files "$TARGET_LEARNING" "$TARGET_LEARNING/.extension-managed-files" /dev/null
-        log "Removed $INSTALLED_EXTENSION extension"
+        remove_retired_managed_files "$TARGET_AGENTIC" "$TARGET_AGENTIC/.managed-files" /dev/null
+        remove_retired_managed_files "$TARGET_LEARNING" "$TARGET_LEARNING/.managed-files" /dev/null
+        log "Removed repository-scoped framework files now owned by $GLOBAL_ROOT"
+    fi
+    log "Installing repository learning state"
+    copy_manifest_files_if_missing "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_REPOSITORY_FILES" "repository"
+    copy_manifest_files_if_missing "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_REPOSITORY_FILES" "repository"
+elif [ "$SCOPE" = "global" ]; then
+    install_managed_component "agentic-flow" "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_MANAGED_FILES" "$TARGET_AGENTIC/.managed-files"
+    install_managed_component "learning-flow/$SELECTED_PROFILE" "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_MANAGED_FILES" "$TARGET_LEARNING/.managed-files"
+else
+    install_component "agentic-flow" "$SOURCE_AGENTIC" "$TARGET_AGENTIC" "$SOURCE_AGENTIC_MANAGED_FILES"
+    install_component "learning-flow/$SELECTED_PROFILE" "$SOURCE_LEARNING" "$TARGET_LEARNING" "$SOURCE_LEARNING_MANAGED_FILES"
+fi
+
+if [ "$SCOPE" != "linked" ]; then
+    if [ "$SELECTED_EXTENSION" = "regulatory" ]; then
+        install_extension_overlay "learning-flow/regulatory (extension)" "$SOURCE_EXTENSION_LEARNING" "$TARGET_LEARNING" "$SOURCE_EXTENSION_MANAGED_FILES"
+    elif [ -n "$INSTALLED_EXTENSION" ]; then
+        if [ "$MODE" = "update" ] || [ "$MODE" = "replace" ]; then
+            remove_retired_managed_files "$TARGET_LEARNING" "$TARGET_LEARNING/.extension-managed-files" /dev/null
+            log "Removed $INSTALLED_EXTENSION extension"
+        fi
     fi
 fi
 
-initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY"
+if [ "$SCOPE" != "global" ]; then
+    initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY"
+fi
 
-if [ "$SKIP_SKILLS" != "true" ]; then
+if [ "$SCOPE" = "linked" ] && [ "$INSTALLED_SCOPE" = "repository" ] && [ "$SKIP_SKILLS" != "true" ]; then
+    remove_skills_from_manifest "$SOURCE_AGENTIC_MANAGED_SKILLS" "$TARGET_SKILLS"
+    remove_skills_from_manifest "$ARCHIVE_ROOT/sample/profiles/minimal/learning-flow/.managed-skills" "$TARGET_SKILLS"
+    remove_skills_from_manifest "$ARCHIVE_ROOT/sample/profiles/full/learning-flow/.managed-skills" "$TARGET_SKILLS"
+    remove_skills_from_manifest "$SOURCE_EXTENSION_MANAGED_SKILLS" "$TARGET_SKILLS"
+fi
+
+if [ "$SKIP_SKILLS" != "true" ] && [ "$SCOPE" != "linked" ]; then
     mkdir -p "$TARGET_SKILLS"
 
     if [ "$MODE" = "replace" ]; then
@@ -928,6 +1173,21 @@ esac
 
 set_root_integration_state "$TARGET_AGENTIC/SETTINGS.md" "$RESOLVED_ROOT_AGENTS_MODE"
 
+if [ -n "$RELEASE_TAG" ]; then
+    FRAMEWORK_VERSION="$RELEASE_TAG"
+else
+    FRAMEWORK_VERSION="${RESOLVED_COMMIT:-unknown}"
+fi
+
+write_install_scope_marker "$TARGET_LEARNING/.install-scope" "$SCOPE" "$FRAMEWORK_VERSION" "$GLOBAL_VERSION"
+
+if [ "$SCOPE" = "linked" ] && [ -n "$GLOBAL_VERSION" ] && [ "$GLOBAL_VERSION" != "$FRAMEWORK_VERSION" ]; then
+    log "WARNING: this repository was linked at $FRAMEWORK_VERSION but $GLOBAL_ROOT holds $GLOBAL_VERSION. Reinstall one of them so the routing contract and the repository state agree."
+fi
+if [ "$SCOPE" = "repository" ] && [ "$(read_marker_field "$GLOBAL_MARKER" scope)" = "global" ]; then
+    log "WARNING: a global installation exists at $GLOBAL_ROOT. This repository now carries its own copy of every managed skill, so the host agent will discover each one twice. Use --scope linked instead unless the duplication is intended."
+fi
+
 printf '\n%s\n' "Codebase Learning Flow"
 if [ -n "$RELEASE_TAG" ]; then
     printf 'Version: %s\n' "$RELEASE_TAG"
@@ -940,7 +1200,13 @@ else
     printf 'Version: %s (ref: %s)\n' "$RESOLVED_COMMIT" "$REF"
     printf 'Source: development checkout (mutable unless ref is a commit or tag)\n'
 fi
+printf 'Scope: %s (%s)\n' "$SCOPE" "$TARGET_PATH"
 
-log "Installation complete: profile=$SELECTED_PROFILE extension=$SELECTED_EXTENSION mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
+log "Installation complete: scope=$SCOPE profile=$SELECTED_PROFILE extension=$SELECTED_EXTENSION mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
+if [ "$SCOPE" = "global" ]; then
+    printf '\n%s\n' "Next step:"
+    printf '%s\n' "Run the installer with --scope linked inside a repository to give it its own learning state, or start working: the managed skills in $TARGET_SKILLS already apply everywhere."
+    exit 0
+fi
 printf '\n%s\n' "Suggested first instruction:"
 printf '%s\n' "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."

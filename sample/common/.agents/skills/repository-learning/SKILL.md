@@ -5,7 +5,7 @@ description: Understand or work on a repository through one focused route for or
 
 # Repository learning
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` selectively and only the relevant shared records.
+Follow `agentic-flow/AGENTS.md` (repository root, else `~/.agents/`) and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` selectively and only the relevant shared records.
 
 ## Shared route
 

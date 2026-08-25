@@ -5,7 +5,7 @@ description: Sequence Explore, Design, and Approve for one consequential, ambigu
 
 # Structured change
 
-Read `agentic-flow/AGENTS.md` and the relevant `WORKFLOW.md` sections. Read `SETTINGS.md` only when the preset affects the decision.
+Read `agentic-flow/AGENTS.md` (repository root, else `~/.agents/`) and the relevant `WORKFLOW.md` sections. Read `SETTINGS.md` only when the preset affects the decision.
 
 ## Use when
 

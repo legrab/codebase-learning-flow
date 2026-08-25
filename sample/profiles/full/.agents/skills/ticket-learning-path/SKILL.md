@@ -5,7 +5,7 @@ description: Turn a real issue or planned change into a short repository learnin
 
 # Ticket learning path
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`.
+Follow `agentic-flow/AGENTS.md` (repository root, else `~/.agents/`) and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`.
 
 1. Read and classify the ticket.
 2. State the actor, intended outcome, capability, and governing rule.

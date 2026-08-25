@@ -76,7 +76,10 @@ Use [`AGENTIC_WORKFLOW_SANITY.md`](AGENTIC_WORKFLOW_SANITY.md) when changing com
 6. Preserve repository-authored maps, takeaways, settings, and unrelated skills
    during updates.
 7. Validate both minimal and full installations after changing manifests or
-   managed files.
+   managed files, and both the global and linked scopes after changing which
+   files a component owns.
+   A new file under a component must be added to its `.managed-files` or its
+   `.repository-files`; structural validation rejects one that is in neither.
 8. Review the human entry points after structural changes. The root README
    should remain useful before any agent-facing detail is read.
 

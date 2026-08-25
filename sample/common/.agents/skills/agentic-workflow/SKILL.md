@@ -5,13 +5,13 @@ description: Initialize, integrate, configure, explain, review, or improve a rep
 
 # Agentic workflow
 
-Read `agentic-flow/README.md` and `AGENTS.md` first. Read `SETTINGS.md` only when configuration matters. Load only the documents needed for the current operation.
+Read `agentic-flow/README.md` and `AGENTS.md` (repository root, else `~/.agents/`) first. Read `SETTINGS.md` only when configuration matters. Load only the documents needed for the current operation.
 
 ## Discover
 
 1. Inspect root and nested instructions plus tool-specific files.
 2. Find skills, prompts, plans, sessions, records, and refresh rules.
-3. Detect managed template markers.
+3. Detect managed template markers, including `learning-flow/.install-scope`, and note which root the framework files actually resolve from.
 4. Inspect custom additions, overrides, conflicts, and precedence.
 5. Keep stable policy, task procedures, shared learning, and private `.local/` state distinct.
 6. Keep context narrow.

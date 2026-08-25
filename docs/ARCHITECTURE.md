@@ -116,6 +116,30 @@ This separation is a trust and context boundary as well as an installation bound
 
 </details>
 
+## Install roots
+
+The three layers are content boundaries. Cutting across them is a second, independent boundary: whether a given file describes *the framework* or *one repository*.
+
+| Kind | Example | Root |
+|---|---|---|
+| Framework-owned | `agentic-flow/AGENTS.md`, `learning-flow/AGENTS.md`, every managed skill | repository or `~/.agents/` |
+| Repository-authored | `MAP.md`, `TAKEAWAYS.md`, `REPOSITORIES.md`, `SETTINGS.md`, `DECISIONS.md`, `.local/` | always the repository |
+
+Framework-owned content is identical in every repository, so it can be installed once globally and shared. Repository-authored content describes one system and cannot be. This is the same line the installer's `.managed-files` manifests already drew to decide what `update` may overwrite; `.repository-files` names the other side of it explicitly so both can be installed independently.
+
+Instructions resolve at the repository root first and fall back to the global root, so a self-contained repository never consults the global installation. There is no merging between roots: whichever answers first is the one that applies.
+
+```mermaid
+flowchart LR
+    T[Task in a repository] --> R{Repository has agentic-flow/?}
+    R -->|yes| L[Read repository copy]
+    R -->|no| G[Read ~/.agents copy]
+    L --> S[Repository state: MAP, TAKEAWAYS, SETTINGS, .local]
+    G --> S
+```
+
+Repository state sits below the fork because it is read from the repository either way.
+
 ## Runtime instruction flow
 
 The path an agent actually walks for one task, independent of profile:

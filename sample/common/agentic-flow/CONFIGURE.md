@@ -13,7 +13,7 @@ Configuration is optional. Use `balanced` by default and begin work immediately.
 
 `balanced` is the default. A task-specific request such as “move fast,” “teach me as we work,” or “pause before implementation” overrides the stored preset for that task without rewriting settings.
 
-`gated` sets the default posture; `structured-change` is what actually runs the Explore → Design → Approve sequence for one change, regardless of preset, when the change itself warrants it. When `.agents/skills/regulatory-knowledge/` is installed (the `regulatory` extension), that lens is available to `structured-change` automatically; it does not change the default preset.
+`gated` sets the default posture; `structured-change` is what actually runs the Explore → Design → Approve sequence for one change, regardless of preset, when the change itself warrants it. When the `regulatory-knowledge` skill is available (the `regulatory` extension), that lens is available to `structured-change` automatically; it does not change the default preset.
 
 <details>
 <summary>Advanced overrides and optional learner context</summary>

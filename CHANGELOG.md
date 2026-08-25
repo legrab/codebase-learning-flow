@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.4.0
+
+Install scopes: the framework can now be installed once into `%USERPROFILE%\.agents\` (`~/.agents/`) and shared by every repository, while each repository keeps its own learning state locally. Repository-scoped installation is unchanged and remains the default.
+
+### Added
+
+- `--scope repository|global|linked` / `-Scope Repository|Global|Linked` on both installers. `global` installs framework-owned instructions and managed skills into `$HOME/.agents` (skills at `<root>/skills/`, where host agents already look) and writes no repository state — no `.local/`, no `.gitignore` entry, no home-directory `AGENTS.md`. `linked` installs only a repository's own learning state and reads everything else from the global installation.
+- `.repository-files` manifests in `sample/common/agentic-flow/` and both profiles' `learning-flow/`, naming the repository-authored seeds (`SETTINGS.md`, `DECISIONS.md`, `MAP.md`, `TAKEAWAYS.md`, and `REPOSITORIES.md` in the full profile). The framework-owned half was already declared in `.managed-files`; this makes the other half explicit instead of implicit in what `update` happens not to overwrite.
+- "Framework root" section in `agentic-flow/AGENTS.md`: the single canonical rule that `agentic-flow/` and `learning-flow/` resolve at the repository root first and at `~/.agents/` second, that a repository copy always wins, that the two roots are never merged, and that repository state is never read from the global root.
+- `learning-flow/.install-scope` marker recording the scope and framework version of each installation, plus the global version a linked repository was linked against. The installer compares them and warns on drift. This reintroduces a version marker under the three conditions `docs/DESIGN_NOTES.md` set in 1.3 when it removed `.template-version`: a documented reader, a stated compatibility rule, and a CI check.
+- Install-scope classification check in `scripts/ci-validate.py`: every packaged file in a component must appear in exactly one of its managed/repository manifests, so a new file cannot ship without a declared install scope.
+- Global and linked scenarios in `scripts/ci-install-test.sh`, `scripts/ci-release-test.sh`, and the PowerShell CI job, including assertions that neither root holds the other's content and that the two scope markers agree on the version.
+- `CODEBASE_LEARNING_FLOW_HOME` environment override for the global root.
+- Two routing cases in `skill-evals/agentic-cases.yaml` covering framework-root resolution and the rule that repository knowledge is never written to the global root.
+
+### Changed
+
+- Scope conversion is supported in both directions. `--scope linked --mode update` removes a repository's framework copies through their own manifests and leaves authored state in place; `--scope repository --mode update` restores them at the profile and extension the global installation was providing.
+- The root pointer block and lean root template now state the framework-root resolution rule, so one pointer stays correct whether the framework files are local, global, or later moved between the two.
+- `scripts/ci-validate.py` now validates `.extension-managed-files` and `.extension-managed-skills` the same way it already validated their non-extension counterparts.
+- Both installers report the resolved scope and root in their closing summary, and warn when a repository-scoped install would make the host agent discover every managed skill twice.
+- `agentic-workflow`'s discovery step now detects `learning-flow/.install-scope` and reports which root the framework files resolve from; `agentic-flow/LEARN.md`'s setup explanation names that root too, so "explain my agentic setup" stays accurate in a linked repository.
+- `learning-closure` states that every destination it recommends belongs to the repository being worked on, closing the one place a skill could write repository knowledge to a global root.
+- The regulatory extension is now detected by skill name rather than by the literal path `.agents/skills/regulatory-knowledge/`, which resolves differently under a global installation and would have made the extension look absent in a linked repository.
+
+### Fixed
+
+- `agentic-flow/ROOT_INTEGRATION.md`'s documented pointer-block example, which had again fallen behind `sample/root/AGENTS.pointer.md`.
+- `docs/EXAMPLE_WALKTHROUGH.md` was missing from `MANIFEST.txt`, so released packages shipped a `docs/README.md` whose link to it was broken.
+
+
 ## 1.3.0
 
 Architectural simplification of the `full` profile: reduced meta-ceremony while preserving every behavior the framework depends on (repository authority, selective learning, hypothesis-first proposals, consequential-change reasoning, private continuity, optional regulatory guidance).

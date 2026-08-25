@@ -18,7 +18,7 @@ Private learning and temporary state in .local/
 
 Show:
 
-- which files provide stable rules;
+- which files provide stable rules, and whether they resolve from this repository or a global installation at `~/.agents/`;
 - which workflow governs planning, autonomy, validation, and handoff;
 - which skills load only for particular tasks;
 - where learning support lives;

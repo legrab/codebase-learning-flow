@@ -5,7 +5,7 @@ description: Explain a non-trivial diff, pull request, or machine-generated impl
 
 # Change explainer
 
-Follow `agentic-flow/AGENTS.md` and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`.
+Follow `agentic-flow/AGENTS.md` (repository root, else `~/.agents/`) and `agentic-flow/SETTINGS.md`. Read `agentic-flow/EDUCATION.md` and `learning-flow/AGENTS.md`.
 
 1. Establish the exact change range and intended real-world outcome.
 2. Explain the governing rules, system boundary, and relevant architecture before the diff.

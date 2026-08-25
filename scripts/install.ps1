@@ -11,6 +11,13 @@ param(
     # Internal/CI hook: install directly from an already-built local release
     # package without touching the network. Not part of the public contract.
     [string]$PackageFile = "",
+    # Where framework content is installed: Repository (default) installs
+    # everything into one repository; Global installs framework-owned
+    # instructions and skills into %USERPROFILE%\.agents so every repository
+    # shares them; Linked adds only this repository's own learning state and
+    # reads everything else from an existing global installation.
+    [ValidateSet("Repository", "Global", "Linked")]
+    [string]$Scope = "Repository",
     [ValidateSet("Auto", "Minimal", "Full")]
     [string]$Profile = "Auto",
     [ValidateSet("Auto", "None", "Regulatory")]
@@ -42,6 +49,49 @@ if (-not [string]::IsNullOrWhiteSpace($PackageFile)) {
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
+}
+
+function Resolve-GlobalRoot {
+    if (-not [string]::IsNullOrWhiteSpace($env:CODEBASE_LEARNING_FLOW_HOME)) {
+        return $env:CODEBASE_LEARNING_FLOW_HOME
+    }
+    $home_directory = $env:USERPROFILE
+    if ([string]::IsNullOrWhiteSpace($home_directory)) { $home_directory = $env:HOME }
+    if ([string]::IsNullOrWhiteSpace($home_directory)) {
+        throw "Cannot resolve the global root: neither USERPROFILE nor HOME is set. Pass -TargetPath or set CODEBASE_LEARNING_FLOW_HOME."
+    }
+    return (Join-Path $home_directory ".agents")
+}
+
+function Read-MarkerField([string]$MarkerPath, [string]$Field) {
+    if (-not (Test-Path -LiteralPath $MarkerPath -PathType Leaf)) { return "" }
+    foreach ($line in Get-Content -LiteralPath $MarkerPath) {
+        if ($line -match "^$([regex]::Escape($Field))\s*:\s*(.*?)\s*$") {
+            return $Matches[1]
+        }
+    }
+    return ""
+}
+
+function Write-InstallScopeMarker(
+    [string]$MarkerPath,
+    [string]$ScopeValue,
+    [string]$VersionValue,
+    [string]$GlobalVersionValue
+) {
+    $parent = Split-Path -Parent $MarkerPath
+    if (-not (Test-Path -LiteralPath $parent -PathType Container)) {
+        New-Item -ItemType Directory -Path $parent -Force | Out-Null
+    }
+    $lines = @("scope: $ScopeValue", "version: $VersionValue")
+    if (-not [string]::IsNullOrWhiteSpace($GlobalVersionValue)) {
+        $lines += "global-version: $GlobalVersionValue"
+    }
+    [System.IO.File]::WriteAllText(
+        $MarkerPath,
+        ([string]::Join("`n", $lines) + "`n"),
+        [System.Text.UTF8Encoding]::new($false)
+    )
 }
 
 function Get-Sha256([string]$Path) {
@@ -251,6 +301,103 @@ function Copy-ManagedFiles([string]$Source, [string]$Destination, [string]$Manif
         $copied += 1
     }
     return $copied
+}
+
+# Shared manifest walker for the two non-overwriting copies: framework files in
+# Merge mode, and repository-authored seeds in every mode.
+function Copy-ManifestFilesIfMissing(
+    [string]$Source,
+    [string]$Destination,
+    [string]$ManifestPath,
+    [string]$Kind
+) {
+    $sourceRoot = [System.IO.Path]::GetFullPath($Source).TrimEnd([char[]]@('\', '/')) + [System.IO.Path]::DirectorySeparatorChar
+    $destinationRoot = [System.IO.Path]::GetFullPath($Destination).TrimEnd([char[]]@('\', '/')) + [System.IO.Path]::DirectorySeparatorChar
+    $copied = 0
+    $preserved = 0
+
+    if (-not (Test-Path -LiteralPath $Destination -PathType Container)) {
+        New-Item -ItemType Directory -Path $Destination -Force | Out-Null
+    }
+
+    foreach ($rawLine in Get-Content -LiteralPath $ManifestPath) {
+        $relative = $rawLine.Trim()
+        if ([string]::IsNullOrWhiteSpace($relative) -or $relative.StartsWith('#')) { continue }
+        $normalized = $relative.Replace('/', [string][System.IO.Path]::DirectorySeparatorChar)
+        $sourceFile = [System.IO.Path]::GetFullPath((Join-Path $Source $normalized))
+        $targetFile = [System.IO.Path]::GetFullPath((Join-Path $Destination $normalized))
+        if (-not $sourceFile.StartsWith($sourceRoot, [System.StringComparison]::OrdinalIgnoreCase) -or
+            -not $targetFile.StartsWith($destinationRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+            throw "Unsafe path in $Kind manifest: $relative"
+        }
+        if (-not (Test-Path -LiteralPath $sourceFile -PathType Leaf)) {
+            throw "Manifest source file is missing: $relative"
+        }
+        if (Test-Path -LiteralPath $targetFile -PathType Container) {
+            throw "Manifest target path is a directory, expected a file: $relative"
+        }
+        $parent = Split-Path -Parent $targetFile
+        if (-not (Test-Path -LiteralPath $parent)) {
+            New-Item -ItemType Directory -Path $parent -Force | Out-Null
+        }
+        if (Test-Path -LiteralPath $targetFile) {
+            $preserved += 1
+        }
+        else {
+            Copy-Item -LiteralPath $sourceFile -Destination $targetFile
+            $copied += 1
+        }
+    }
+
+    Write-Step "Added $copied and preserved $preserved $Kind files in $(Split-Path -Leaf $Destination)"
+}
+
+# Global scope installs only what the managed manifest declares: the framework
+# owns every file at the global root, so repository-authored seeds must not
+# follow the payload there.
+function Install-ManagedComponent(
+    [string]$Name,
+    [string]$Source,
+    [string]$Destination,
+    [string]$ManagedFiles,
+    [string]$InstallMode
+) {
+    if ($InstallMode -eq "Replace" -and (Test-Path -LiteralPath $Destination)) {
+        Write-Step "Removing existing $Name directory"
+        Remove-Item -LiteralPath $Destination -Recurse -Force
+    }
+    if (-not (Test-Path -LiteralPath $Destination -PathType Container)) {
+        New-Item -ItemType Directory -Path $Destination -Force | Out-Null
+    }
+
+    if ($InstallMode -eq "Merge") {
+        Write-Step "Merging missing $Name files"
+        Copy-ManifestFilesIfMissing -Source $Source -Destination $Destination -ManifestPath $ManagedFiles -Kind "managed"
+    }
+    else {
+        if ($InstallMode -eq "Update") {
+            $retired = Remove-RetiredManagedFiles -Destination $Destination -PreviousManifestPath (Join-Path $Destination ".managed-files") -CurrentManifestPath $ManagedFiles
+            if ($retired -gt 0) { Write-Step "Removed $retired retired managed files from $Name" }
+        }
+        Write-Step "Installing $Name"
+        $count = Copy-ManagedFiles -Source $Source -Destination $Destination -ManifestPath $ManagedFiles
+        Write-Step "Updated $count managed files in $Name"
+    }
+}
+
+# Removing every entry of a previously installed manifest is expressed as
+# "retire against an empty manifest", which is how extension removal already
+# works. Scope conversion reuses it for the profile's own managed files.
+function Remove-ManifestFiles([string]$Destination, [string]$PreviousManifestPath) {
+    if (-not (Test-Path -LiteralPath $PreviousManifestPath -PathType Leaf)) { return 0 }
+    $emptyManifest = Join-Path ([System.IO.Path]::GetTempPath()) ([Guid]::NewGuid().ToString("N") + ".txt")
+    New-Item -ItemType File -Path $emptyManifest -Force | Out-Null
+    try {
+        return Remove-RetiredManagedFiles -Destination $Destination -PreviousManifestPath $PreviousManifestPath -CurrentManifestPath $emptyManifest
+    }
+    finally {
+        Remove-Item -LiteralPath $emptyManifest -Force -ErrorAction SilentlyContinue
+    }
 }
 
 function Remove-RetiredManagedFiles([string]$Destination, [string]$PreviousManifestPath, [string]$CurrentManifestPath) {
@@ -506,6 +653,13 @@ if ($Repository -like "__GITHUB_OWNER__/*") {
     throw "Replace __GITHUB_OWNER__ in the installer or pass -Repository owner/codebase-learning-flow."
 }
 
+# Resolved before self-refresh because the re-invocation always passes
+# -TargetPath explicitly, which would hide "the user did not choose a target"
+# from the child process.
+if ($Scope -eq "Global" -and -not $PSBoundParameters.ContainsKey('TargetPath')) {
+    $TargetPath = Resolve-GlobalRoot
+}
+
 $resolvedCommit = Resolve-RemoteCommit -RepositoryName $Repository -RequestedRef $Ref
 $headers = @{ "Cache-Control" = "no-cache, no-store, max-age=0"; "Pragma" = "no-cache" }
 
@@ -529,6 +683,7 @@ if (-not $SkipSelfRefresh) {
                 -Repository $Repository `
                 -Release $Release `
                 -PackageFile $PackageFile `
+                -Scope $Scope `
                 -Profile $Profile `
                 -Extension $Extension `
                 -Mode $Mode `
@@ -543,6 +698,7 @@ if (-not $SkipSelfRefresh) {
                 -Repository $Repository `
                 -Ref $resolvedCommit `
                 -PackageFile $PackageFile `
+                -Scope $Scope `
                 -Profile $Profile `
                 -Extension $Extension `
                 -Mode $Mode `
@@ -567,8 +723,88 @@ if (-not (Test-Path -LiteralPath $resolvedTarget)) {
 
 $targetAgentic = Join-Path $resolvedTarget "agentic-flow"
 $targetLearning = Join-Path $resolvedTarget "learning-flow"
-$targetSkills = Join-Path $resolvedTarget ".agents/skills"
-$installedProfile = Get-InstalledProfile $targetLearning
+$scopeName = $Scope.ToLowerInvariant()
+if ($scopeName -eq "global") {
+    # The global root is itself the .agents directory host agents already scan,
+    # so managed skills belong directly beneath it rather than one level deeper.
+    $globalRoot = $resolvedTarget
+    $targetSkills = Join-Path $resolvedTarget "skills"
+}
+else {
+    $globalRoot = Resolve-GlobalRoot
+    $targetSkills = Join-Path $resolvedTarget ".agents/skills"
+}
+$globalLearning = Join-Path $globalRoot "learning-flow"
+$globalMarker = Join-Path $globalLearning ".install-scope"
+
+$installedScope = Read-MarkerField -MarkerPath (Join-Path $targetLearning ".install-scope") -Field "scope"
+if ($installedScope -notin @("", "repository", "global", "linked")) {
+    throw "Invalid installed scope marker: $installedScope"
+}
+if ([string]::IsNullOrWhiteSpace($installedScope) -and (Test-DirectoryHasContent $targetLearning)) {
+    # Installations from before scopes existed are repository-scoped.
+    $installedScope = "repository"
+}
+
+if (-not [string]::IsNullOrWhiteSpace($installedScope) -and $installedScope -ne $scopeName) {
+    if ($installedScope -eq "repository" -and $scopeName -eq "linked") {
+        if ($Mode -notin @("Update", "Replace")) {
+            throw "Scope change repository -> linked is not supported in mode '$Mode'. Use Update or Replace."
+        }
+        Write-Step "Converting repository-scoped installation to linked; framework files move to $globalRoot"
+    }
+    elseif ($installedScope -eq "linked" -and $scopeName -eq "repository") {
+        if ($Mode -notin @("Merge", "Update", "Replace")) {
+            throw "Scope change linked -> repository is not supported in mode '$Mode'. Use Merge, Update, or Replace."
+        }
+        Write-Step "Converting linked installation to a self-contained repository installation"
+    }
+    else {
+        throw "$resolvedTarget holds a '$installedScope' installation and cannot be reused as '$scopeName'."
+    }
+}
+
+$globalVersion = ""
+$globalProfile = ""
+$globalExtension = ""
+if ((Read-MarkerField -MarkerPath $globalMarker -Field "scope") -eq "global") {
+    $globalVersion = Read-MarkerField -MarkerPath $globalMarker -Field "version"
+    $globalProfile = Get-InstalledProfile $globalLearning
+    $globalExtension = Get-InstalledExtension $globalLearning
+    if ([string]::IsNullOrWhiteSpace($globalExtension)) { $globalExtension = "none" }
+}
+elseif ($scopeName -eq "linked") {
+    throw "-Scope Linked requires a global installation at $globalRoot. Run the installer once with -Scope Global first."
+}
+
+if ($scopeName -eq "linked") {
+    if ([string]::IsNullOrWhiteSpace($globalProfile)) {
+        throw "The global installation at $globalRoot is missing its profile marker. Reinstall it with -Scope Global."
+    }
+    # The global installation owns the routing contract. A linked repository
+    # only adds its own state, so it cannot select a different profile or
+    # extension than the instructions it will actually read.
+    if ($Profile -ne "Auto" -and $Profile.ToLowerInvariant() -ne $globalProfile) {
+        throw "The global installation uses the '$globalProfile' profile. A linked repository cannot select '$($Profile.ToLowerInvariant())'; change the global installation instead."
+    }
+    $Profile = $globalProfile
+    if ($Extension -ne "Auto" -and $Extension.ToLowerInvariant() -ne $globalExtension) {
+        throw "The global installation uses extension '$globalExtension'. A linked repository cannot select '$($Extension.ToLowerInvariant())'; change the global installation instead."
+    }
+    $Extension = $globalExtension
+}
+elseif ($installedScope -eq "linked") {
+    # A linked repository carries no profile or extension marker of its own, so
+    # converting it back to self-contained inherits what the global
+    # installation was providing rather than the fresh-install defaults.
+    if ($Profile -eq "Auto" -and -not [string]::IsNullOrWhiteSpace($globalProfile)) { $Profile = $globalProfile }
+    if ($Extension -eq "Auto" -and -not [string]::IsNullOrWhiteSpace($globalExtension)) { $Extension = $globalExtension }
+}
+
+# A linked repository never carries .template-profile: the global installation
+# owns the profile, so the legacy "content but no marker means full" fallback
+# would misread it.
+$installedProfile = if ($installedScope -eq "linked") { $null } else { Get-InstalledProfile $targetLearning }
 $requestedProfile = $Profile.ToLowerInvariant()
 $selectedProfile = if ($requestedProfile -eq "auto") {
     if ([string]::IsNullOrWhiteSpace($installedProfile)) { "minimal" } else { $installedProfile }
@@ -670,6 +906,8 @@ try {
     $sourceProfileSkills = Join-Path $sourceProfile ".agents/skills"
     $sourceLearningManagedFiles = Join-Path $sourceLearning ".managed-files"
     $sourceLearningManagedSkills = Join-Path $sourceLearning ".managed-skills"
+    $sourceAgenticRepositoryFiles = Join-Path $sourceAgentic ".repository-files"
+    $sourceLearningRepositoryFiles = Join-Path $sourceLearning ".repository-files"
     $sourceRootAgents = Join-Path $archiveRoot "sample/root/AGENTS.md"
     $sourceRootPointer = Join-Path $archiveRoot "sample/root/AGENTS.pointer.md"
 
@@ -684,12 +922,16 @@ try {
             throw "Required framework directory is missing: $requiredDirectory"
         }
     }
-    foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills, $sourceLocalHistory)) {
+    foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills, $sourceAgenticRepositoryFiles, $sourceLearningRepositoryFiles, $sourceLocalHistory)) {
         if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
             throw "Required framework manifest is missing: $requiredFile"
         }
     }
-    if (-not $SkipSkills) {
+    if ($scopeName -eq "global") {
+        $SkipRootAgents = [switch]$true
+        $RootAgents = "Skip"
+    }
+    if (-not $SkipSkills -and $scopeName -ne "linked") {
         if (-not (Test-Path -LiteralPath $sourceCommonSkills -PathType Container)) { throw "Common skill directory is missing." }
         $profileManagedSkills = @(Get-Content -LiteralPath $sourceLearningManagedSkills | Where-Object { -not [string]::IsNullOrWhiteSpace($_) -and -not $_.Trim().StartsWith("#") })
         if ($profileManagedSkills.Count -gt 0 -and -not (Test-Path -LiteralPath $sourceProfileSkills -PathType Container)) {
@@ -714,7 +956,7 @@ try {
         if ((Test-DirectoryHasContent $targetAgentic) -or (Test-DirectoryHasContent $targetLearning)) {
             throw "agentic-flow or learning-flow already contains files. Use -Mode Merge, -Mode Update, or -Mode Replace."
         }
-        if (-not $SkipSkills) {
+        if (-not $SkipSkills -and $scopeName -ne "linked") {
             $allNames = @(
                 Get-ManagedSkillNames $sourceAgenticManagedSkills
                 Get-ManagedSkillNames $sourceLearningManagedSkills
@@ -729,27 +971,52 @@ try {
         }
     }
 
-    Install-Component -Name "agentic-flow" -Source $sourceAgentic -Destination $targetAgentic -ManagedFiles $sourceAgenticManagedFiles -InstallMode $Mode
-    Install-Component -Name "learning-flow/$selectedProfile" -Source $sourceLearning -Destination $targetLearning -ManagedFiles $sourceLearningManagedFiles -InstallMode $Mode
-
-    if ($selectedExtension -eq "regulatory") {
-        Install-ExtensionOverlay -Name "learning-flow/regulatory (extension)" -Source $sourceExtensionLearning -Destination $targetLearning -ManagedFiles $sourceExtensionManagedFiles -InstallMode $Mode
-    }
-    elseif (-not [string]::IsNullOrWhiteSpace($installedExtension) -and ($Mode -eq "Update" -or $Mode -eq "Replace")) {
-        $removedExtensionFiles = Join-Path ([System.IO.Path]::GetTempPath()) ([Guid]::NewGuid().ToString("N") + ".txt")
-        New-Item -ItemType File -Path $removedExtensionFiles -Force | Out-Null
-        try {
-            Remove-RetiredManagedFiles -Destination $targetLearning -PreviousManifestPath (Join-Path $targetLearning ".extension-managed-files") -CurrentManifestPath $removedExtensionFiles | Out-Null
+    if ($scopeName -eq "linked") {
+        # A linked repository owns only the files it authors. Everything the
+        # framework owns is read from the global root, so the seeds are copied
+        # without overwriting in every mode: there is no framework content here
+        # for Update or Replace to refresh.
+        if ($installedScope -eq "repository") {
+            Remove-ManifestFiles -Destination $targetLearning -PreviousManifestPath (Join-Path $targetLearning ".extension-managed-files") | Out-Null
+            Remove-ManifestFiles -Destination $targetAgentic -PreviousManifestPath (Join-Path $targetAgentic ".managed-files") | Out-Null
+            Remove-ManifestFiles -Destination $targetLearning -PreviousManifestPath (Join-Path $targetLearning ".managed-files") | Out-Null
+            Write-Step "Removed repository-scoped framework files now owned by $globalRoot"
         }
-        finally {
-            Remove-Item -LiteralPath $removedExtensionFiles -Force -ErrorAction SilentlyContinue
-        }
-        Write-Step "Removed $installedExtension extension"
+        Write-Step "Installing repository learning state"
+        Copy-ManifestFilesIfMissing -Source $sourceAgentic -Destination $targetAgentic -ManifestPath $sourceAgenticRepositoryFiles -Kind "repository"
+        Copy-ManifestFilesIfMissing -Source $sourceLearning -Destination $targetLearning -ManifestPath $sourceLearningRepositoryFiles -Kind "repository"
+    }
+    elseif ($scopeName -eq "global") {
+        Install-ManagedComponent -Name "agentic-flow" -Source $sourceAgentic -Destination $targetAgentic -ManagedFiles $sourceAgenticManagedFiles -InstallMode $Mode
+        Install-ManagedComponent -Name "learning-flow/$selectedProfile" -Source $sourceLearning -Destination $targetLearning -ManagedFiles $sourceLearningManagedFiles -InstallMode $Mode
+    }
+    else {
+        Install-Component -Name "agentic-flow" -Source $sourceAgentic -Destination $targetAgentic -ManagedFiles $sourceAgenticManagedFiles -InstallMode $Mode
+        Install-Component -Name "learning-flow/$selectedProfile" -Source $sourceLearning -Destination $targetLearning -ManagedFiles $sourceLearningManagedFiles -InstallMode $Mode
     }
 
-    Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
+    if ($scopeName -ne "linked") {
+        if ($selectedExtension -eq "regulatory") {
+            Install-ExtensionOverlay -Name "learning-flow/regulatory (extension)" -Source $sourceExtensionLearning -Destination $targetLearning -ManagedFiles $sourceExtensionManagedFiles -InstallMode $Mode
+        }
+        elseif (-not [string]::IsNullOrWhiteSpace($installedExtension) -and ($Mode -eq "Update" -or $Mode -eq "Replace")) {
+            Remove-ManifestFiles -Destination $targetLearning -PreviousManifestPath (Join-Path $targetLearning ".extension-managed-files") | Out-Null
+            Write-Step "Removed $installedExtension extension"
+        }
+    }
 
-    if (-not $SkipSkills) {
+    if ($scopeName -ne "global") {
+        Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
+    }
+
+    if ($scopeName -eq "linked" -and $installedScope -eq "repository" -and -not $SkipSkills) {
+        Remove-ManagedSkills -ManifestPath $sourceAgenticManagedSkills -TargetSkills $targetSkills
+        Remove-ManagedSkills -ManifestPath (Join-Path $archiveRoot "sample/profiles/minimal/learning-flow/.managed-skills") -TargetSkills $targetSkills
+        Remove-ManagedSkills -ManifestPath (Join-Path $archiveRoot "sample/profiles/full/learning-flow/.managed-skills") -TargetSkills $targetSkills
+        Remove-ManagedSkills -ManifestPath $sourceExtensionManagedSkills -TargetSkills $targetSkills
+    }
+
+    if (-not $SkipSkills -and $scopeName -ne "linked") {
         New-Item -ItemType Directory -Path $targetSkills -Force | Out-Null
 
         if ($Mode -eq "Replace") {
@@ -811,6 +1078,20 @@ try {
 
     Set-RootIntegrationState -SettingsPath (Join-Path $targetAgentic "SETTINGS.md") -ResolvedMode $resolvedRootAgents
 
+    $frameworkVersion = if (-not [string]::IsNullOrWhiteSpace($Release)) { $Release } else { $resolvedCommit }
+    Write-InstallScopeMarker `
+        -MarkerPath (Join-Path $targetLearning ".install-scope") `
+        -ScopeValue $scopeName `
+        -VersionValue $frameworkVersion `
+        -GlobalVersionValue $(if ($scopeName -eq "linked") { $globalVersion } else { "" })
+
+    if ($scopeName -eq "linked" -and -not [string]::IsNullOrWhiteSpace($globalVersion) -and $globalVersion -ne $frameworkVersion) {
+        Write-Step "WARNING: this repository was linked at $frameworkVersion but $globalRoot holds $globalVersion. Reinstall one of them so the routing contract and the repository state agree."
+    }
+    if ($scopeName -eq "repository" -and (Read-MarkerField -MarkerPath $globalMarker -Field "scope") -eq "global") {
+        Write-Step "WARNING: a global installation exists at $globalRoot. This repository now carries its own copy of every managed skill, so the host agent will discover each one twice. Use -Scope Linked instead unless the duplication is intended."
+    }
+
     Write-Host ""
     Write-Host "Codebase Learning Flow"
     if (-not [string]::IsNullOrWhiteSpace($Release)) {
@@ -826,11 +1107,18 @@ try {
         Write-Host "Version: $resolvedCommit (ref: $Ref)"
         Write-Host "Source: development checkout (mutable unless ref is a commit or tag)"
     }
+    Write-Host "Scope: $scopeName ($resolvedTarget)"
 
-    Write-Step "Installation complete: profile=$selectedProfile extension=$selectedExtension mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
+    Write-Step "Installation complete: scope=$scopeName profile=$selectedProfile extension=$selectedExtension mode=$($Mode.ToLowerInvariant()) root-agents=$($resolvedRootAgents.ToLowerInvariant())"
     Write-Host ""
-    Write-Host "Suggested first instruction:"
-    Write-Host "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."
+    if ($scopeName -eq "global") {
+        Write-Host "Next step:"
+        Write-Host "Run the installer with -Scope Linked inside a repository to give it its own learning state, or start working: the managed skills in $targetSkills already apply everywhere."
+    }
+    else {
+        Write-Host "Suggested first instruction:"
+        Write-Host "Start with my current task. Quietly verify the installed workflow, surface only meaningful instruction conflicts, teach the relevant code and domain path while working, and persist only verified findings that will be useful again."
+    }
 }
 finally {
     if (Test-Path -LiteralPath $tempRoot) {

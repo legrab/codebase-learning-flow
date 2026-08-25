@@ -86,6 +86,39 @@ curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/
 
 *Contributing to the framework itself? Run `scripts/install.sh` from your local checkout instead of curling the remote copy above.*
 
+### One installation for every repository
+
+By default the framework installs into a single repository. `--scope global` instead installs the framework-owned instructions and skills once, into `%USERPROFILE%\.agents\` (`~/.agents/` elsewhere), where every repository picks them up:
+
+```powershell
+& ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Scope Global -Profile Full
+```
+
+```sh
+sh install.sh --scope global --profile full
+```
+
+That alone is enough to work in any repository. What it deliberately does not do is create repository state: a global installation writes no `.local/`, no `.gitignore` entry, and no `AGENTS.md` in your home directory.
+
+When a repository should keep its own durable learning — a map of the system, verified takeaways, its own collaboration settings and decision record — run `--scope linked` inside it:
+
+```sh
+sh install.sh --scope linked
+```
+
+The repository then holds only what it authors; the instructions and skills stay global and shared.
+
+| Scope | Root | Holds |
+|---|---|---|
+| `repository` (default) | the repository | everything, self-contained |
+| `global` | `~/.agents/` | instructions and skills, shared by every repository |
+| `linked` | the repository | that repository's own learning state only |
+
+> [!NOTE]
+> Instructions resolve at the repository root first and fall back to `~/.agents/`, so a repository with its own copy always wins. Repository state — `.local/`, `MAP.md`, `TAKEAWAYS.md`, `SETTINGS.md`, `DECISIONS.md` — is never read from the global root.
+
+An existing installation can move between scopes: `--scope linked --mode update` strips the framework copies out of a repository and leaves its authored state behind, and `--scope repository --mode update` puts them back.
+
 <details>
 <summary>Profiles, extensions, and update modes</summary>
 
@@ -196,6 +229,28 @@ learning-flow/
 ```
 
 Task-specific templates live inside their owning skills and are materialized only when justified.
+
+<details>
+<summary>Where each file lands under a global installation</summary>
+
+The split follows the manifests the installer already used to decide what `update` may overwrite: `.managed-files` and `.managed-skills` name framework-owned content, `.repository-files` names the repository-authored seeds.
+
+```text
+~/.agents/                    <repository>/
+├── agentic-flow/             ├── agentic-flow/
+│   ├── AGENTS.md             │   ├── SETTINGS.md
+│   ├── WORKFLOW.md           │   └── DECISIONS.md
+│   ├── EDUCATION.md          ├── learning-flow/
+│   └── ...                   │   ├── MAP.md
+├── learning-flow/            │   ├── TAKEAWAYS.md
+│   ├── AGENTS.md             │   └── REPOSITORIES.md
+│   └── README.md             ├── .local/
+└── skills/                   └── AGENTS.md
+```
+
+`learning-flow/.install-scope` in each root records the scope and the framework version it was installed at. A linked repository also records the version of the global installation it was linked against, and the installer warns when the two drift apart.
+
+</details>
 
 ## Documentation
 

@@ -54,3 +54,37 @@ jobs:
           if (-not (Test-Path "$root/learning-flow")) {
             throw "Installer did not create the learning-flow component."
           }
+      - name: Run global and linked scope smoke test
+        shell: pwsh
+        run: |
+          $globalRoot = Join-Path $env:RUNNER_TEMP "learning-flow-global"
+          $linked = Join-Path $env:RUNNER_TEMP "learning-flow-linked"
+          New-Item -ItemType Directory -Force -Path $globalRoot, $linked | Out-Null
+          $env:CODEBASE_LEARNING_FLOW_HOME = $globalRoot
+          & "$PWD/scripts/install.ps1" `
+            -Scope Global `
+            -Repository $env:GITHUB_REPOSITORY `
+            -Ref $env:GITHUB_SHA `
+            -Profile full `
+            -Mode fail
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          & "$PWD/scripts/install.ps1" `
+            -Target $linked `
+            -Scope Linked `
+            -Repository $env:GITHUB_REPOSITORY `
+            -Ref $env:GITHUB_SHA `
+            -Mode fail `
+            -SkipRootAgents
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          if (-not (Test-Path "$globalRoot/skills/repository-learning/SKILL.md")) {
+            throw "Global scope did not install managed skills."
+          }
+          if (Test-Path "$globalRoot/learning-flow/MAP.md") {
+            throw "Repository-authored MAP.md reached the global root."
+          }
+          if (-not (Test-Path "$linked/learning-flow/MAP.md")) {
+            throw "Linked scope did not install repository learning state."
+          }
+          if (Test-Path "$linked/agentic-flow/AGENTS.md") {
+            throw "Framework instructions were duplicated into the linked repository."
+          }

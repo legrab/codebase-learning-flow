@@ -15,14 +15,18 @@ path rather than a production one.
 
 ```mermaid
 flowchart LR
-    D[Resolve source: checkout ref or pinned release] --> P[Select profile]
+    D[Resolve source: checkout ref or pinned release] --> Sc[Resolve scope and root]
+    Sc --> P[Select profile]
     P --> C[Install common agentic flow]
     C --> L[Install learning profile]
     L --> Ext[Install or remove regulatory extension]
     Ext --> S[Install managed skills]
     S --> X[Initialize ignored .local]
     X --> R[Integrate or preserve root AGENTS]
+    R --> M[Record scope and version marker]
 ```
+
+Under `--scope global` the steps that write repository state — `.local/`, `.gitignore`, root `AGENTS.md` — are skipped. Under `--scope linked` the steps that write framework content are skipped instead.
 
 ## Installing a packaged release
 
@@ -71,6 +75,8 @@ never ships something CI has not already installed and exercised.
 
 ## Installed components
 
+Under `--scope repository`, all six; under `global`, only the framework-owned parts of 1–4; under `linked`, only the repository-authored parts of 1 and 3 plus 5 and 6.
+
 1. common `agentic-flow/`;
 2. common `agentic-workflow`, `learn-anything`, and `structured-change` skills unless skipped;
 3. the selected minimal or full `learning-flow/` profile and its managed skills;
@@ -82,6 +88,51 @@ The local workspace contains `learning-history.md`, `sessions/`, and `follow-ups
 
 > [!IMPORTANT]
 > `update` owns framework files listed in managed manifests. Repository-authored maps, takeaways, settings, local history, and unrelated skills remain outside destructive refresh behavior.
+
+## Scopes
+
+```text
+--scope repository|global|linked
+-Scope Repository|Global|Linked
+```
+
+| Scope | Default root | Installs | Skips |
+|---|---|---|---|
+| `repository` | the current directory | everything | nothing |
+| `global` | `$HOME/.agents` or `%USERPROFILE%\.agents` | managed files and managed skills | `.local/`, `.gitignore`, root `AGENTS.md` |
+| `linked` | the current directory | repository-authored seeds, `.local/`, root `AGENTS.md` | managed files and managed skills |
+
+`repository` is the default, so an existing command line keeps behaving exactly as before.
+
+Which files belong to which scope is declared, not inferred: `.managed-files` and `.managed-skills` name framework-owned content, and `.repository-files` names the seeds a repository authors afterward (`SETTINGS.md`, `DECISIONS.md`, `MAP.md`, `TAKEAWAYS.md`, and `REPOSITORIES.md` in the full profile). `scripts/ci-validate.py` fails if a packaged file appears in neither manifest or in both.
+
+Under `global`, managed skills install to `<root>/skills/` rather than `<root>/.agents/skills/`, because the global root is itself the `.agents` directory a host agent scans. Skills the framework does not manage are never touched.
+
+`--target`/`-TargetPath` overrides the global root when given. `CODEBASE_LEARNING_FLOW_HOME` overrides the default location for every scope's global lookup.
+
+<details>
+<summary>Linked-scope rules and scope conversion</summary>
+
+- `linked` requires an existing global installation and refuses to run without one, rather than silently downloading a possibly different version into the repository.
+- `linked` inherits the global installation's profile and extension. Passing a conflicting `--profile` or `--extension` is an error: the repository would be seeded for a routing contract it does not read.
+- Repository-authored seeds are copied only when missing, in every mode. There is no framework content in a linked repository for `update` or `replace` to refresh, so those modes cannot destroy authored learning state.
+- `repository` → `linked` requires `update` or `replace`. It removes the repository's managed files and managed skills through their own manifests and leaves authored files in place.
+- `linked` → `repository` requires `merge`, `update`, or `replace`, and inherits the profile and extension the global installation was providing.
+- Installing `--scope repository` while a global installation exists is allowed but warned about: the host agent would discover every managed skill twice.
+
+</details>
+
+## Version and scope marker
+
+Each root records `learning-flow/.install-scope`:
+
+```text
+scope: linked
+version: v1.4.0
+global-version: v1.4.0
+```
+
+The installer is the reader. On a `linked` install it compares the version being written against the global installation's own and warns when they differ; `scripts/ci-install-test.sh` and `scripts/ci-release-test.sh` assert the two agree after a paired install. Installations predating this marker are treated as `repository`.
 
 ## Profiles
 

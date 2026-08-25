@@ -50,6 +50,8 @@ The installer and the `agentic-workflow` skill may add this idempotent block (ve
 ```md
 <!-- codebase-learning-flow:start -->
 For collaboration behavior, planning, validation, and handoff, follow `agentic-flow/AGENTS.md`.
+Resolve `agentic-flow/` and `learning-flow/` at the repository root first, then at `~/.agents/`
+(`%USERPROFILE%\.agents\` on Windows) for a global installation.
 
 **Learning is automatic:** `help me understand`, `explain`, `teach me`, and similar general
 questions use `learn-anything`; questions about the current repository use repository
@@ -61,6 +63,8 @@ Do not turn mechanical work into a lesson. Keep the user's actual task primary.
 ```
 
 Never append a second copy. Existing root content remains repository-owned.
+
+The block is written the same way for every install scope. A repository that carries its own `agentic-flow/` never consults the global root, so one pointer stays correct whether the framework files are local, global, or moved between the two later.
 
 ## Later changes
 

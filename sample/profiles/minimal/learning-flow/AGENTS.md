@@ -16,6 +16,8 @@ Select one `repository-learning` branch: Orientation, Bug, Feature, or Refactor.
 - `TAKEAWAYS.md`: verified reusable lessons that are costly to rediscover.
 - `.local/`: private attempts, progress, uncertainty, checks, and session continuity.
 
+All three describe one repository and live in that repository, under its own `learning-flow/` and `.local/`, even when these instructions are installed globally.
+
 The common Agentic Delivery and Education instructions own collaboration, context economy, verification, understanding checks, evidence language, and handoff. Do not duplicate those rules here.
 
 Promote only verified, repository-specific, reusable, non-sensitive knowledge that is costly enough to rediscover.

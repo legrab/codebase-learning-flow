@@ -50,4 +50,6 @@ Use at most one consequential understanding check per task. A declined check nev
 - `REPOSITORIES.md`: repository identity, baseline, and access boundary.
 - `.local/`: private sessions, attempts, uncertainty, and follow-ups.
 
+All four describe one repository and live in that repository, under its own `learning-flow/` and `.local/`, even when these instructions are installed globally.
+
 Promote only verified, repository-specific, reusable, non-sensitive findings that are costly enough to rediscover.

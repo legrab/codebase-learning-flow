@@ -38,7 +38,7 @@ If this session corrected an existing `learning-flow/MAP.md` or `TAKEAWAYS.md` e
 | Module README/documentation | knowledge belongs specifically with a module |
 | Skill/workflow documentation | knowledge changes a reusable framework or repository workflow |
 
-Prefer the module's own documentation when it is necessary to use or extend that module correctly. Prefer learning-flow surfaces for cross-cutting repository understanding.
+Prefer the module's own documentation when it is necessary to use or extend that module correctly. Prefer learning-flow surfaces for cross-cutting repository understanding. Every destination above belongs to the repository being worked on, never to a global installation root.
 
 ## Ask at meaningful closure
 
