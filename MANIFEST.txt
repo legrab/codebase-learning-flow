@@ -94,10 +94,15 @@ sample/profiles/minimal/learning-flow/README.md	1974
 sample/profiles/minimal/learning-flow/TAKEAWAYS.md	973
 sample/root/AGENTS.md	2263
 sample/root/AGENTS.pointer.md	712
+sample/vault/.gitignore	32
+sample/vault/AGENTS.md	1580
+sample/vault/README.md	1369
 scripts/README.md	10227
 scripts/install.bat	1477
 scripts/install.ps1	55583
 scripts/install.sh	47145
+scripts/register-vault.ps1	18800
+scripts/register-vault.sh	13633
 skill-evals/README.md	1689
 skill-evals/adoption-cases.yaml	1337
 skill-evals/agentic-cases.yaml	9830
