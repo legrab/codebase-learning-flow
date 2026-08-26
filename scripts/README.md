@@ -36,11 +36,11 @@ Under `--scope global` the steps that write repository state — `.local/`, `.gi
 ```
 
 ```text
-sh install.sh --release v1.3.0 --profile minimal
+sh install.sh --release v1.5.0 --profile minimal
 ```
 
 ```powershell
-.\install.ps1 -Release v1.3.0 -Profile Minimal
+.\install.ps1 -Release v1.5.0 -Profile Minimal
 ```
 
 `--release`/`-Release` downloads the packaged artifact and `checksums.txt`
@@ -58,7 +58,7 @@ Every install prints which trust boundary it used:
 
 ```text
 Codebase Learning Flow
-Version: v1.3.0
+Version: v1.5.0
 Source: packaged release (checksum verified)
 ```
 
@@ -117,10 +117,72 @@ Under `global`, managed skills install to `<root>/skills/` rather than `<root>/.
 - `linked` inherits the global installation's profile and extension. Passing a conflicting `--profile` or `--extension` is an error: the repository would be seeded for a routing contract it does not read.
 - Repository-authored seeds are copied only when missing, in every mode. There is no framework content in a linked repository for `update` or `replace` to refresh, so those modes cannot destroy authored learning state.
 - `repository` → `linked` requires `update` or `replace`. It removes the repository's managed files and managed skills through their own manifests and leaves authored files in place.
-- `linked` → `repository` requires `merge`, `update`, or `replace`, and inherits the profile and extension the global installation was providing.
+- `linked` → `repository` requires `merge`, `update`, or `replace`, and inherits the profile and extension the global installation was providing. A vault-linked repository must run `unregister --restore` first.
 - Installing `--scope repository` while a global installation exists is allowed but warned about: the host agent would discover every managed skill twice.
 
 </details>
+
+## Optional LearningVault storage
+
+LearningVault does not add another install scope. It changes only the physical
+storage of repository-authored state and therefore requires `linked` scope.
+The global installation remains under `~/.agents`; the vault defaults to
+`$HOME/LearningVault` (`%USERPROFILE%\LearningVault` on Windows).
+
+```text
+--vault-init
+--vault-register
+--vault-path PATH
+
+-VaultInit
+-VaultRegister
+-VaultPath PATH
+```
+
+- `vault-init` initializes the vault as a local Git repository, copies its
+  README, root `AGENTS.md`, and `.gitignore` only when missing, and refreshes
+  its installer-owned registration scripts;
+- `vault-register` implies initialization and, after a successful linked
+  install, moves `.local/`, `learning-flow/`, and `agentic-flow/` into the
+  vault and links them back;
+- `CODEBASE_LEARNING_VAULT` overrides the default root when no path option is
+  supplied.
+
+The combined registration path does not add `/.local/` to shared `.gitignore`.
+Instead, registration owns one marked block in the source Git repository's
+`.git/info/exclude` for the three linked directories. Existing unrelated
+exclude entries are preserved, and root `AGENTS.md` is not excluded.
+
+```powershell
+& "$HOME\LearningVault\scripts\register-vault.ps1" status
+& "$HOME\LearningVault\scripts\register-vault.ps1" relink -RepositoryId <id>
+& "$HOME\LearningVault\scripts\register-vault.ps1" unregister -Restore
+```
+
+```sh
+"$HOME/LearningVault/scripts/register-vault.sh" status
+"$HOME/LearningVault/scripts/register-vault.sh" relink --repository-id <id>
+"$HOME/LearningVault/scripts/register-vault.sh" unregister --restore
+```
+
+Registration is transactional across the three state directories: it
+preflights link support, refuses source/vault conflicts, and restores moved
+directories when link creation fails. Rerunning against the same targets is
+idempotent. `relink` repairs absolute junction/symlink targets after the vault
+or source is moved. `unregister` requires explicit restoration so it cannot
+silently leave a repository without its state.
+
+Tracked `agentic-flow`, `learning-flow`, or `.local` content is refused rather
+than automatically removed from the source repository's index. Resolve that
+team-visible migration deliberately first. Each Git worktree is a separate
+registration because links live in the worktree filesystem; nested invocations
+must target the repository top level.
+
+The vault never creates/configures a remote, stages files, or commits.
+Repository IDs combine a sanitized repository name with a hash of the origin
+URL (when one exists) and absolute worktree path. This keeps clones and
+worktrees separate. Use the recorded or explicit ID when relinking after a
+source or vault relocation.
 
 ## Version and scope marker
 
@@ -128,8 +190,8 @@ Each root records `learning-flow/.install-scope`:
 
 ```text
 scope: linked
-version: v1.4.0
-global-version: v1.4.0
+version: v1.5.0
+global-version: v1.5.0
 ```
 
 The installer is the reader. On a `linked` install it compares the version being written against the global installation's own and warns when they differ; `scripts/ci-install-test.sh` and `scripts/ci-release-test.sh` assert the two agree after a paired install. Installations predating this marker are treated as `repository`.

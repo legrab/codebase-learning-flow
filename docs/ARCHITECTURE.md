@@ -123,22 +123,34 @@ The three layers are content boundaries. Cutting across them is a second, indepe
 | Kind | Example | Root |
 |---|---|---|
 | Framework-owned | `agentic-flow/AGENTS.md`, `learning-flow/AGENTS.md`, every managed skill | repository or `~/.agents/` |
-| Repository-authored | `MAP.md`, `TAKEAWAYS.md`, `REPOSITORIES.md`, `SETTINGS.md`, `DECISIONS.md`, `.local/` | always the repository |
+| Repository-authored | `MAP.md`, `TAKEAWAYS.md`, `REPOSITORIES.md`, `SETTINGS.md`, `DECISIONS.md`, `.local/` | logically the repository; physically in place by default or under optional LearningVault |
 
 Framework-owned content is identical in every repository, so it can be installed once globally and shared. Repository-authored content describes one system and cannot be. This is the same line the installer's `.managed-files` manifests already drew to decide what `update` may overwrite; `.repository-files` names the other side of it explicitly so both can be installed independently.
 
 Instructions resolve at the repository root first and fall back to the global root, so a self-contained repository never consults the global installation. There is no merging between roots: whichever answers first is the one that applies.
+
+LearningVault is an optional physical-storage adapter for the repository side
+of this boundary. It is not another framework root or install scope. A linked
+repository may expose `.local/`, `learning-flow/`, and `agentic-flow/` through
+directory links into `~/LearningVault/repositories/<repository-id>/`. Root
+`AGENTS.md` remains a real source-repository file, and managed instructions and
+skills remain under `~/.agents`.
 
 ```mermaid
 flowchart LR
     T[Task in a repository] --> R{Repository has agentic-flow/?}
     R -->|yes| L[Read repository copy]
     R -->|no| G[Read ~/.agents copy]
-    L --> S[Repository state: MAP, TAKEAWAYS, SETTINGS, .local]
+    L --> S[Repository paths: MAP, TAKEAWAYS, SETTINGS, .local]
     G --> S
+    S --> P{Vault registered?}
+    P -->|no| D[Physical state in source repository]
+    P -->|yes| V[Physical state in LearningVault]
 ```
 
-Repository state sits below the fork because it is read from the repository either way.
+Repository state sits below the fork because it is read through repository
+paths either way. Vault storage does not transfer ownership to a global
+knowledge base.
 
 ## Runtime instruction flow
 
