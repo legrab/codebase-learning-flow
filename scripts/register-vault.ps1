@@ -74,8 +74,8 @@ function Initialize-VaultRepository([string]$Root) {
     if (-not (Test-Path -LiteralPath $Root -PathType Container)) {
         New-Item -ItemType Directory -Path $Root -Force | Out-Null
     }
-    $inside = Invoke-Git -WorkingDirectory $Root -Arguments @("rev-parse", "--is-inside-work-tree") -AllowFailure
-    if (($inside | Select-Object -First 1) -ne "true") {
+    $top = Invoke-Git -WorkingDirectory $Root -Arguments @("rev-parse", "--show-toplevel") -AllowFailure | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($top) -or -not (Test-SamePath $top $Root)) {
         & git -C $Root init | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "Failed to initialize the LearningVault Git repository at $Root." }
         Write-Step "Initialized local Git repository at $Root"

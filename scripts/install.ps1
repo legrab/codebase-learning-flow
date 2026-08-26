@@ -209,8 +209,14 @@ function Initialize-LearningVault(
         throw "Git is required to initialize LearningVault."
     }
     New-Item -ItemType Directory -Path $Root -Force | Out-Null
-    $inside = @(& git -C $Root rev-parse --is-inside-work-tree 2>$null)
-    if ($LASTEXITCODE -ne 0 -or ($inside | Select-Object -First 1) -ne "true") {
+    $top = @(& git -C $Root rev-parse --show-toplevel 2>$null) | Select-Object -First 1
+    $isVaultRoot = $LASTEXITCODE -eq 0 -and
+        -not [string]::IsNullOrWhiteSpace($top) -and
+        ([System.IO.Path]::GetFullPath($top).TrimEnd('\', '/')).Equals(
+            [System.IO.Path]::GetFullPath($Root).TrimEnd('\', '/'),
+            [System.StringComparison]::OrdinalIgnoreCase
+        )
+    if (-not $isVaultRoot) {
         & git -C $Root init | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "Failed to initialize LearningVault at $Root." }
         Write-Step "Initialized local LearningVault Git repository at $Root"

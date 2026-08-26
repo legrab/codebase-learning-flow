@@ -64,7 +64,9 @@ fi
 mkdir -p "$VAULT_PATH"
 VAULT_ROOT="$(cd "$VAULT_PATH" && pwd -P)"
 
-if [ "$(git -C "$VAULT_ROOT" rev-parse --is-inside-work-tree 2>/dev/null || true)" != "true" ]; then
+vault_top="$(git -C "$VAULT_ROOT" rev-parse --show-toplevel 2>/dev/null || true)"
+if [ -n "$vault_top" ]; then vault_top="$(cd "$vault_top" && pwd -P)"; fi
+if [ "$vault_top" != "$VAULT_ROOT" ]; then
     git -C "$VAULT_ROOT" init >/dev/null
     log "Initialized local Git repository at $VAULT_ROOT"
 fi
@@ -302,10 +304,20 @@ register_repository() {
         destination="$registration/$name"
         if [ -L "$source" ]; then continue; fi
         if [ -e "$source" ]; then
-            mv "$source" "$destination"
+            if ! mv "$source" "$destination"; then
+                rollback
+                trap - HUP INT TERM
+                echo "Failed to move $source into LearningVault; prior moves were restored." >&2
+                exit 1
+            fi
             moved="$name $moved"
         elif [ ! -e "$destination" ]; then
-            mkdir -p "$destination"
+            if ! mkdir -p "$destination"; then
+                rollback
+                trap - HUP INT TERM
+                echo "Failed to create $destination; prior moves were restored." >&2
+                exit 1
+            fi
         fi
         if ! ln -s "$destination" "$source"; then
             rollback

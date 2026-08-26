@@ -99,10 +99,10 @@ sample/vault/AGENTS.md	1580
 sample/vault/README.md	1369
 scripts/README.md	12921
 scripts/install.bat	1477
-scripts/install.ps1	60821
-scripts/install.sh	51063
-scripts/register-vault.ps1	18800
-scripts/register-vault.sh	13633
+scripts/install.ps1	61089
+scripts/install.sh	51169
+scripts/register-vault.ps1	18841
+scripts/register-vault.sh	14133
 skill-evals/README.md	1689
 skill-evals/adoption-cases.yaml	1337
 skill-evals/agentic-cases.yaml	9830

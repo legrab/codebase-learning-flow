@@ -152,7 +152,9 @@ initialize_learning_vault() {
 
     command -v git >/dev/null 2>&1 || { echo "Git is required to initialize LearningVault." >&2; exit 1; }
     mkdir -p "$vault_root"
-    if [ "$(git -C "$vault_root" rev-parse --is-inside-work-tree 2>/dev/null || true)" != "true" ]; then
+    vault_top="$(git -C "$vault_root" rev-parse --show-toplevel 2>/dev/null || true)"
+    if [ -n "$vault_top" ]; then vault_top="$(cd "$vault_top" && pwd -P)"; fi
+    if [ "$vault_top" != "$vault_root" ]; then
         git -C "$vault_root" init >/dev/null
         log "Initialized local LearningVault Git repository at $vault_root"
     fi
