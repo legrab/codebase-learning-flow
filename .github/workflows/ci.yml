@@ -22,7 +22,7 @@ jobs:
       - name: Validate repository structure
         run: python scripts/ci-validate.py
       - name: Validate POSIX installer syntax
-        run: sh -n scripts/install.sh
+        run: sh -n scripts/install.sh scripts/register-vault.sh
       - name: Run installer smoke test
         run: bash scripts/ci-install-test.sh
 
@@ -34,9 +34,17 @@ jobs:
       - name: Validate PowerShell syntax
         shell: pwsh
         run: |
-          $errors = $null
-          [void][System.Management.Automation.Language.Parser]::ParseFile(
-            (Resolve-Path "scripts/install.ps1"), [ref]$null, [ref]$errors)
+          $errors = @()
+          foreach ($path in @(
+            "scripts/install.ps1",
+            "scripts/register-vault.ps1",
+            "scripts/ci-vault-test.ps1"
+          )) {
+            $fileErrors = $null
+            [void][System.Management.Automation.Language.Parser]::ParseFile(
+              (Resolve-Path $path), [ref]$null, [ref]$fileErrors)
+            $errors += $fileErrors
+          }
           if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
       - name: Run installer smoke test
         shell: pwsh
@@ -88,3 +96,6 @@ jobs:
           if (Test-Path "$linked/agentic-flow/AGENTS.md") {
             throw "Framework instructions were duplicated into the linked repository."
           }
+      - name: Run LearningVault lifecycle test
+        shell: pwsh
+        run: ./scripts/ci-vault-test.ps1

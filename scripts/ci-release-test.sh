@@ -31,6 +31,9 @@ PACKAGE_ROOT="$(find "$INSPECT_DIR" -mindepth 1 -maxdepth 1 -type d | head -n 1)
 [ -f "$PACKAGE_ROOT/adoption/ADOPT.md" ] || fail "Package is missing adoption/ADOPT.md"
 [ -f "$PACKAGE_ROOT/adoption/README.md" ] || fail "Package is missing adoption/README.md"
 [ -f "$PACKAGE_ROOT/VERSION" ] || fail "Package is missing a VERSION file"
+[ -f "$PACKAGE_ROOT/sample/vault/AGENTS.md" ] || fail "Package is missing the LearningVault AGENTS.md"
+[ -f "$PACKAGE_ROOT/scripts/register-vault.sh" ] || fail "Package is missing register-vault.sh"
+[ -f "$PACKAGE_ROOT/scripts/register-vault.ps1" ] || fail "Package is missing register-vault.ps1"
 rm -rf "$INSPECT_DIR"
 echo "OK: adoption resources and VERSION present in package"
 
@@ -81,7 +84,12 @@ if (cd "$WORK_ROOT" && sh "$INSTALL_SH" --package-file "$PACKAGE_PATH" --scope l
 fi
 echo "OK: linked scope refuses to run before a global installation exists"
 
-run_install "global" "$WORK_ROOT/global" --scope global --profile full --extension regulatory
+run_install "global" "$WORK_ROOT/global" \
+  --scope global \
+  --profile full \
+  --extension regulatory \
+  --vault-init \
+  --vault-path "$WORK_ROOT/LearningVault"
 [ -f "$WORK_ROOT/global/agentic-flow/AGENTS.md" ] || fail "global install has no agentic-flow/AGENTS.md"
 [ -f "$WORK_ROOT/global/skills/repository-learning/SKILL.md" ] || fail "global install has no managed skills"
 [ -f "$WORK_ROOT/global/skills/regulatory-knowledge/SKILL.md" ] || fail "global install has no extension skill"
@@ -90,6 +98,8 @@ run_install "global" "$WORK_ROOT/global" --scope global --profile full --extensi
 [ ! -e "$WORK_ROOT/global/.local" ] || fail "global install created a .local/ workspace"
 [ ! -e "$WORK_ROOT/global/.gitignore" ] || fail "global install wrote a .gitignore"
 [ ! -e "$WORK_ROOT/global/AGENTS.md" ] || fail "global install wrote a root AGENTS.md"
+[ -f "$WORK_ROOT/LearningVault/AGENTS.md" ] || fail "vault initialization did not install root guidance"
+[ -z "$(git -C "$WORK_ROOT/LearningVault" remote)" ] || fail "vault initialization configured a remote"
 echo "OK: global scope installs framework content only"
 
 run_install "linked" "$WORK_ROOT/linked" --scope linked --skip-root-agents
@@ -108,5 +118,18 @@ linked_global_version="$(sed -n 's/^global-version:[[:space:]]*//p' "$WORK_ROOT/
 [ -n "$global_version" ] || fail "global installation recorded no framework version"
 [ "$global_version" = "$linked_global_version" ] || fail "linked repository recorded $linked_global_version against a global installation at $global_version"
 echo "OK: global and linked scope markers agree on the framework version"
+
+mkdir -p "$WORK_ROOT/vault-linked"
+git -C "$WORK_ROOT/vault-linked" init -q
+run_install "vault-linked" "$WORK_ROOT/vault-linked" \
+  --scope linked \
+  --skip-root-agents \
+  --vault-register \
+  --vault-path "$WORK_ROOT/LearningVault"
+[ -L "$WORK_ROOT/vault-linked/learning-flow" ] || fail "vault-linked learning-flow is not a symbolic link"
+[ ! -e "$WORK_ROOT/vault-linked/.gitignore" ] || fail "vault-linked install modified shared .gitignore"
+vault_exclude="$(git -C "$WORK_ROOT/vault-linked" rev-parse --path-format=absolute --git-path info/exclude)"
+grep -Fxq "/agentic-flow/" "$vault_exclude" || fail "vault-linked install did not write local Git excludes"
+echo "OK: packaged release initializes and registers LearningVault state"
 
 echo "All packaged-release checks passed for $PACKAGE_PATH"
