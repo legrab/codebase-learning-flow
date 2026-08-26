@@ -11,7 +11,7 @@ Read `agentic-flow/README.md` and `AGENTS.md` (repository root, else `~/.agents/
 
 1. Inspect root and nested instructions plus tool-specific files.
 2. Find skills, prompts, plans, sessions, records, and refresh rules.
-3. Detect managed template markers, including `learning-flow/.install-scope`, and note which root the framework files actually resolve from.
+3. Detect managed template markers, including `learning-flow/.install-scope`, and note which root the framework files actually resolve from. When repository state is linked into LearningVault, use that repository's `VAULT.md` as the storage index without treating the vault as the repository owner.
 4. Inspect custom additions, overrides, conflicts, and precedence.
 5. Keep stable policy, task procedures, shared learning, and private `.local/` state distinct.
 6. Keep context narrow.

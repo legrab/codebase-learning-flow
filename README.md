@@ -119,6 +119,42 @@ The repository then holds only what it authors; the instructions and skills stay
 
 An existing installation can move between scopes: `--scope linked --mode update` strips the framework copies out of a repository and leaves its authored state behind, and `--scope repository --mode update` puts them back.
 
+### Optional LearningVault
+
+Linked repositories normally keep their authored state in place. LearningVault
+is an opt-in storage adapter that instead collects that state in one local-only
+Git repository while preserving the source paths through Windows directory
+junctions or POSIX symbolic links.
+
+```powershell
+# Seed the vault while installing the global framework.
+.\scripts\install.ps1 -Scope Global -Profile Full -VaultInit
+
+# In a source Git repository, install linked state and register it.
+.\scripts\install.ps1 -Scope Linked -VaultRegister
+```
+
+```sh
+sh scripts/install.sh --scope global --profile full --vault-init
+sh scripts/install.sh --scope linked --vault-register
+```
+
+The default vault is `%USERPROFILE%\LearningVault` on Windows and
+`$HOME/LearningVault` elsewhere. Override it with `-VaultPath` /
+`--vault-path` or `CODEBASE_LEARNING_VAULT`.
+
+The vault stores each repository under `repositories/<repository-id>/` and
+ships its own compact `AGENTS.md`, README, registration scripts, and
+`.gitignore`. The source repository keeps its physical root `AGENTS.md`;
+`.local/`, `learning-flow/`, and `agentic-flow/` become links. Their exclusions
+are written to `.git/info/exclude`, not shared `.gitignore`.
+
+Registration never creates a remote, stages files, or commits. Use
+`register-vault status`, `relink`, and `unregister --restore` (PowerShell:
+`-Restore`) for the rest of the lifecycle. A vault can contain private
+continuity and Git history retains deleted content, so review it before
+committing or adding any remote manually.
+
 <details>
 <summary>Profiles, extensions, and update modes</summary>
 

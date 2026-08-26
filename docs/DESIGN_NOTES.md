@@ -4,6 +4,58 @@
 
 The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
+## Unreleased: optional LearningVault storage
+
+The global install introduced in 1.4 deliberately left repository state in
+each repository. That remains the default and the ownership model. The missing
+use case was physical aggregation: one developer may want maps, takeaways,
+settings, and private continuity from several dependent repositories visible
+in one local Git client without moving reusable framework files out of
+`~/.agents`.
+
+LearningVault addresses only that storage concern. It is not a fourth install
+scope. A vault registration requires `linked` scope, moves `.local/`,
+`learning-flow/`, and `agentic-flow/` under
+`~/LearningVault/repositories/<repository-id>/`, and preserves their source
+paths through Windows directory junctions or POSIX symbolic links. Root
+`AGENTS.md` remains a physical source-repository file because Git operations
+can replace tracked files and silently sever hard links.
+
+This is intentionally narrower than the symlink design rejected in 1.4. That
+decision concerned shared framework files and ambiguous `update` ownership.
+LearningVault links only repository-authored state after the framework/state
+boundary has already been established by `linked` scope. Managed framework
+updates continue under `~/.agents`; repository seeds remain copy-if-missing
+through their source paths.
+
+### Alternatives rejected
+
+- Copy/synchronization would create two writable copies and require a new
+  conflict protocol.
+- A `vault` install scope would mix framework placement with repository-state
+  storage and duplicate the existing linked workflow.
+- Vaulting only `.local/` would not provide the cross-repository map and
+  settings workflow that motivated the feature.
+- Automatically untracking repository files would turn a local storage choice
+  into an unreviewed team-visible migration.
+
+### Lifecycle and safety boundaries
+
+- The installer seeds the vault and may invoke registration, while standalone
+  registration scripts own register, status, relink, and restore. This keeps
+  filesystem migration out of ordinary install/update paths.
+- Link support is probed before migration. Source/vault conflicts and tracked
+  state are refused. Moved directories are rolled back when linking fails.
+- Registration owns one marked `.git/info/exclude` block and never rewrites
+  unrelated entries or excludes root `AGENTS.md`.
+- Repository IDs use repository name plus a hash of origin URL when available,
+  otherwise source path; an explicit ID repairs origin-less relocations.
+- The vault initializes a local Git repository but never creates a remote,
+  stages files, or commits. Users must treat its history as private because
+  deleted sensitive material remains in prior commits.
+- Empty registrations remain visible through `VAULT.md`; this also records the
+  source path, origin, and link kind needed for recovery.
+
 ## v1.4 install scopes: one framework, many repositories
 
 Until 1.4 the framework had exactly one install root. A developer who wanted this behavior in fifteen repositories installed and updated fifteen byte-identical copies of `agentic-flow/`, `learning-flow/`, and every managed skill, and had no way at all to get the behavior in a repository they could not or should not modify. The layer architecture was already right; the *deployment* model assumed the repository was the only place content could live.

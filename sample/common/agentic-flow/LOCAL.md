@@ -4,7 +4,7 @@ Use one rule:
 
 > Learn locally first. Promote only reusable knowledge deliberately.
 
-The repository-root `.local/` directory owns private learning continuity. The installer creates it, adds `/.local/` to the root `.gitignore`, and never overwrites existing local files. This stays true for a global installation: instructions and skills may live in `~/.agents/`, but `.local/` always belongs to the repository being worked on. There is no global `.local/`.
+The repository-root `.local/` directory owns private learning continuity. The installer creates it, adds `/.local/` to the root `.gitignore`, and never overwrites existing local files. In optional LearningVault mode, the path is instead a junction or symbolic link to that repository's vault directory and is hidden through local `.git/info/exclude`; logical ownership is unchanged. This stays true for a global installation: instructions and skills may live in `~/.agents/`, but `.local/` always belongs to the repository being worked on. There is no global `.local/`.
 
 This framework's own source checkout follows the same model lazily: when `.local/` is missing, create the two directories below and copy `sample/common/local/learning-history.md` only if the local history file does not exist.
 

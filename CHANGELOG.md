@@ -1,5 +1,32 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Optional LearningVault initialization through `--vault-init` /
+  `-VaultInit`, with configurable `--vault-path` / `-VaultPath` and
+  `CODEBASE_LEARNING_VAULT`.
+- Opt-in linked-repository registration through `--vault-register` /
+  `-VaultRegister`. Repository state is moved under
+  `LearningVault/repositories/<repository-id>/` and exposed at its original
+  paths by POSIX symbolic links or Windows directory junctions.
+- Cross-platform `register-vault` commands for idempotent registration,
+  status, relocation/relinking, and explicit restoration.
+- A compact vault root `AGENTS.md`, README, and `.gitignore` for safe
+  cross-repository use without crawling every registered repository.
+- Linux and Windows lifecycle coverage for packaged seeding, local Git
+  excludes, relocation, update, restore, tracked-path refusal, and the
+  no-remote boundary.
+
+### Changed
+
+- Combined linked installation and vault registration writes private harness
+  exclusions to `.git/info/exclude` instead of changing shared `.gitignore`.
+- Conversion from a vault-linked installation to repository scope now requires
+  `unregister --restore` first, preventing installer replacement logic from
+  operating on a link node.
+
 ## 1.4.0
 
 Install scopes: the framework can now be installed once into `%USERPROFILE%\.agents\` (`~/.agents/`) and shared by every repository, while each repository keeps its own learning state locally. Repository-scoped installation is unchanged and remains the default.
