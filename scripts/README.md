@@ -117,7 +117,7 @@ Under `global`, managed skills install to `<root>/skills/` rather than `<root>/.
 - `linked` inherits the global installation's profile and extension. Passing a conflicting `--profile` or `--extension` is an error: the repository would be seeded for a routing contract it does not read.
 - Repository-authored seeds are copied only when missing, in every mode. There is no framework content in a linked repository for `update` or `replace` to refresh, so those modes cannot destroy authored learning state.
 - `repository` → `linked` requires `update` or `replace`. It removes the repository's managed files and managed skills through their own manifests and leaves authored files in place.
-- `linked` → `repository` requires `merge`, `update`, or `replace`, and inherits the profile and extension the global installation was providing.
+- `linked` → `repository` requires `merge`, `update`, or `replace`, and inherits the profile and extension the global installation was providing. A vault-linked repository must run `unregister --restore` first.
 - Installing `--scope repository` while a global installation exists is allowed but warned about: the host agent would discover every managed skill twice.
 
 </details>
@@ -179,9 +179,10 @@ registration because links live in the worktree filesystem; nested invocations
 must target the repository top level.
 
 The vault never creates/configures a remote, stages files, or commits.
-Repository IDs combine a sanitized repository name with a stable hash of the
-origin URL when one exists, otherwise the absolute source path. Use an explicit
-ID when relinking a relocated repository that has no origin.
+Repository IDs combine a sanitized repository name with a hash of the origin
+URL (when one exists) and absolute worktree path. This keeps clones and
+worktrees separate. Use the recorded or explicit ID when relinking after a
+source or vault relocation.
 
 ## Version and scope marker
 

@@ -86,6 +86,19 @@ function Initialize-VaultRepository([string]$Root) {
     New-Item -ItemType Directory -Path (Join-Path $Root "repositories") -Force | Out-Null
 }
 
+function Assert-VaultRepository([string]$Root) {
+    if (-not (Test-Path -LiteralPath $Root -PathType Container)) {
+        throw "LearningVault does not exist: $Root"
+    }
+    $top = Invoke-Git -WorkingDirectory $Root -Arguments @("rev-parse", "--show-toplevel") -AllowFailure | Select-Object -First 1
+    if ([string]::IsNullOrWhiteSpace($top) -or -not (Test-SamePath $top $Root)) {
+        throw "Path is not a LearningVault Git repository root: $Root"
+    }
+    if (-not (Test-Path -LiteralPath (Join-Path $Root "repositories") -PathType Container)) {
+        throw "LearningVault is missing its repositories directory: $Root"
+    }
+}
+
 function Get-Sha256Prefix([string]$Value) {
     $bytes = [System.Text.Encoding]::UTF8.GetBytes($Value)
     $sha = [System.Security.Cryptography.SHA256]::Create()
@@ -105,10 +118,10 @@ function Get-RepositoryIdentity([string]$SourceRoot) {
     $origin = (Invoke-Git -WorkingDirectory $SourceRoot -Arguments @("config", "--get", "remote.origin.url") -AllowFailure | Select-Object -First 1)
     if (-not [string]::IsNullOrWhiteSpace($origin)) {
         $trimmed = $origin.Trim().TrimEnd('/').TrimEnd('\')
-        $name = [System.IO.Path]::GetFileNameWithoutExtension(($trimmed -replace "\\", "/"))
+        $name = (($trimmed -replace "\\", "/") -split "/")[-1]
         return [pscustomobject]@{
             Origin = $trimmed
-            Identity = $trimmed.ToLowerInvariant()
+            Identity = "$($trimmed.ToLowerInvariant())`n$($SourceRoot.ToLowerInvariant())"
             Name = (ConvertTo-SafeId $name)
         }
     }
@@ -202,14 +215,27 @@ function Test-LinkCapability([string]$VaultRoot) {
 function Get-ExcludePath([string]$SourceRoot) {
     $path = (Invoke-Git -WorkingDirectory $SourceRoot -Arguments @("rev-parse", "--path-format=absolute", "--git-path", "info/exclude") -AllowFailure | Select-Object -First 1)
     if ([string]::IsNullOrWhiteSpace($path)) {
-        $path = (Invoke-Git -WorkingDirectory $SourceRoot -Arguments @("rev-parse", "--git-path", "info/exclude") | Select-Object -First 1)
-        if (-not [System.IO.Path]::IsPathRooted($path)) { $path = Join-Path $SourceRoot $path }
+        $gitDirectory = (Invoke-Git -WorkingDirectory $SourceRoot -Arguments @("rev-parse", "--git-dir") | Select-Object -First 1)
+        if (-not [System.IO.Path]::IsPathRooted($gitDirectory)) { $gitDirectory = Join-Path $SourceRoot $gitDirectory }
+        $path = Join-Path $gitDirectory "info/exclude"
     }
     return [System.IO.Path]::GetFullPath($path)
 }
 
+function Assert-ExcludeBlockWellFormed([string]$SourceRoot) {
+    $path = Get-ExcludePath $SourceRoot
+    if (-not (Test-Path -LiteralPath $path -PathType Leaf)) { return }
+    $content = [System.IO.File]::ReadAllText($path)
+    $startCount = [regex]::Matches($content, "(?m)^$([regex]::Escape($ExcludeStart))\r?$").Count
+    $endCount = [regex]::Matches($content, "(?m)^$([regex]::Escape($ExcludeEnd))\r?$").Count
+    if ($startCount -ne $endCount -or $startCount -gt 1) {
+        throw "Refusing to rewrite malformed LearningVault markers in $path. Repair the marked block first."
+    }
+}
+
 function Set-ExcludeBlock([string]$SourceRoot, [bool]$Present) {
     $path = Get-ExcludePath $SourceRoot
+    Assert-ExcludeBlockWellFormed $SourceRoot
     $parent = Split-Path -Parent $path
     New-Item -ItemType Directory -Path $parent -Force | Out-Null
     $content = if (Test-Path -LiteralPath $path -PathType Leaf) {
@@ -295,6 +321,7 @@ function Find-RegistrationId([string]$SourceRoot, [string]$VaultRoot, [string]$R
 function Register-Repository([string]$SourceRoot, [string]$VaultRoot, [string]$Id) {
     Assert-LinkedInstall $SourceRoot
     Assert-StateUntracked $SourceRoot
+    Assert-ExcludeBlockWellFormed $SourceRoot
     Test-LinkCapability $VaultRoot
 
     $registration = Join-Path (Join-Path $VaultRoot "repositories") $Id
@@ -381,11 +408,31 @@ function Unregister-Repository([string]$SourceRoot, [string]$VaultRoot, [string]
             throw "Cannot restore because the vault copy is missing: $destination"
         }
     }
-    foreach ($name in $StateDirectories) {
-        $source = Join-Path $SourceRoot $name
-        $destination = Join-Path $registration $name
-        if (Test-ReparsePoint $source) { Remove-StateLink $source }
-        Move-Item -LiteralPath $destination -Destination $source
+    $restored = [System.Collections.Generic.List[object]]::new()
+    try {
+        foreach ($name in $StateDirectories) {
+            $source = Join-Path $SourceRoot $name
+            $destination = Join-Path $registration $name
+            if (Test-ReparsePoint $source) { Remove-StateLink $source }
+            Move-Item -LiteralPath $destination -Destination $source
+            $restored.Add([pscustomobject]@{ Source = $source; Destination = $destination })
+        }
+    }
+    catch {
+        for ($index = $restored.Count - 1; $index -ge 0; $index--) {
+            $entry = $restored[$index]
+            if ((Test-Path -LiteralPath $entry.Source) -and -not (Test-Path -LiteralPath $entry.Destination)) {
+                Move-Item -LiteralPath $entry.Source -Destination $entry.Destination
+            }
+        }
+        foreach ($name in $StateDirectories) {
+            $source = Join-Path $SourceRoot $name
+            $destination = Join-Path $registration $name
+            if (-not (Test-ReparsePoint $source) -and -not (Test-Path -LiteralPath $source) -and (Test-Path -LiteralPath $destination)) {
+                New-StateLink -Path $source -Target $destination
+            }
+        }
+        throw
     }
     Set-ExcludeBlock -SourceRoot $SourceRoot -Present $false
     $metadata = Join-Path $registration "VAULT.md"
@@ -416,13 +463,14 @@ function Show-Status([string]$SourceRoot, [string]$VaultRoot, [string]$Id) {
 
 $sourceRoot = Resolve-SourceRoot $SourcePath
 $vaultRoot = Resolve-VaultRoot $VaultPath
-Initialize-VaultRepository $vaultRoot
 
 if ($Action -eq "register") {
+    Initialize-VaultRepository $vaultRoot
     $id = Get-RepositoryId -SourceRoot $sourceRoot -RequestedId $RepositoryId
     Register-Repository -SourceRoot $sourceRoot -VaultRoot $vaultRoot -Id $id
 }
 else {
+    Assert-VaultRepository $vaultRoot
     $id = Find-RegistrationId -SourceRoot $sourceRoot -VaultRoot $vaultRoot -RequestedId $RepositoryId
     switch ($Action) {
         "relink" { Relink-Repository -SourceRoot $sourceRoot -VaultRoot $vaultRoot -Id $id }

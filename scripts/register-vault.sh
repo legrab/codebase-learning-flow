@@ -61,19 +61,31 @@ if [ -z "$VAULT_PATH" ]; then
     [ -n "${HOME:-}" ] || { echo "Cannot resolve LearningVault: pass --vault-path or set CODEBASE_LEARNING_VAULT." >&2; exit 1; }
     VAULT_PATH="$HOME/LearningVault"
 fi
+[ "$ACTION" = "register" ] || [ -d "$VAULT_PATH" ] || {
+    echo "LearningVault does not exist: $VAULT_PATH" >&2
+    exit 1
+}
 mkdir -p "$VAULT_PATH"
 VAULT_ROOT="$(cd "$VAULT_PATH" && pwd -P)"
 
 vault_top="$(git -C "$VAULT_ROOT" rev-parse --show-toplevel 2>/dev/null || true)"
 if [ -n "$vault_top" ]; then vault_top="$(cd "$vault_top" && pwd -P)"; fi
-if [ "$vault_top" != "$VAULT_ROOT" ]; then
+if [ "$ACTION" = "register" ] && [ "$vault_top" != "$VAULT_ROOT" ]; then
     git -C "$VAULT_ROOT" init >/dev/null
     log "Initialized local Git repository at $VAULT_ROOT"
+elif [ "$ACTION" != "register" ] && [ "$vault_top" != "$VAULT_ROOT" ]; then
+    echo "Path is not a LearningVault Git repository root: $VAULT_ROOT" >&2
+    exit 1
 fi
 if [ -n "$(git -C "$VAULT_ROOT" remote 2>/dev/null || true)" ]; then
     log "WARNING: this LearningVault has a Git remote. Registration will not modify it."
 fi
-mkdir -p "$VAULT_ROOT/repositories"
+if [ "$ACTION" = "register" ]; then
+    mkdir -p "$VAULT_ROOT/repositories"
+elif [ ! -d "$VAULT_ROOT/repositories" ]; then
+    echo "LearningVault is missing its repositories directory: $VAULT_ROOT" >&2
+    exit 1
+fi
 
 absolute_path() {
     path="$1"
@@ -136,7 +148,7 @@ safe_id() {
 repository_identity() {
     origin="$(git -C "$SOURCE_ROOT" config --get remote.origin.url 2>/dev/null || true)"
     if [ -n "$origin" ]; then
-        identity="$(printf '%s' "$origin" | tr '[:upper:]' '[:lower:]')"
+        identity="$(printf '%s\n%s' "$origin" "$SOURCE_ROOT" | tr '[:upper:]' '[:lower:]')"
         name="$(basename "${origin%/}")"
         name="$(safe_id "$name")"
     else
@@ -167,15 +179,28 @@ get_repository_id() {
 exclude_path() {
     path="$(git -C "$SOURCE_ROOT" rev-parse --path-format=absolute --git-path info/exclude 2>/dev/null || true)"
     if [ -z "$path" ]; then
-        path="$(git -C "$SOURCE_ROOT" rev-parse --git-path info/exclude)"
-        case "$path" in /*) ;; *) path="$SOURCE_ROOT/$path" ;; esac
+        git_directory="$(git -C "$SOURCE_ROOT" rev-parse --git-dir)"
+        case "$git_directory" in /*) ;; *) git_directory="$SOURCE_ROOT/$git_directory" ;; esac
+        path="$git_directory/info/exclude"
     fi
     printf '%s\n' "$path"
+}
+
+assert_exclude_block_well_formed() {
+    path="$(exclude_path)"
+    [ -f "$path" ] || return 0
+    start_count="$(awk -v marker="$EXCLUDE_START" '$0 == marker { count++ } END { print count + 0 }' "$path")"
+    end_count="$(awk -v marker="$EXCLUDE_END" '$0 == marker { count++ } END { print count + 0 }' "$path")"
+    if [ "$start_count" -ne "$end_count" ] || [ "$start_count" -gt 1 ]; then
+        echo "Refusing to rewrite malformed LearningVault markers in $path. Repair the marked block first." >&2
+        exit 1
+    fi
 }
 
 set_exclude_block() {
     present="$1"
     path="$(exclude_path)"
+    assert_exclude_block_well_formed
     mkdir -p "$(dirname "$path")"
     [ -f "$path" ] || : > "$path"
     temp="$path.learning-vault.$$"
@@ -271,6 +296,7 @@ register_repository() {
     id="$1"
     assert_linked_install
     assert_state_untracked
+    assert_exclude_block_well_formed
     test_link_capability
     registration="$VAULT_ROOT/repositories/$id"
     mkdir -p "$registration"
@@ -362,11 +388,32 @@ unregister_repository() {
         [ -L "$source" ] || [ ! -e "$source" ] || { echo "Cannot restore because a real source directory exists: $source" >&2; exit 1; }
         [ -d "$registration/$name" ] || { echo "Cannot restore because the vault copy is missing: $registration/$name" >&2; exit 1; }
     done
+    restored=""
+    rollback_restore() {
+        for restored_name in $restored; do
+            restored_source="$SOURCE_ROOT/$restored_name"
+            restored_destination="$registration/$restored_name"
+            [ ! -e "$restored_source" ] || [ -e "$restored_destination" ] || mv "$restored_source" "$restored_destination"
+        done
+        for restore_name in $STATE_DIRECTORIES; do
+            restore_source="$SOURCE_ROOT/$restore_name"
+            restore_destination="$registration/$restore_name"
+            [ -L "$restore_source" ] || [ -e "$restore_source" ] || [ ! -d "$restore_destination" ] || ln -s "$restore_destination" "$restore_source"
+        done
+    }
+    trap 'rollback_restore' HUP INT TERM
     for name in $STATE_DIRECTORIES; do
         source="$SOURCE_ROOT/$name"
         [ ! -L "$source" ] || rm -f "$source"
-        mv "$registration/$name" "$source"
+        if ! mv "$registration/$name" "$source"; then
+            rollback_restore
+            trap - HUP INT TERM
+            echo "Failed to restore $name; completed restores were returned to LearningVault." >&2
+            exit 1
+        fi
+        restored="$name $restored"
     done
+    trap - HUP INT TERM
     set_exclude_block false
     rm -f "$registration/VAULT.md"
     rmdir "$registration" 2>/dev/null || true

@@ -8,7 +8,7 @@ adoption/ADOPT.md	4177
 adoption/README.md	2445
 docs/AGENTIC_WORKFLOW_SANITY.md	10021
 docs/ARCHITECTURE.md	9277
-docs/DESIGN_NOTES.md	48330
+docs/DESIGN_NOTES.md	48403
 docs/EXAMPLE_WALKTHROUGH.md	3614
 docs/EDUCATION_MODEL.md	5452
 docs/INITIALIZE_LEARNING_FLOW.md	12199
@@ -97,12 +97,12 @@ sample/root/AGENTS.pointer.md	712
 sample/vault/.gitignore	32
 sample/vault/AGENTS.md	1580
 sample/vault/README.md	1369
-scripts/README.md	12921
+scripts/README.md	13020
 scripts/install.bat	1477
-scripts/install.ps1	61089
-scripts/install.sh	51169
-scripts/register-vault.ps1	18841
-scripts/register-vault.sh	14133
+scripts/install.ps1	61308
+scripts/install.sh	51826
+scripts/register-vault.ps1	21228
+scripts/register-vault.sh	16299
 skill-evals/README.md	1689
 skill-evals/adoption-cases.yaml	1337
 skill-evals/agentic-cases.yaml	9830

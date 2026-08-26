@@ -1199,10 +1199,16 @@ try {
             -PowerShellRegistrationScript $sourceVaultPowerShell `
             -ShellRegistrationScript $sourceVaultShell
         if ($VaultRegister) {
-            & (Join-Path $resolvedVault "scripts/register-vault.ps1") `
-                register `
-                -SourcePath $resolvedTarget `
-                -VaultPath $resolvedVault
+            try {
+                & (Join-Path $resolvedVault "scripts/register-vault.ps1") `
+                    register `
+                    -SourcePath $resolvedTarget `
+                    -VaultPath $resolvedVault
+            }
+            catch {
+                Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
+                throw
+            }
         }
     }
 

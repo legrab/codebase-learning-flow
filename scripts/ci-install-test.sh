@@ -112,5 +112,15 @@ if "$vault_root/scripts/register-vault.sh" register \
   exit 1
 fi
 test ! -L "$vault_target/learning-flow"
+git -C "$vault_target" rm --cached --force --quiet learning-flow/MAP.md
+printf '%s\n' '# codebase-learning-flow-vault:start' 'unrelated-entry' > "$exclude_path"
+if "$vault_root/scripts/register-vault.sh" register \
+  --source "$vault_target" \
+  --vault-path "$vault_root" >/dev/null 2>&1; then
+  echo "LearningVault unexpectedly rewrote malformed local exclude markers." >&2
+  exit 1
+fi
+test ! -L "$vault_target/learning-flow"
+grep -Fxq "unrelated-entry" "$exclude_path"
 
 echo "Installer smoke test passed for minimal, full, global, linked, and LearningVault modes."

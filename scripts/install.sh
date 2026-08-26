@@ -171,6 +171,16 @@ initialize_learning_vault() {
     log "LearningVault ready at $vault_root"
 }
 
+has_learning_vault_registration() {
+    repository_root="$1"
+    command -v git >/dev/null 2>&1 || return 1
+    git_directory="$(git -C "$repository_root" rev-parse --git-dir 2>/dev/null || true)"
+    [ -n "$git_directory" ] || return 1
+    case "$git_directory" in /*) ;; *) git_directory="$repository_root/$git_directory" ;; esac
+    [ -f "$git_directory/info/exclude" ] || return 1
+    grep -Fqx '# codebase-learning-flow-vault:start' "$git_directory/info/exclude"
+}
+
 require_value() {
     option="$1"
     remaining="$2"
@@ -913,7 +923,7 @@ if [ -n "$INSTALLED_SCOPE" ] && [ "$INSTALLED_SCOPE" != "$SCOPE" ]; then
             esac
             ;;
         linked/repository)
-            if [ -L "$TARGET_AGENTIC" ] || [ -L "$TARGET_LEARNING" ] || [ -L "$TARGET_PATH/.local" ]; then
+            if [ -L "$TARGET_AGENTIC" ] || [ -L "$TARGET_LEARNING" ] || [ -L "$TARGET_PATH/.local" ] || has_learning_vault_registration "$TARGET_PATH"; then
                 echo "This linked installation uses LearningVault directory links. Run register-vault.sh unregister --restore before converting it to repository scope." >&2
                 exit 1
             fi
@@ -1272,7 +1282,10 @@ if [ "$VAULT_INIT" = "true" ]; then
     RESOLVED_VAULT="$(cd "$RESOLVED_VAULT" && pwd)"
     initialize_learning_vault "$RESOLVED_VAULT" "$SOURCE_VAULT" "$SOURCE_VAULT_POWERSHELL" "$SOURCE_VAULT_SHELL"
     if [ "$VAULT_REGISTER" = "true" ]; then
-        sh "$RESOLVED_VAULT/scripts/register-vault.sh" register --source "$TARGET_PATH" --vault-path "$RESOLVED_VAULT"
+        if ! sh "$RESOLVED_VAULT/scripts/register-vault.sh" register --source "$TARGET_PATH" --vault-path "$RESOLVED_VAULT"; then
+            initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY" "false"
+            exit 1
+        fi
     fi
 fi
 

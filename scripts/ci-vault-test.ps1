@@ -125,6 +125,28 @@ try {
         throw "LearningVault did not refuse a tracked repository-state path."
     }
 
+    & git -C $sourceRoot rm --cached --force --quiet learning-flow/MAP.md
+    if ($LASTEXITCODE -ne 0) { throw "Failed to clear the tracked-path refusal fixture." }
+    [System.IO.File]::WriteAllText(
+        $excludePath,
+        "# codebase-learning-flow-vault:start`nunrelated-entry`n",
+        [System.Text.UTF8Encoding]::new($false)
+    )
+    $refusedMalformedExclude = $false
+    try {
+        & "$vaultRoot/scripts/register-vault.ps1" `
+            register `
+            -SourcePath $sourceRoot `
+            -VaultPath $vaultRoot
+    }
+    catch {
+        $refusedMalformedExclude = $_.Exception.Message -like "Refusing to rewrite malformed LearningVault markers*"
+    }
+    if (-not $refusedMalformedExclude -or
+        ((Get-Item -LiteralPath (Join-Path $sourceRoot "learning-flow") -Force).Attributes -band [System.IO.FileAttributes]::ReparsePoint)) {
+        throw "Malformed local exclude markers were not refused before migration."
+    }
+
     Write-Host "PowerShell LearningVault lifecycle test passed."
 }
 finally {

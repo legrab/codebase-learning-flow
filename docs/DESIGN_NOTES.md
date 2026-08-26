@@ -48,8 +48,9 @@ through their source paths.
   state are refused. Moved directories are rolled back when linking fails.
 - Registration owns one marked `.git/info/exclude` block and never rewrites
   unrelated entries or excludes root `AGENTS.md`.
-- Repository IDs use repository name plus a hash of origin URL when available,
-  otherwise source path; an explicit ID repairs origin-less relocations.
+- Repository IDs use repository name plus a hash of origin URL (when
+  available) and absolute worktree path. This prevents clones or worktrees of
+  one remote from sharing state; an explicit recorded ID repairs relocations.
 - The vault initializes a local Git repository but never creates a remote,
   stages files, or commits. Users must treat its history as private because
   deleted sensitive material remains in prior commits.
