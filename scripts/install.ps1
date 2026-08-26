@@ -28,6 +28,11 @@ param(
     [string]$RootAgents = "Auto",
     [switch]$SkipRootAgents,
     [switch]$SkipSkills,
+    # Optional local-only LearningVault storage. -VaultInit seeds the vault;
+    # -VaultRegister also registers this repository after a linked install.
+    [switch]$VaultInit,
+    [switch]$VaultRegister,
+    [string]$VaultPath = "",
     [switch]$SkipSelfRefresh
 )
 
@@ -46,6 +51,12 @@ if (-not [string]::IsNullOrWhiteSpace($Release)) {
 if (-not [string]::IsNullOrWhiteSpace($PackageFile)) {
     $SkipSelfRefresh = $true
 }
+if ($VaultRegister -and $Scope -ne "Linked") {
+    throw "-VaultRegister requires -Scope Linked so framework files remain owned by the global installation."
+}
+if (-not [string]::IsNullOrWhiteSpace($VaultPath) -and -not $VaultInit -and -not $VaultRegister) {
+    throw "-VaultPath requires -VaultInit or -VaultRegister."
+}
 
 function Write-Step([string]$Message) {
     Write-Host "[learning-flow] $Message"
@@ -61,6 +72,21 @@ function Resolve-GlobalRoot {
         throw "Cannot resolve the global root: neither USERPROFILE nor HOME is set. Pass -TargetPath or set CODEBASE_LEARNING_FLOW_HOME."
     }
     return (Join-Path $home_directory ".agents")
+}
+
+function Resolve-LearningVaultRoot([string]$RequestedPath) {
+    if (-not [string]::IsNullOrWhiteSpace($RequestedPath)) {
+        return [System.IO.Path]::GetFullPath($RequestedPath)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($env:CODEBASE_LEARNING_VAULT)) {
+        return [System.IO.Path]::GetFullPath($env:CODEBASE_LEARNING_VAULT)
+    }
+    $homeDirectory = $env:USERPROFILE
+    if ([string]::IsNullOrWhiteSpace($homeDirectory)) { $homeDirectory = $env:HOME }
+    if ([string]::IsNullOrWhiteSpace($homeDirectory)) {
+        throw "Cannot resolve LearningVault: pass -VaultPath or set CODEBASE_LEARNING_VAULT."
+    }
+    return Join-Path $homeDirectory "LearningVault"
 }
 
 function Read-MarkerField([string]$MarkerPath, [string]$Field) {
@@ -110,7 +136,11 @@ function Confirm-Checksum([string]$Path, [string]$ChecksumsPath, [string]$AssetN
     }
 }
 
-function Initialize-LocalLearningWorkspace([string]$TargetRoot, [string]$HistoryTemplate) {
+function Initialize-LocalLearningWorkspace(
+    [string]$TargetRoot,
+    [string]$HistoryTemplate,
+    [switch]$SkipGitIgnore
+) {
     if (-not (Test-Path -LiteralPath $HistoryTemplate -PathType Leaf)) {
         throw "Local learning-history template is missing: $HistoryTemplate"
     }
@@ -121,27 +151,29 @@ function Initialize-LocalLearningWorkspace([string]$TargetRoot, [string]$History
         throw "$ignorePath exists but is not a file."
     }
 
-    $hasLocalIgnore = $false
-    if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
-        $hasLocalIgnore = $null -ne (
-            Get-Content -LiteralPath $ignorePath |
-                Where-Object { $_.Trim() -in @("/.local/", ".local/", "/.local", ".local") } |
-                Select-Object -First 1
-        )
-    }
-    if (-not $hasLocalIgnore) {
-        $newline = "`n"
+    if (-not $SkipGitIgnore) {
+        $hasLocalIgnore = $false
         if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
-            $content = [System.IO.File]::ReadAllText($ignorePath)
-            if ($content.Contains("`r`n")) { $newline = "`r`n" }
-            $entry = "/.local/$newline"
-            if ($content.Length -gt 0 -and -not $content.EndsWith("`n")) { $entry = "$newline$entry" }
-            [System.IO.File]::AppendAllText($ignorePath, $entry, [System.Text.UTF8Encoding]::new($false))
+            $hasLocalIgnore = $null -ne (
+                Get-Content -LiteralPath $ignorePath |
+                    Where-Object { $_.Trim() -in @("/.local/", ".local/", "/.local", ".local") } |
+                    Select-Object -First 1
+            )
         }
-        else {
-            [System.IO.File]::WriteAllText($ignorePath, "/.local/$newline", [System.Text.UTF8Encoding]::new($false))
+        if (-not $hasLocalIgnore) {
+            $newline = "`n"
+            if (Test-Path -LiteralPath $ignorePath -PathType Leaf) {
+                $content = [System.IO.File]::ReadAllText($ignorePath)
+                if ($content.Contains("`r`n")) { $newline = "`r`n" }
+                $entry = "/.local/$newline"
+                if ($content.Length -gt 0 -and -not $content.EndsWith("`n")) { $entry = "$newline$entry" }
+                [System.IO.File]::AppendAllText($ignorePath, $entry, [System.Text.UTF8Encoding]::new($false))
+            }
+            else {
+                [System.IO.File]::WriteAllText($ignorePath, "/.local/$newline", [System.Text.UTF8Encoding]::new($false))
+            }
+            $changed = $true
         }
-        $changed = $true
     }
 
     $localRoot = Join-Path $TargetRoot ".local"
@@ -165,6 +197,38 @@ function Initialize-LocalLearningWorkspace([string]$TargetRoot, [string]$History
     }
 
     if ($changed) { Write-Step "Initialized private learning state under .local/" }
+}
+
+function Initialize-LearningVault(
+    [string]$Root,
+    [string]$TemplateRoot,
+    [string]$PowerShellRegistrationScript,
+    [string]$ShellRegistrationScript
+) {
+    if ($null -eq (Get-Command git -ErrorAction SilentlyContinue)) {
+        throw "Git is required to initialize LearningVault."
+    }
+    New-Item -ItemType Directory -Path $Root -Force | Out-Null
+    $inside = @(& git -C $Root rev-parse --is-inside-work-tree 2>$null)
+    if ($LASTEXITCODE -ne 0 -or ($inside | Select-Object -First 1) -ne "true") {
+        & git -C $Root init | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "Failed to initialize LearningVault at $Root." }
+        Write-Step "Initialized local LearningVault Git repository at $Root"
+    }
+    New-Item -ItemType Directory -Path (Join-Path $Root "repositories"), (Join-Path $Root "scripts") -Force | Out-Null
+    foreach ($name in @("README.md", "AGENTS.md", ".gitignore")) {
+        $source = Join-Path $TemplateRoot $name
+        $target = Join-Path $Root $name
+        if (-not (Test-Path -LiteralPath $target)) {
+            Copy-Item -LiteralPath $source -Destination $target
+        }
+    }
+    Copy-Item -LiteralPath $PowerShellRegistrationScript -Destination (Join-Path $Root "scripts/register-vault.ps1") -Force
+    Copy-Item -LiteralPath $ShellRegistrationScript -Destination (Join-Path $Root "scripts/register-vault.sh") -Force
+    if (@(& git -C $Root remote 2>$null).Count -gt 0) {
+        Write-Step "WARNING: LearningVault already has a Git remote. The installer did not modify it."
+    }
+    Write-Step "LearningVault ready at $Root"
 }
 
 function Resolve-RemoteCommit([string]$RepositoryName, [string]$RequestedRef) {
@@ -210,6 +274,14 @@ function Resolve-RemoteCommit([string]$RepositoryName, [string]$RequestedRef) {
 function Test-DirectoryHasContent([string]$Path) {
     if (-not (Test-Path -LiteralPath $Path -PathType Container)) { return $false }
     return $null -ne (Get-ChildItem -LiteralPath $Path -Force | Select-Object -First 1)
+}
+
+function Test-DirectoryLink([string]$Path) {
+    try {
+        $item = Get-Item -LiteralPath $Path -Force -ErrorAction Stop
+        return ($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0
+    }
+    catch { return $false }
 }
 
 function Get-InstalledProfile([string]$LearningPath) {
@@ -690,6 +762,9 @@ if (-not $SkipSelfRefresh) {
                 -RootAgents $RootAgents `
                 -SkipRootAgents:$($SkipRootAgents.IsPresent) `
                 -SkipSkills:$($SkipSkills.IsPresent) `
+                -VaultInit:$($VaultInit.IsPresent) `
+                -VaultRegister:$($VaultRegister.IsPresent) `
+                -VaultPath $VaultPath `
                 -SkipSelfRefresh
         }
         else {
@@ -705,6 +780,9 @@ if (-not $SkipSelfRefresh) {
                 -RootAgents $RootAgents `
                 -SkipRootAgents:$($SkipRootAgents.IsPresent) `
                 -SkipSkills:$($SkipSkills.IsPresent) `
+                -VaultInit:$($VaultInit.IsPresent) `
+                -VaultRegister:$($VaultRegister.IsPresent) `
+                -VaultPath $VaultPath `
                 -SkipSelfRefresh
         }
         return
@@ -754,6 +832,9 @@ if (-not [string]::IsNullOrWhiteSpace($installedScope) -and $installedScope -ne 
         Write-Step "Converting repository-scoped installation to linked; framework files move to $globalRoot"
     }
     elseif ($installedScope -eq "linked" -and $scopeName -eq "repository") {
+        if ((Test-DirectoryLink $targetAgentic) -or (Test-DirectoryLink $targetLearning) -or (Test-DirectoryLink (Join-Path $resolvedTarget ".local"))) {
+            throw "This linked installation uses LearningVault directory links. Run register-vault.ps1 unregister -Restore before converting it to repository scope."
+        }
         if ($Mode -notin @("Merge", "Update", "Replace")) {
             throw "Scope change linked -> repository is not supported in mode '$Mode'. Use Merge, Update, or Replace."
         }
@@ -910,6 +991,9 @@ try {
     $sourceLearningRepositoryFiles = Join-Path $sourceLearning ".repository-files"
     $sourceRootAgents = Join-Path $archiveRoot "sample/root/AGENTS.md"
     $sourceRootPointer = Join-Path $archiveRoot "sample/root/AGENTS.pointer.md"
+    $sourceVault = Join-Path $archiveRoot "sample/vault"
+    $sourceVaultPowerShell = Join-Path $archiveRoot "scripts/register-vault.ps1"
+    $sourceVaultShell = Join-Path $archiveRoot "scripts/register-vault.sh"
 
     $sourceExtension = Join-Path $archiveRoot "sample/extensions/regulatory"
     $sourceExtensionLearning = Join-Path $sourceExtension "learning-flow"
@@ -925,6 +1009,19 @@ try {
     foreach ($requiredFile in @($sourceAgenticManagedFiles, $sourceAgenticManagedSkills, $sourceLearningManagedFiles, $sourceLearningManagedSkills, $sourceAgenticRepositoryFiles, $sourceLearningRepositoryFiles, $sourceLocalHistory)) {
         if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
             throw "Required framework manifest is missing: $requiredFile"
+        }
+    }
+    if ($VaultInit -or $VaultRegister) {
+        foreach ($requiredFile in @(
+            (Join-Path $sourceVault "README.md"),
+            (Join-Path $sourceVault "AGENTS.md"),
+            (Join-Path $sourceVault ".gitignore"),
+            $sourceVaultPowerShell,
+            $sourceVaultShell
+        )) {
+            if (-not (Test-Path -LiteralPath $requiredFile -PathType Leaf)) {
+                throw "Required LearningVault file is missing: $requiredFile"
+            }
         }
     }
     if ($scopeName -eq "global") {
@@ -1006,7 +1103,10 @@ try {
     }
 
     if ($scopeName -ne "global") {
-        Initialize-LocalLearningWorkspace -TargetRoot $resolvedTarget -HistoryTemplate $sourceLocalHistory
+        Initialize-LocalLearningWorkspace `
+            -TargetRoot $resolvedTarget `
+            -HistoryTemplate $sourceLocalHistory `
+            -SkipGitIgnore:$($VaultRegister.IsPresent)
     }
 
     if ($scopeName -eq "linked" -and $installedScope -eq "repository" -and -not $SkipSkills) {
@@ -1084,6 +1184,21 @@ try {
         -ScopeValue $scopeName `
         -VersionValue $frameworkVersion `
         -GlobalVersionValue $(if ($scopeName -eq "linked") { $globalVersion } else { "" })
+
+    if ($VaultInit -or $VaultRegister) {
+        $resolvedVault = Resolve-LearningVaultRoot $VaultPath
+        Initialize-LearningVault `
+            -Root $resolvedVault `
+            -TemplateRoot $sourceVault `
+            -PowerShellRegistrationScript $sourceVaultPowerShell `
+            -ShellRegistrationScript $sourceVaultShell
+        if ($VaultRegister) {
+            & (Join-Path $resolvedVault "scripts/register-vault.ps1") `
+                register `
+                -SourcePath $resolvedTarget `
+                -VaultPath $resolvedVault
+        }
+    }
 
     if ($scopeName -eq "linked" -and -not [string]::IsNullOrWhiteSpace($globalVersion) -and $globalVersion -ne $frameworkVersion) {
         Write-Step "WARNING: this repository was linked at $frameworkVersion but $globalRoot holds $globalVersion. Reinstall one of them so the routing contract and the repository state agree."

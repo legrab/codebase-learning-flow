@@ -99,8 +99,8 @@ sample/vault/AGENTS.md	1580
 sample/vault/README.md	1369
 scripts/README.md	10227
 scripts/install.bat	1477
-scripts/install.ps1	55583
-scripts/install.sh	47145
+scripts/install.ps1	60821
+scripts/install.sh	51063
 scripts/register-vault.ps1	18800
 scripts/register-vault.sh	13633
 skill-evals/README.md	1689

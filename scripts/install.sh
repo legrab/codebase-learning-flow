@@ -14,6 +14,9 @@ EXTENSION="auto"
 SKIP_ROOT_AGENTS="false"
 ROOT_AGENTS_MODE="auto"
 SKIP_SKILLS="false"
+VAULT_INIT="false"
+VAULT_REGISTER="false"
+VAULT_PATH=""
 
 usage() {
     cat <<'EOF'
@@ -39,10 +42,14 @@ Options:
   --root-agents MODE               auto|integrate|initialize|preserve|skip
   --skip-root-agents               Alias for --root-agents skip
   --skip-skills                    Do not install or update managed skills
+  --vault-init                     Initialize or refresh a local-only LearningVault
+  --vault-register                 Register this linked repository after installation
+  --vault-path PATH                Override $HOME/LearningVault
   -h, --help                       Show this help
 
 --ref and --release are mutually exclusive.
 The global root can be overridden with CODEBASE_LEARNING_FLOW_HOME.
+The vault root can be overridden with CODEBASE_LEARNING_VAULT.
 EOF
 }
 
@@ -62,6 +69,22 @@ resolve_global_root() {
         exit 1
     fi
     printf '%s\n' "$home_directory/.agents"
+}
+
+resolve_learning_vault_root() {
+    if [ -n "$VAULT_PATH" ]; then
+        printf '%s\n' "$VAULT_PATH"
+        return
+    fi
+    if [ -n "${CODEBASE_LEARNING_VAULT:-}" ]; then
+        printf '%s\n' "$CODEBASE_LEARNING_VAULT"
+        return
+    fi
+    [ -n "${HOME:-}" ] || {
+        echo "Cannot resolve LearningVault: pass --vault-path or set CODEBASE_LEARNING_VAULT." >&2
+        exit 1
+    }
+    printf '%s\n' "$HOME/LearningVault"
 }
 
 read_marker_field() {
@@ -88,6 +111,7 @@ write_install_scope_marker() {
 initialize_local_learning_workspace() {
     target_root="$1"
     history_template="$2"
+    skip_gitignore="${3:-false}"
     ignore_path="$target_root/.gitignore"
     local_root="$target_root/.local"
     changed="false"
@@ -97,7 +121,7 @@ initialize_local_learning_workspace() {
         echo "$ignore_path exists but is not a file." >&2
         exit 1
     fi
-    if [ ! -f "$ignore_path" ] || ! grep -Eq '^[[:space:]]*/?\.local/?[[:space:]]*$' "$ignore_path"; then
+    if [ "$skip_gitignore" != "true" ] && { [ ! -f "$ignore_path" ] || ! grep -Eq '^[[:space:]]*/?\.local/?[[:space:]]*$' "$ignore_path"; }; then
         if [ -s "$ignore_path" ]; then printf '\n/.local/\n' >> "$ignore_path"; else printf '/.local/\n' > "$ignore_path"; fi
         changed="true"
     fi
@@ -118,6 +142,31 @@ initialize_local_learning_workspace() {
     fi
 
     if [ "$changed" = "true" ]; then log "Initialized private learning state under .local/"; fi
+}
+
+initialize_learning_vault() {
+    vault_root="$1"
+    template_root="$2"
+    powershell_script="$3"
+    shell_script="$4"
+
+    command -v git >/dev/null 2>&1 || { echo "Git is required to initialize LearningVault." >&2; exit 1; }
+    mkdir -p "$vault_root"
+    if [ "$(git -C "$vault_root" rev-parse --is-inside-work-tree 2>/dev/null || true)" != "true" ]; then
+        git -C "$vault_root" init >/dev/null
+        log "Initialized local LearningVault Git repository at $vault_root"
+    fi
+    mkdir -p "$vault_root/repositories" "$vault_root/scripts"
+    for name in README.md AGENTS.md .gitignore; do
+        [ -e "$vault_root/$name" ] || cp "$template_root/$name" "$vault_root/$name"
+    done
+    cp "$powershell_script" "$vault_root/scripts/register-vault.ps1"
+    cp "$shell_script" "$vault_root/scripts/register-vault.sh"
+    chmod +x "$vault_root/scripts/register-vault.sh" 2>/dev/null || true
+    if [ -n "$(git -C "$vault_root" remote 2>/dev/null || true)" ]; then
+        log "WARNING: LearningVault already has a Git remote. The installer did not modify it."
+    fi
+    log "LearningVault ready at $vault_root"
 }
 
 require_value() {
@@ -784,6 +833,20 @@ while [ "$#" -gt 0 ]; do
             SKIP_SKILLS="true"
             shift
             ;;
+        --vault-init)
+            VAULT_INIT="true"
+            shift
+            ;;
+        --vault-register)
+            VAULT_REGISTER="true"
+            VAULT_INIT="true"
+            shift
+            ;;
+        --vault-path)
+            require_value "$1" "$#"
+            VAULT_PATH="$2"
+            shift 2
+            ;;
         -h|--help)
             usage
             exit 0
@@ -801,6 +864,14 @@ case "$SCOPE" in repository|global|linked) ;; *) echo "Invalid scope: $SCOPE" >&
 case "$PROFILE" in auto|minimal|full) ;; *) echo "Invalid profile: $PROFILE" >&2; exit 2 ;; esac
 case "$EXTENSION" in auto|none|regulatory) ;; *) echo "Invalid extension: $EXTENSION" >&2; exit 2 ;; esac
 case "$ROOT_AGENTS_MODE" in auto|integrate|initialize|preserve|skip) ;; *) echo "Invalid root agents mode: $ROOT_AGENTS_MODE" >&2; exit 2 ;; esac
+[ "$VAULT_REGISTER" != "true" ] || [ "$SCOPE" = "linked" ] || {
+    echo "--vault-register requires --scope linked so framework files remain owned by the global installation." >&2
+    exit 2
+}
+[ -z "$VAULT_PATH" ] || [ "$VAULT_INIT" = "true" ] || {
+    echo "--vault-path requires --vault-init or --vault-register." >&2
+    exit 2
+}
 
 command -v unzip >/dev/null 2>&1 || { echo "The installer requires unzip." >&2; exit 1; }
 
@@ -840,6 +911,10 @@ if [ -n "$INSTALLED_SCOPE" ] && [ "$INSTALLED_SCOPE" != "$SCOPE" ]; then
             esac
             ;;
         linked/repository)
+            if [ -L "$TARGET_AGENTIC" ] || [ -L "$TARGET_LEARNING" ] || [ -L "$TARGET_PATH/.local" ]; then
+                echo "This linked installation uses LearningVault directory links. Run register-vault.sh unregister --restore before converting it to repository scope." >&2
+                exit 1
+            fi
             case "$MODE" in
                 merge|update|replace) log "Converting linked installation to a self-contained repository installation" ;;
                 *) echo "Scope change linked -> repository is not supported in mode '$MODE'. Use merge, update, or replace." >&2; exit 1 ;;
@@ -1007,6 +1082,9 @@ SOURCE_AGENTIC_REPOSITORY_FILES="$SOURCE_AGENTIC/.repository-files"
 SOURCE_LEARNING_REPOSITORY_FILES="$SOURCE_LEARNING/.repository-files"
 SOURCE_ROOT_AGENTS="$ARCHIVE_ROOT/sample/root/AGENTS.md"
 SOURCE_ROOT_POINTER="$ARCHIVE_ROOT/sample/root/AGENTS.pointer.md"
+SOURCE_VAULT="$ARCHIVE_ROOT/sample/vault"
+SOURCE_VAULT_POWERSHELL="$ARCHIVE_ROOT/scripts/register-vault.ps1"
+SOURCE_VAULT_SHELL="$ARCHIVE_ROOT/scripts/register-vault.sh"
 SOURCE_EXTENSION="$ARCHIVE_ROOT/sample/extensions/regulatory"
 SOURCE_EXTENSION_LEARNING="$SOURCE_EXTENSION/learning-flow"
 SOURCE_EXTENSION_SKILLS="$SOURCE_EXTENSION/.agents/skills"
@@ -1019,6 +1097,11 @@ done
 for required in "$SOURCE_AGENTIC_MANAGED_FILES" "$SOURCE_AGENTIC_MANAGED_SKILLS" "$SOURCE_LEARNING_MANAGED_FILES" "$SOURCE_LEARNING_MANAGED_SKILLS" "$SOURCE_AGENTIC_REPOSITORY_FILES" "$SOURCE_LEARNING_REPOSITORY_FILES" "$SOURCE_LOCAL_HISTORY"; do
     [ -f "$required" ] || { echo "Required framework manifest is missing: $required" >&2; exit 1; }
 done
+if [ "$VAULT_INIT" = "true" ]; then
+    for required in "$SOURCE_VAULT/README.md" "$SOURCE_VAULT/AGENTS.md" "$SOURCE_VAULT/.gitignore" "$SOURCE_VAULT_POWERSHELL" "$SOURCE_VAULT_SHELL"; do
+        [ -f "$required" ] || { echo "Required LearningVault file is missing: $required" >&2; exit 1; }
+    done
+fi
 if [ "$SCOPE" = "global" ]; then
     SKIP_ROOT_AGENTS="true"
     ROOT_AGENTS_MODE="skip"
@@ -1104,7 +1187,7 @@ if [ "$SCOPE" != "linked" ]; then
 fi
 
 if [ "$SCOPE" != "global" ]; then
-    initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY"
+    initialize_local_learning_workspace "$TARGET_PATH" "$SOURCE_LOCAL_HISTORY" "$VAULT_REGISTER"
 fi
 
 if [ "$SCOPE" = "linked" ] && [ "$INSTALLED_SCOPE" = "repository" ] && [ "$SKIP_SKILLS" != "true" ]; then
@@ -1180,6 +1263,16 @@ else
 fi
 
 write_install_scope_marker "$TARGET_LEARNING/.install-scope" "$SCOPE" "$FRAMEWORK_VERSION" "$GLOBAL_VERSION"
+
+if [ "$VAULT_INIT" = "true" ]; then
+    RESOLVED_VAULT="$(resolve_learning_vault_root)"
+    mkdir -p "$RESOLVED_VAULT"
+    RESOLVED_VAULT="$(cd "$RESOLVED_VAULT" && pwd)"
+    initialize_learning_vault "$RESOLVED_VAULT" "$SOURCE_VAULT" "$SOURCE_VAULT_POWERSHELL" "$SOURCE_VAULT_SHELL"
+    if [ "$VAULT_REGISTER" = "true" ]; then
+        sh "$RESOLVED_VAULT/scripts/register-vault.sh" register --source "$TARGET_PATH" --vault-path "$RESOLVED_VAULT"
+    fi
+fi
 
 if [ "$SCOPE" = "linked" ] && [ -n "$GLOBAL_VERSION" ] && [ "$GLOBAL_VERSION" != "$FRAMEWORK_VERSION" ]; then
     log "WARNING: this repository was linked at $FRAMEWORK_VERSION but $GLOBAL_ROOT holds $GLOBAL_VERSION. Reinstall one of them so the routing contract and the repository state agree."
