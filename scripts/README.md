@@ -36,11 +36,11 @@ Under `--scope global` the steps that write repository state — `.local/`, `.gi
 ```
 
 ```text
-sh install.sh --release v1.3.0 --profile minimal
+sh install.sh --release v1.5.0 --profile minimal
 ```
 
 ```powershell
-.\install.ps1 -Release v1.3.0 -Profile Minimal
+.\install.ps1 -Release v1.5.0 -Profile Minimal
 ```
 
 `--release`/`-Release` downloads the packaged artifact and `checksums.txt`
@@ -58,7 +58,7 @@ Every install prints which trust boundary it used:
 
 ```text
 Codebase Learning Flow
-Version: v1.3.0
+Version: v1.5.0
 Source: packaged release (checksum verified)
 ```
 
@@ -190,8 +190,8 @@ Each root records `learning-flow/.install-scope`:
 
 ```text
 scope: linked
-version: v1.4.0
-global-version: v1.4.0
+version: v1.5.0
+global-version: v1.5.0
 ```
 
 The installer is the reader. On a `linked` install it compares the version being written against the global installation's own and warns when they differ; `scripts/ci-install-test.sh` and `scripts/ci-release-test.sh` assert the two agree after a paired install. Installations predating this marker are treated as `repository`.

@@ -4,7 +4,7 @@
 
 The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
-## Unreleased: optional LearningVault storage
+## v1.5: optional LearningVault storage
 
 The global install introduced in 1.4 deliberately left repository state in
 each repository. That remains the default and the ownership model. The missing

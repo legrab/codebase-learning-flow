@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased
+## 1.5.0
+
+Optional LearningVault storage for linked installations: repository-authored state can live in one local vault while framework files stay in `~/.agents`. Combined linked and vault installs write private harness exclusions to `.git/info/exclude` instead of shared `.gitignore`.
 
 ### Added
 
