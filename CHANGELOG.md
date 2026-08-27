@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- A managed host-discovery contract with a reviewed Cursor User Rule for global
+  installations, plus installer guidance that makes the required host bridge
+  explicit without mutating account settings.
+- A behavioral conformance fixture for ignored, dot-directory, and
+  junction/symlink-backed repository learning state.
+
+### Changed
+
+- Repository learning, bootstrap, workflow discovery, local continuity, and
+  promotion now directly probe repository-root state and read exact
+  destinations before writing, preventing missed records from being recreated
+  or assigned the wrong owner.
+- Installer smoke coverage now preserves existing custom baselines, entry
+  points, MAP, and TAKEAWAYS behind local Git excludes and verifies that host
+  discovery guidance reaches global and packaged installations.
+
 ## 1.5.0
 
 Optional LearningVault storage for linked installations: repository-authored state can live in one local vault while framework files stay in `~/.agents`. Combined linked and vault installs write private harness exclusions to `.git/info/exclude` instead of shared `.gitignore`.

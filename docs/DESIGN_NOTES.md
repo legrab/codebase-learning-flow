@@ -4,6 +4,43 @@
 
 The harness should keep a developer able to reason about a repository while collaborating with an agent, and let any learner use the same lightweight methods for a general subject. It should improve delivery, code and architecture understanding, domain reasoning, debugging, ownership growth, and conversational learning without making workflow administration or learning administration the primary activity.
 
+## Post-v1.5: host discovery and repository-state conformance
+
+The global-install design correctly separated framework-owned files from
+repository-owned state, but it treated storage under `~/.agents/` as if every
+host would discover and load it. A live Cursor session disproved that
+assumption: project `AGENTS.md` and User Rules were documented discovery
+surfaces, while `%USERPROFILE%\.agents\AGENTS.md` was not an automatic Cursor
+instruction source. Once the bridge failed, ignored and junction-backed local
+state was missed and later writes followed the wrong ownership model.
+
+> **Design takeaway:** Correct storage and ownership are insufficient without a
+> small, verifiable host discovery bridge and an explicit repository-state
+> probe before learning records are created or replaced.
+
+The change keeps those concerns separate:
+
+- `HOST_INTEGRATION.md` is the single managed contract for host adapters. It
+  documents a compact Cursor User Rule but the installer does not mutate
+  account settings.
+- `agentic-flow/AGENTS.md` owns the always-loaded direct-path and pre-write
+  invariants. `LOCAL.md` owns the detailed probe order, while repository
+  learning, bootstrap, workflow, and closure skills apply it at their write
+  boundaries.
+- Global installer summaries now state that host discovery must be configured;
+  they no longer claim globally stored skills already apply everywhere.
+- Behavioral fixtures cover ignored or linked state, and installer smoke tests
+  preserve existing history, custom entry points, MAP, and TAKEAWAYS while
+  proving the host guide ships to global installations.
+
+A repository-state manifest was not added. Optional custom records such as
+`repository-baseline.md` and `maintenance-entry-points.md` are not universal
+framework surfaces; direct inspection plus repository-native ownership
+instructions finds them without creating another source of truth. Static CI
+also does not claim to prove model compliance: it verifies packaging and
+preservation, while the behavioral scenario defines the fresh-session
+conformance review.
+
 ## v1.5: optional LearningVault storage
 
 The global install introduced in 1.4 deliberately left repository state in

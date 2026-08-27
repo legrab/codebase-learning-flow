@@ -88,7 +88,10 @@ curl -fsSL https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/
 
 ### One installation for every repository
 
-By default the framework installs into a single repository. `--scope global` instead installs the framework-owned instructions and skills once, into `%USERPROFILE%\.agents\` (`~/.agents/` elsewhere), where every repository picks them up:
+By default the framework installs into a single repository. `--scope global`
+instead stores the framework-owned instructions and skills once, in
+`%USERPROFILE%\.agents\` (`~/.agents/` elsewhere), for a configured host adapter
+to use from every repository:
 
 ```powershell
 & ([scriptblock]::Create((irm https://raw.githubusercontent.com/legrab/codebase-learning-flow/main/scripts/install.ps1))) -Scope Global -Profile Full
@@ -98,7 +101,16 @@ By default the framework installs into a single repository. `--scope global` ins
 sh install.sh --scope global --profile full
 ```
 
-That alone is enough to work in any repository. What it deliberately does not do is create repository state: a global installation writes no `.local/`, no `.gitignore` entry, and no `AGENTS.md` in your home directory.
+Global storage is not automatically discoverable by every agent host. Configure
+the host's documented user/global instruction mechanism once; for Cursor, use
+the reviewed User Rule in
+[`agentic-flow/HOST_INTEGRATION.md`](sample/common/agentic-flow/HOST_INTEGRATION.md).
+The installer prints this requirement but deliberately does not edit account
+settings.
+
+What global installation deliberately does not do is create repository state:
+it writes no `.local/`, no `.gitignore` entry, and no `AGENTS.md` in your home
+directory.
 
 When a repository should keep its own durable learning — a map of the system, verified takeaways, its own collaboration settings and decision record — run `--scope linked` inside it:
 

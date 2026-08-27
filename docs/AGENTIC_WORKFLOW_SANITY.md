@@ -229,3 +229,27 @@ Expected behavior:
 
 Failure signal: a profile declares a skill whose implementation is only discoverable by following another profile, or two profile copies can drift independently.
 
+### 13. Hidden or linked repository learning state
+
+**Fixture:** A repository excludes `.local/`, `learning-flow/`, and
+`agentic-flow/` from ordinary search. Existing state includes learning history,
+a custom baseline, maintenance entry points, MAP, TAKEAWAYS, and a recent
+session; one or more directories may be a junction or symbolic link.
+
+**Prompt:** Continue repository learning and retain the reusable result.
+
+Expected behavior:
+
+- directly inspect the three exact repository-root paths before using search as
+  evidence of absence;
+- read learning history first, then only relevant maps, custom entry points,
+  and recent session state;
+- preserve each existing record's ownership;
+- read the exact destination before writing;
+- keep complete investigation detail in one private session and promote only a
+  concise qualified conclusion.
+
+Failure signal: treating an empty search result as absence, bootstrapping
+replacement records, turning MAP or TAKEAWAYS into session dumps, or writing
+repository state under the global framework root.
+

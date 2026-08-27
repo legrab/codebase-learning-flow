@@ -59,6 +59,7 @@ New evidence can change the route mid-task. This is a set of behavioral rules, n
 | `EDUCATION.md` | durable ownership, AI leverage, resilience, and teaching judgment |
 | `LEARN.md` | understanding the effective repository harness |
 | `LOCAL.md` | private learning continuity and deliberate promotion |
+| `HOST_INTEGRATION.md` | making global instructions discoverable to each host |
 | `ROOT_INTEGRATION.md` | connecting existing or missing root instructions |
 | `REFERENCE_INTEGRATION.md` | extracting value from another source |
 | `learn-anything` | general-topic learning without repository inspection |

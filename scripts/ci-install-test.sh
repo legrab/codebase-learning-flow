@@ -7,10 +7,20 @@ repository="${GITHUB_REPOSITORY:-legrab/codebase-learning-flow}"
 ref="${GITHUB_SHA:-main}"
 bash "$repo_root/scripts/install.sh" --target "$target" --repository "$repository" --ref "$ref" --profile minimal --mode fail --skip-root-agents
 test -d "$target/learning-flow"
+git -C "$target" init -q
+printf '%s\n' "/.local/" "/learning-flow/" "/agentic-flow/" > "$target/.git/info/exclude"
 mkdir -p "$target/.local"
 printf '%s\n' "CI sentinel" > "$target/.local/ci-sentinel"
+printf '%s\n' "Existing baseline" > "$target/.local/repository-baseline.md"
+printf '%s\n' "Existing entry points" > "$target/.local/maintenance-entry-points.md"
+printf '%s\n' "Existing map" > "$target/learning-flow/MAP.md"
+printf '%s\n' "Existing takeaways" > "$target/learning-flow/TAKEAWAYS.md"
 bash "$repo_root/scripts/install.sh" --target "$target" --repository "$repository" --ref "$ref" --profile minimal --mode update --skip-root-agents
 grep -Fxq "CI sentinel" "$target/.local/ci-sentinel"
+grep -Fxq "Existing baseline" "$target/.local/repository-baseline.md"
+grep -Fxq "Existing entry points" "$target/.local/maintenance-entry-points.md"
+grep -Fxq "Existing map" "$target/learning-flow/MAP.md"
+grep -Fxq "Existing takeaways" "$target/learning-flow/TAKEAWAYS.md"
 
 full_target="$(mktemp -d)"
 global_root="$(mktemp -d)"
@@ -24,13 +34,15 @@ test -f "$full_target/.agents/skills/repository-learning/SKILL.md"
 # A global installation owns framework files only; a linked repository owns
 # only what it authors. The two must never hold the other's content.
 export CODEBASE_LEARNING_FLOW_HOME="$global_root"
-bash "$repo_root/scripts/install.sh" --scope global --repository "$repository" --ref "$ref" --profile full --mode fail
+global_output="$(bash "$repo_root/scripts/install.sh" --scope global --repository "$repository" --ref "$ref" --profile full --mode fail)"
 test -f "$global_root/agentic-flow/AGENTS.md"
+test -f "$global_root/agentic-flow/HOST_INTEGRATION.md"
 test -f "$global_root/skills/repository-learning/SKILL.md"
 test ! -e "$global_root/agentic-flow/SETTINGS.md"
 test ! -e "$global_root/learning-flow/MAP.md"
 test ! -e "$global_root/.local"
 test ! -e "$global_root/AGENTS.md"
+printf '%s\n' "$global_output" | grep -Fq "Configure your agent host to discover this global installation"
 
 bash "$repo_root/scripts/install.sh" --target "$linked_target" --scope linked --repository "$repository" --ref "$ref" --mode fail --skip-root-agents
 test -f "$linked_target/learning-flow/MAP.md"

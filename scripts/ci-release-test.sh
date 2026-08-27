@@ -31,6 +31,7 @@ PACKAGE_ROOT="$(find "$INSPECT_DIR" -mindepth 1 -maxdepth 1 -type d | head -n 1)
 [ -f "$PACKAGE_ROOT/adoption/ADOPT.md" ] || fail "Package is missing adoption/ADOPT.md"
 [ -f "$PACKAGE_ROOT/adoption/README.md" ] || fail "Package is missing adoption/README.md"
 [ -f "$PACKAGE_ROOT/VERSION" ] || fail "Package is missing a VERSION file"
+[ -f "$PACKAGE_ROOT/sample/common/agentic-flow/HOST_INTEGRATION.md" ] || fail "Package is missing host discovery guidance"
 [ -f "$PACKAGE_ROOT/sample/vault/AGENTS.md" ] || fail "Package is missing the LearningVault AGENTS.md"
 [ -f "$PACKAGE_ROOT/scripts/register-vault.sh" ] || fail "Package is missing register-vault.sh"
 [ -f "$PACKAGE_ROOT/scripts/register-vault.ps1" ] || fail "Package is missing register-vault.ps1"
@@ -91,6 +92,7 @@ run_install "global" "$WORK_ROOT/global" \
   --vault-init \
   --vault-path "$WORK_ROOT/LearningVault"
 [ -f "$WORK_ROOT/global/agentic-flow/AGENTS.md" ] || fail "global install has no agentic-flow/AGENTS.md"
+[ -f "$WORK_ROOT/global/agentic-flow/HOST_INTEGRATION.md" ] || fail "global install has no host discovery guidance"
 [ -f "$WORK_ROOT/global/skills/repository-learning/SKILL.md" ] || fail "global install has no managed skills"
 [ -f "$WORK_ROOT/global/skills/regulatory-knowledge/SKILL.md" ] || fail "global install has no extension skill"
 [ ! -e "$WORK_ROOT/global/agentic-flow/SETTINGS.md" ] || fail "repository-authored SETTINGS.md reached the global root"

@@ -9,12 +9,16 @@ Follow `agentic-flow/AGENTS.md` (repository root, else `~/.agents/`) and `agenti
 
 ## Shared route
 
-1. Identify the real outcome, system boundary, governing rule or invariant, representative path, and proof surface.
-2. Work from decisive repository evidence before committing to a model or proposed design.
-3. Use the smallest responsible investigation, attempt, or change.
-4. Verify against decisive evidence and relevant failure modes.
-5. Use at most one consequential understanding check when a mistaken model would affect later reasoning.
-6. Transfer only verified, reusable learning into the normal handoff or a qualified shared record.
+1. Directly inspect repository-root `.local/`, `learning-flow/`, and
+   `agentic-flow/`. Read `.local/learning-history.md` first when present, then
+   only relevant maps and recent session state; do not infer absence from
+   search results.
+2. Identify the real outcome, system boundary, governing rule or invariant, representative path, and proof surface.
+3. Work from decisive repository evidence before committing to a model or proposed design.
+4. Use the smallest responsible investigation, attempt, or change.
+5. Verify against decisive evidence and relevant failure modes.
+6. Use at most one consequential understanding check when a mistaken model would affect later reasoning.
+7. Transfer only verified, reusable learning into the normal handoff or a qualified shared record.
 
 Select exactly one branch below. Do not load or execute the other branches.
 
@@ -77,3 +81,5 @@ Ask at most one check about the preserved contract, failure boundary, or new res
 Use `MAP.md`, `TAKEAWAYS.md`, and, in the full profile, `REPOSITORIES.md` as the single owners for durable shared knowledge. Keep private attempts, personal state, uncertainty, secrets, and sensitive operational evidence under `.local/`.
 
 Promote only verified, repository-specific, reusable, non-sensitive findings that are costly enough to rediscover.
+Before creating or replacing any learning record, read its exact path and
+confirm that the content matches that record's existing ownership.

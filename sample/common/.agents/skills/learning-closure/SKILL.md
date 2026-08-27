@@ -40,6 +40,12 @@ If this session corrected an existing `learning-flow/MAP.md` or `TAKEAWAYS.md` e
 
 Prefer the module's own documentation when it is necessary to use or extend that module correctly. Prefer learning-flow surfaces for cross-cutting repository understanding. Every destination above belongs to the repository being worked on, never to a global installation root.
 
+Before recommending or writing a destination, inspect its exact
+repository-root path directly. Do not treat an empty glob or indexed-search
+result as proof that ignored, dot-directory, junction-backed, or symlinked
+state is absent. Read an existing destination before editing it so promotion
+cannot replace its established ownership or duplicate a focused record.
+
 ## Ask at meaningful closure
 
 At pull-request or substantial change completion, if a useful candidate exists, present a compact recommendation:
