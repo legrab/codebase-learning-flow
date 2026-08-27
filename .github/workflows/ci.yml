@@ -69,13 +69,17 @@ jobs:
           $linked = Join-Path $env:RUNNER_TEMP "learning-flow-linked"
           New-Item -ItemType Directory -Force -Path $globalRoot, $linked | Out-Null
           $env:CODEBASE_LEARNING_FLOW_HOME = $globalRoot
-          & "$PWD/scripts/install.ps1" `
+          $globalOutput = & "$PWD/scripts/install.ps1" `
             -Scope Global `
             -Repository $env:GITHUB_REPOSITORY `
             -Ref $env:GITHUB_SHA `
             -Profile full `
-            -Mode fail
+            -Mode fail 6>&1
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Write-Host ($globalOutput -join [Environment]::NewLine)
+          if (($globalOutput -join "`n") -notmatch "Configure your agent host to discover this global installation") {
+            throw "Global install did not report the host discovery requirement."
+          }
           & "$PWD/scripts/install.ps1" `
             -Target $linked `
             -Scope Linked `
@@ -86,6 +90,9 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           if (-not (Test-Path "$globalRoot/skills/repository-learning/SKILL.md")) {
             throw "Global scope did not install managed skills."
+          }
+          if (-not (Test-Path "$globalRoot/agentic-flow/HOST_INTEGRATION.md")) {
+            throw "Global scope did not install host discovery guidance."
           }
           if (Test-Path "$globalRoot/learning-flow/MAP.md") {
             throw "Repository-authored MAP.md reached the global root."

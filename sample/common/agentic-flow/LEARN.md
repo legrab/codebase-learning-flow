@@ -3,6 +3,8 @@
 The repository's agent-facing setup is part of the system collaborators need to understand. Explain it at a high level first, then reveal detail on demand.
 
 ```text
+Host discovery adapter
+  ↓
 Repository instructions
   ↓
 Agentic collaboration workflow
@@ -18,6 +20,7 @@ Private learning and temporary state in .local/
 
 Show:
 
+- which documented host surface discovers repository or global instructions;
 - which files provide stable rules, and whether they resolve from this repository or a global installation at `~/.agents/`;
 - which workflow governs planning, autonomy, validation, and handoff;
 - which skills load only for particular tasks;

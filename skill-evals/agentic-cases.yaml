@@ -125,6 +125,22 @@ cases:
     must_include: [preserve existing local files, ensure root .gitignore excludes .local, create only missing structure]
     must_not: [overwrite learning history, delete follow-ups, commit local state]
 
+  - prompt: >
+      Continue repository learning. Ordinary search shows no learning files, but
+      this repository excludes .local/, learning-flow/, and agentic-flow/ and
+      may expose them through directory links.
+    expected_behavior: explicit_repository_state_discovery
+    must_include:
+      - directly inspect exact repository-root .local learning-flow and agentic-flow paths
+      - read learning-history first when present
+      - reuse relevant existing maps baselines entry points and recent session state
+      - read the exact destination before writing
+      - preserve existing record ownership
+    must_not:
+      - treat empty search results as proof of absence
+      - bootstrap replacement learning records
+      - overwrite MAP or TAKEAWAYS with session detail
+
   - prompt: "Update an existing minimal installation that has custom MAP.md and TAKEAWAYS.md to this revision."
     expected_behavior: safe_framework_update
     must_include: [add managed EDUCATION.md, refresh managed instructions and skills, preserve MAP.md TAKEAWAYS.md SETTINGS.md .local and unrelated skills]

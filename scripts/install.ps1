@@ -1240,7 +1240,8 @@ try {
     Write-Host ""
     if ($scopeName -eq "global") {
         Write-Host "Next step:"
-        Write-Host "Run the installer with -Scope Linked inside a repository to give it its own learning state, or start working: the managed skills in $targetSkills already apply everywhere."
+        Write-Host "Configure your agent host to discover this global installation; see $(Join-Path $targetAgentic 'HOST_INTEGRATION.md')."
+        Write-Host "Then run the installer with -Scope Linked inside a repository when it should have its own learning state."
     }
     else {
         Write-Host "Suggested first instruction:"

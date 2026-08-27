@@ -17,6 +17,21 @@ Repository state is never read from the global root. `.local/`, `learning-flow/M
 
 When neither root has a file this layer names, the guidance simply does not apply. Do not create it to satisfy a reference.
 
+## Repository-state discovery
+
+For repository learning, onboarding, continuation, or persistence, inspect the
+repository-root `.local/`, `learning-flow/`, and `agentic-flow/` paths directly
+before relying on glob or indexed-search results. Ignore rules, dot-directory
+handling, junctions, and symbolic links can hide existing state; an empty
+search result is not evidence that these paths are absent.
+
+Read `.local/learning-history.md` first when present, then only the relevant
+map, baseline or entry-point document, and recent session state. Before
+creating, replacing, or promoting into a learning record, resolve its owner and
+read the exact destination. Preserve existing records and do not bootstrap
+missing state unless the user requests it or the active repository instructions
+require it.
+
 ## Route
 
 1. Follow root, nested, and tool-specific repository instructions first.

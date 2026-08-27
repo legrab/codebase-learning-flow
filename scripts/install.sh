@@ -1313,7 +1313,8 @@ printf 'Scope: %s (%s)\n' "$SCOPE" "$TARGET_PATH"
 log "Installation complete: scope=$SCOPE profile=$SELECTED_PROFILE extension=$SELECTED_EXTENSION mode=$MODE root-agents=$RESOLVED_ROOT_AGENTS_MODE"
 if [ "$SCOPE" = "global" ]; then
     printf '\n%s\n' "Next step:"
-    printf '%s\n' "Run the installer with --scope linked inside a repository to give it its own learning state, or start working: the managed skills in $TARGET_SKILLS already apply everywhere."
+    printf '%s\n' "Configure your agent host to discover this global installation; see $TARGET_AGENTIC/HOST_INTEGRATION.md."
+    printf '%s\n' "Then run the installer with --scope linked inside a repository when it should have its own learning state."
     exit 0
 fi
 printf '\n%s\n' "Suggested first instruction:"

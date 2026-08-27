@@ -15,6 +15,20 @@ This framework's own source checkout follows the same model lazily: when `.local
 └── follow-ups/
 ```
 
+## Discover before reading or writing
+
+At the start of repository learning, onboarding, or continuation, probe the
+exact repository-root `.local/`, `learning-flow/`, and `agentic-flow/` paths.
+Use a direct path read or directory listing before concluding that a path is
+absent: indexed search, globs, ignore rules, dot-directory handling, junctions,
+and symbolic links can omit state that still exists.
+
+When present, read `.local/learning-history.md` first, then only relevant maps,
+custom baseline or entry-point documents, and recent session state. Before
+creating or replacing any history, session, map, takeaway, baseline, or other
+learning record, read the exact destination and confirm its documented owner.
+Do not recreate a record merely because search did not reveal it.
+
 - `learning-history.md` is compact cross-session memory: current goals, system models, revised assumptions, demonstrated understanding, fragile areas, and useful next directions.
 - `sessions/` holds complete state for meaningful learning sessions, including the goal, attempts, observations, model revisions, questions, checks, summary, and next step.
 - `follow-ups/` holds generated revision material, practice, or quizzes intended for later use.

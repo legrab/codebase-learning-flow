@@ -108,6 +108,11 @@ Which files belong to which scope is declared, not inferred: `.managed-files` an
 
 Under `global`, managed skills install to `<root>/skills/` rather than `<root>/.agents/skills/`, because the global root is itself the `.agents` directory a host agent scans. Skills the framework does not manage are never touched.
 
+Global storage does not by itself prove that a host reads global instructions.
+Configure the host discovery bridge documented in
+`agentic-flow/HOST_INTEGRATION.md`; the installer reports this required next
+step but does not edit host account settings.
+
 `--target`/`-TargetPath` overrides the global root when given. `CODEBASE_LEARNING_FLOW_HOME` overrides the default location for every scope's global lookup.
 
 <details>

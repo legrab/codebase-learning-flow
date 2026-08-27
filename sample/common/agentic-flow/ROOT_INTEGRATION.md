@@ -2,6 +2,10 @@
 
 The installed workflow must coexist with the repository's actual agent-facing setup. Never assume this template is the only source of instructions.
 
+This guide begins after the agent host has found the framework. For a global
+installation, configure that discovery bridge through `HOST_INTEGRATION.md`;
+root integration cannot substitute for an undiscovered global rule.
+
 ## First inspect
 
 Before creating or editing a root `AGENTS.md`, look for:
